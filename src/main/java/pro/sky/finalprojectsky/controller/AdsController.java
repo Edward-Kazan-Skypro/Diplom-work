@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import pro.sky.finalprojectsky.service.AdsService;
 
 import javax.validation.Valid;
 import java.util.List;
+
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:8080")
@@ -33,7 +35,7 @@ public class AdsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",
-                    schema = @Schema(implementation = Comment.class))),
+                            schema = @Schema(implementation = Comment.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")})
@@ -52,32 +54,17 @@ public class AdsController {
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")})
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(mediaType = "*/*",
-                            schema = @Schema(implementation = FullAds.class))),
-            @ApiResponse(responseCode = "404", description = "Not Found")})
     @RequestMapping(value = "/ads/{id}",
             method = RequestMethod.DELETE)
     ResponseEntity<String> removeAds(@PathVariable("id") Long id) {
         if (adsService.deleteAdsById(id)){
             return ResponseEntity.status(HttpStatus.FOUND).body("Ads deleted");
-            produces = {"*/*"},
-            method = RequestMethod.GET)
-    ResponseEntity<String> getAds(@Parameter(in = ParameterIn.PATH, required = true, schema = @Schema())
-                                  @PathVariable("id") Long id) {
-        FullAds ads = adsService.getAdsById(id);
-        if (ads != null) {
-            return ResponseEntity.status(HttpStatus.FOUND).body(ads.toString());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ads NOT deleted");
         }
     }
 
-
-}
-
-    // /ads/me
-    @Operation(summary = "получить объявления пользователя по идентификатору", tags = {"Объявления"})
+    @Operation(summary = "getAdsMe", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",
@@ -96,8 +83,7 @@ public class AdsController {
         }
     }
 
-    // /ads/
-    @Operation(summary = "добавить объявление", tags = {"Объявления"})
+    @Operation(summary = "addAds", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "OK",
                     content = @Content(mediaType = "*/*",
@@ -113,8 +99,7 @@ public class AdsController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newAds);
     }
 
-    // /ads/
-    @Operation(summary = "получить все объявления", tags = {"Объявления"})
+    @Operation(summary = "getAllAds", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",

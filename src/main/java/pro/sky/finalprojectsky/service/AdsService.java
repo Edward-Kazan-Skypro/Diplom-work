@@ -11,7 +11,7 @@ import pro.sky.finalprojectsky.repository.CommentsRepository;
 import java.util.List;
 
 @Component
-public class AdsService {
+public class AdsService  {
 
     private final AdsRepository adsRepository;
     private final CommentsRepository commentsRepository;
