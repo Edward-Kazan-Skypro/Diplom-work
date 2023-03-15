@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,9 +34,8 @@ public class FullAds   {
 
 
     //Здесь не совсем понятно, почему список стринговый
-    @JsonProperty("image")
-    @Valid
-    private List<String> image = null;
+    //@JsonProperty("image")
+    //private List<String> image = null;
 
     @JsonProperty("phone")
     private String phone = null;
@@ -43,6 +45,11 @@ public class FullAds   {
 
     @JsonProperty("title")
     private String title = null;
+
+    //Наверно нужно сделать связь с таблицей комментариев
+    //т.е. у одного объявления может быть много комментариев
+    @OneToMany
+    Collection<Comment> commentList;
 
 
     //Тоже не понятно, для чего эти конструкторы?
@@ -63,18 +70,18 @@ public class FullAds   {
         this.email = email;
         return this;
     }
-    public FullAds image(List<String> image) {
-        this.image = image;
-        return this;
-    }
+    //public FullAds image(List<String> image) {
+    //    this.image = image;
+    //    return this;
+    //}
 
-    public FullAds addImageItem(String imageItem) {
-        if (this.image == null) {
-            this.image = new ArrayList<String>();
-        }
-        this.image.add(imageItem);
-        return this;
-    }
+    //public FullAds addImageItem(String imageItem) {
+    //    if (this.image == null) {
+    //        this.image = new ArrayList<String>();
+    //    }
+    //    this.image.add(imageItem);
+    //    return this;
+    //}
 
     public FullAds phone(String phone) {
         this.phone = phone;
@@ -108,7 +115,7 @@ public class FullAds   {
                 Objects.equals(this.authorLastName, fullAds.authorLastName) &&
                 Objects.equals(this.description, fullAds.description) &&
                 Objects.equals(this.email, fullAds.email) &&
-                Objects.equals(this.image, fullAds.image) &&
+                //Objects.equals(this.image, fullAds.image) &&
                 Objects.equals(this.phone, fullAds.phone) &&
                 Objects.equals(this.pk, fullAds.pk) &&
                 Objects.equals(this.price, fullAds.price) &&
@@ -117,7 +124,7 @@ public class FullAds   {
 
     @Override
     public int hashCode() {
-        return Objects.hash(authorFirstName, authorLastName, description, email, image, phone, pk, price, title);
+        return Objects.hash(authorFirstName, authorLastName, description, email, phone, pk, price, title);
     }
 
     @Override
@@ -129,7 +136,7 @@ public class FullAds   {
         sb.append("    authorLastName: ").append(toIndentedString(authorLastName)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
         sb.append("    email: ").append(toIndentedString(email)).append("\n");
-        sb.append("    image: ").append(toIndentedString(image)).append("\n");
+        //sb.append("    image: ").append(toIndentedString(image)).append("\n");
         sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
         sb.append("    pk: ").append(toIndentedString(pk)).append("\n");
         sb.append("    price: ").append(toIndentedString(price)).append("\n");
@@ -147,5 +154,16 @@ public class FullAds   {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @ManyToOne(optional = false)
+    private Comment comments;
+
+    public Comment getComments() {
+        return comments;
+    }
+
+    public void setComments(Comment comments) {
+        this.comments = comments;
     }
 }
