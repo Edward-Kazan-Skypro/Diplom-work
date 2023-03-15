@@ -29,38 +29,38 @@ public class AdsController {
         this.adsService = adsService;
     }
 
-    // /ads/{ad_pk}/comments/{id}
-    @Operation(summary = "updateComments", tags = {"Объявления"})
+    @Operation(summary = "updateComments", description = "", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",
-                            schema = @Schema(implementation = Comment.class))),
+                    schema = @Schema(implementation = Comment.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden"),
             @ApiResponse(responseCode = "404", description = "Not Found")})
-    @RequestMapping(value = "/ads/{ad_pk}/comments/{id}",
+    @RequestMapping(value = "/ads/{ads_id}/comments/{comments_id}",
             produces = {"*/*"},
             consumes = {"application/json"},
             method = RequestMethod.PATCH)
-    ResponseEntity<Comment> updateComments(@Parameter(in = ParameterIn.PATH,
-            required = true, schema = @Schema())
-                                           @PathVariable("ad_pk") String adPk,
-                                           @Parameter(in = ParameterIn.PATH, required = true, schema = @Schema())
-                                           @PathVariable("id") Integer id,
-                                           @Parameter(in = ParameterIn.DEFAULT, required = true, schema = @Schema())
-                                           @Valid @RequestBody Comment body) {
+    ResponseEntity<Comment> updateComments(@PathVariable("ads_id") Long adsId,
+                                           @PathVariable("comments_id") Long commentId,
+                                           @RequestBody Comment comment) {
         return null;
     }
 
-
-    // /ads/{id}
-    @Operation(summary = "получить объявление по id", tags = {"Объявления"})
+    @Operation(summary = "removeAds", description = "", tags = {"Объявления"})
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "No Content"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden")})
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",
                             schema = @Schema(implementation = FullAds.class))),
             @ApiResponse(responseCode = "404", description = "Not Found")})
     @RequestMapping(value = "/ads/{id}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<String> removeAds(@PathVariable("id") Long id) {
+        if (adsService.deleteAdsById(id)){
+            return ResponseEntity.status(HttpStatus.FOUND).body("Ads deleted");
             produces = {"*/*"},
             method = RequestMethod.GET)
     ResponseEntity<String> getAds(@Parameter(in = ParameterIn.PATH, required = true, schema = @Schema())
@@ -69,9 +69,12 @@ public class AdsController {
         if (ads != null) {
             return ResponseEntity.status(HttpStatus.FOUND).body(ads.toString());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление не найдено");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ads NOT deleted");
         }
     }
+
+
+}
 
     // /ads/me
     @Operation(summary = "получить объявления пользователя по идентификатору", tags = {"Объявления"})

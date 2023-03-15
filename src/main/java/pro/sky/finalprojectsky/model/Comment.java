@@ -5,15 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity(name = "comments")
 public class Comment   {
-    @JsonProperty("pk")
+    @JsonProperty("id")
     @Id
-    private Long pk = null;
+    private Long id = null;
     @JsonProperty("author")
     private Integer author = null;
 
@@ -23,6 +24,12 @@ public class Comment   {
 
     @JsonProperty("text")
     private String text = null;
+
+    //Наверно нужно сделать связь с таблицей объявлений
+    //т.е. у одного объявления может быть много комментариев
+    @ManyToOne
+    private FullAds fullAds;
+
 
     public Comment author(Integer author) {
         this.author = author;
@@ -34,8 +41,8 @@ public class Comment   {
         return this;
     }
 
-    public Comment pk(Long pk) {
-        this.pk = pk;
+    public Comment id (Long id) {
+        this.id = id;
         return this;
     }
     public Comment text(String text) {
@@ -54,13 +61,13 @@ public class Comment   {
         Comment comment = (Comment) o;
         return Objects.equals(this.author, comment.author) &&
                 Objects.equals(this.createdAt, comment.createdAt) &&
-                Objects.equals(this.pk, comment.pk) &&
+                Objects.equals(this.id, comment.id) &&
                 Objects.equals(this.text, comment.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, createdAt, pk, text);
+        return Objects.hash(author, createdAt, id, text);
     }
 
     @Override
@@ -70,7 +77,7 @@ public class Comment   {
 
         sb.append("    author: ").append(toIndentedString(author)).append("\n");
         sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-        sb.append("    pk: ").append(toIndentedString(pk)).append("\n");
+        sb.append("    pk: ").append(toIndentedString(id)).append("\n");
         sb.append("    text: ").append(toIndentedString(text)).append("\n");
         sb.append("}");
         return sb.toString();
