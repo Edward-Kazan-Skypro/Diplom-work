@@ -8,10 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Getter
@@ -21,8 +18,7 @@ public class FullAds   {
 
     @JsonProperty("pk")
     @Id
-    private Long pk = null;
-
+    private Integer pk = null;
     @JsonProperty("authorFirstName")
     private String authorFirstName = null;
     @JsonProperty("authorLastName")
@@ -34,6 +30,7 @@ public class FullAds   {
 
 
     //Здесь не совсем понятно, почему список стринговый
+    //Возможно это список с адресами для загрузки изображений?
     //@JsonProperty("image")
     //private List<String> image = null;
 
@@ -46,13 +43,17 @@ public class FullAds   {
     @JsonProperty("title")
     private String title = null;
 
-    //Наверно нужно сделать связь с таблицей комментариев
-    //т.е. у одного объявления может быть много комментариев
-    @OneToMany
-    Collection<Comment> commentList;
+    //Создаем поле для хранения комментариев к объявлению
+    @JsonProperty("comments")
+    //Причину ошибки я не понял...
+    //Но нужен контейнер для хранения списка комментариев (от одного до бесконечности)
+    //Отключил проверку - надо это иметь ввиду!
+    private List<Comment> commentList = null;
 
 
-    //Тоже не понятно, для чего эти конструкторы?
+    //Не понятно, для чего эти конструкторы?
+    //Может быть для создания объявления по одному из имеющихся полей?
+    //Но зачем?
     public FullAds authorFirstName(String authorFirstName) {
         this.authorFirstName = authorFirstName;
         return this;
@@ -88,7 +89,7 @@ public class FullAds   {
         return this;
     }
 
-    public FullAds pk(Long pk) {
+    public FullAds pk(Integer pk) {
         this.pk = pk;
         return this;
     }
