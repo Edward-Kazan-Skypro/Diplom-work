@@ -8,20 +8,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.AdsService;
-
 import javax.validation.Valid;
 import java.util.List;
 
 
 @Slf4j
-@CrossOrigin(value = "http://localhost:8080")
+@CrossOrigin(value = "http://localhost:3000")
 @RestController
 public class AdsController {
 
@@ -31,7 +29,15 @@ public class AdsController {
         this.adsService = adsService;
     }
 
-    @Operation(summary = "updateComments", description = "", tags = {"Объявления"})
+    /**
+     * Метод (эндпойнт) изменения комментария в объявлении.
+     * @param adsId - id объявления.
+     * @param commentId - id комментария.
+     * @param comment - сам комментарий.
+     * @return text - сообщение о том, удалось обновить комментарий или нет.
+     * @author Мухаметзянов Эдуард
+     */
+    @Operation(summary = "updateComments", description = "обновление комментария", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",
@@ -43,20 +49,30 @@ public class AdsController {
             produces = {"*/*"},
             consumes = {"application/json"},
             method = RequestMethod.PATCH)
-    ResponseEntity<Comment> updateComments(@PathVariable("ads_id") Long adsId,
-                                           @PathVariable("comments_id") Long commentId,
+    ResponseEntity<String> updateComments(@PathVariable("ads_id") Integer adsId,
+                                           @PathVariable("comments_id") Integer commentId,
                                            @RequestBody Comment comment) {
-        return null;
+        if (adsService.updateCommentInAds(adsId, commentId, comment)){
+            return ResponseEntity.status(HttpStatus.FOUND).body("Comment - " + commentId + " in Ads is updated");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment - " + commentId + " in Ads is NOT updated");
+        }
     }
 
-    @Operation(summary = "removeAds", description = "", tags = {"Объявления"})
+    /**
+     * Метод (эндпойнт) удаления объявления по его id.
+     * @param id - id объявления, который надо удалить.
+     * @return text - сообщение о том, удалось удалить объявление или нет.
+     * @author Мухаметзянов Эдуард
+     */
+    @Operation(summary = "removeAds", description = "удаление объявления", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
             @ApiResponse(responseCode = "403", description = "Forbidden")})
     @RequestMapping(value = "/ads/{id}",
             method = RequestMethod.DELETE)
-    ResponseEntity<String> removeAds(@PathVariable("id") Long id) {
+    ResponseEntity<String> removeAds(@PathVariable("id") Integer id) {
         if (adsService.deleteAdsById(id)){
             return ResponseEntity.status(HttpStatus.FOUND).body("Ads deleted");
         } else {
@@ -74,7 +90,7 @@ public class AdsController {
             produces = {"*/*"},
             method = RequestMethod.GET)
     ResponseEntity<String> getAdsMe(@Parameter(in = ParameterIn.PATH, required = true, schema = @Schema())
-                                    @PathVariable("userId") Long userId) {
+                                    @PathVariable("userId") Integer userId) {
         List<FullAds> adsMe = adsService.getAdsMe(userId);
         if (adsMe != null) {
             return ResponseEntity.status(HttpStatus.FOUND).body(adsMe.toString());

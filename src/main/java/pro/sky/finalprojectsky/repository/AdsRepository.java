@@ -7,8 +7,8 @@ import pro.sky.finalprojectsky.model.FullAds;
 import java.util.List;
 
 @Repository
-public interface AdsRepository extends JpaRepository<FullAds, Long> {
+public interface AdsRepository extends JpaRepository<FullAds, Integer> {
 
     // Метод для получения всех объявлений пользователя
-    List<FullAds> findAllByUserId (Long userId);
+    List<FullAds> findAllByUserId (Integer userId);
 }

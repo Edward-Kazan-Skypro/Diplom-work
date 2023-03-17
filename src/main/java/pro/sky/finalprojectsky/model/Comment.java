@@ -5,16 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.util.Objects;
 
 @Getter
 @Setter
-@Entity(name = "comments")
+//Возможно и не надо из класса делать сущность, ведь все комментарии - часть объявления (комментарии в виде списка)
+//@Entity(name = "comments")
 public class Comment   {
-    @JsonProperty("id")
+    @JsonProperty("pk")
     @Id
-    private Long id = null;
+    private Integer pk = null;
+
+    //Почему здесь тип поля Integer?
+    //Может быть это id пользователя, который создает комментарий?
+    //Тогда получается нужна еще одна модель Author?
+    //А не совпадает ли это с User, т.е. с зарегистрированным пользователем?
+    //Комментарий может писать зарегистрированный пользователь? Или любой может?
     @JsonProperty("author")
     private Integer author = null;
 
@@ -24,11 +30,6 @@ public class Comment   {
 
     @JsonProperty("text")
     private String text = null;
-
-    //Наверно нужно сделать связь с таблицей объявлений
-    //т.е. у одного объявления может быть много комментариев
-    @ManyToOne
-    private FullAds fullAds;
 
 
     public Comment author(Integer author) {
@@ -41,8 +42,8 @@ public class Comment   {
         return this;
     }
 
-    public Comment id (Long id) {
-        this.id = id;
+    public Comment pk (Integer pk) {
+        this.pk = pk;
         return this;
     }
     public Comment text(String text) {
@@ -61,13 +62,13 @@ public class Comment   {
         Comment comment = (Comment) o;
         return Objects.equals(this.author, comment.author) &&
                 Objects.equals(this.createdAt, comment.createdAt) &&
-                Objects.equals(this.id, comment.id) &&
+                Objects.equals(this.pk, comment.pk) &&
                 Objects.equals(this.text, comment.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author, createdAt, id, text);
+        return Objects.hash(author, createdAt, pk, text);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class Comment   {
 
         sb.append("    author: ").append(toIndentedString(author)).append("\n");
         sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-        sb.append("    pk: ").append(toIndentedString(id)).append("\n");
+        sb.append("    pk: ").append(toIndentedString(pk)).append("\n");
         sb.append("    text: ").append(toIndentedString(text)).append("\n");
         sb.append("}");
         return sb.toString();
