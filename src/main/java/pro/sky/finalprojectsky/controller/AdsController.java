@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pro.sky.finalprojectsky.dto.ResponseWrapperComment;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.AdsService;
@@ -133,45 +134,8 @@ public class AdsController {
         }
     }
 
-    @Operation(summary = "получить объявление по id", tags = {"Объявления"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(mediaType = "*/*",
-                            schema = @Schema(implementation = FullAds.class))),
-            @ApiResponse(responseCode = "404", description = "Not Found")})
-    @RequestMapping(value = "/ads/{id}",
-            produces = {"*/*"},
-            method = RequestMethod.GET)
-    ResponseEntity<String> getAds(@Parameter(in = ParameterIn.PATH, required = true, schema = @Schema())
-                                  @PathVariable("id") Long id) {
-        FullAds ads = adsService.getAdsById(id);
-        if (ads != null){
-            return ResponseEntity.status(HttpStatus.FOUND).body(ads.toString());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление не найдено");
-        }
-    }
 
-    // /ads/{id} updateAds
-    @Operation(summary = "updateAds", tags = {"Объявления"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(mediaType = "*/*",
-                            schema = @Schema(implementation = FullAds.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-            @ApiResponse(responseCode = "404", description = "Not Found")})
-    @RequestMapping(value = "/ads/{id}", //@PatchMapping "/ads/{id}"
-            produces = {"*/*"},
-            consumes = {"application/json"},
-            method = RequestMethod.PATCH)
-    ResponseEntity<FullAds>updateAds(@Parameter(in = ParameterIn.PATH,
-            required = true, schema = @Schema())
-                                     @PathVariable ("id") Integer id,
-                                     @Parameter(in = ParameterIn.DEFAULT, required = true, schema = @Schema())
-                                     @Valid @RequestBody FullAds body) {
         return null;
     }
-
 
 }
