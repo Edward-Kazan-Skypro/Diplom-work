@@ -139,10 +139,14 @@ public class AdsService {
 
 
 
-    // редактирование объявления по id
-    public FullAds updateAdsById(FullAds ads, Integer id) {
-
+    public FullAds getAdsById (Long id){
+        try {
+            return adsRepository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        } catch (ChangeSetPersister.NotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 
 
 
