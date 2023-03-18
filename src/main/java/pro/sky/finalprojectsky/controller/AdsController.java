@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pro.sky.finalprojectsky.dto.ResponseWrapperComment;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.AdsService;
@@ -171,6 +172,62 @@ public class AdsController {
                                       @PathVariable("id") Integer id,
                                       @Parameter(in = ParameterIn.DEFAULT, required = true, schema = @Schema())
                                       @Valid @RequestBody FullAds body) {
+        return null;
+    }
+
+    @Operation(summary = "addComments", description = "", tags={ "Объявления" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = Comment.class))),
+
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+
+            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @RequestMapping(value = "/ads/{ad_pk}/comments",
+            produces = { "*/*" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<Comment> addComments(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("ad_pk") String adPk, @Parameter(in = ParameterIn.DEFAULT, description = "", required=true, schema=@Schema()) @Valid @RequestBody Comment body) {
+        return null;
+    }
+
+    @Operation(summary = "getComments", description = "", tags={ "Объявления" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = ResponseWrapperComment.class))),
+
+            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @RequestMapping(value = "/ads/{ad_pk}/comments",
+            produces = { "*/*" },
+            method = RequestMethod.GET)
+    ResponseEntity<ResponseWrapperComment> getComments(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("ad_pk") String adPk) {
+        return  null;
+    }
+
+    @Operation(summary = "getComments", description = "", tags={ "Объявления" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = Comment.class))),
+
+            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @RequestMapping(value = "/ads/{ad_pk}/comments/{id}",
+            produces = { "*/*" },
+            method = RequestMethod.GET)
+    ResponseEntity<Comment> getCommentById(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("ad_pk") String adPk, @Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id) {
+        return null;
+    }
+
+    @Operation(summary = "deleteComments", description = "", tags={ "Объявления" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+
+            @ApiResponse(responseCode = "404", description = "Not Found") })
+    @RequestMapping(value = "/ads/{ad_pk}/comments/{id}",
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteComments(@Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("ad_pk") String adPk, @Parameter(in = ParameterIn.PATH, description = "", required=true, schema=@Schema()) @PathVariable("id") Integer id) {
         return null;
     }
 }
