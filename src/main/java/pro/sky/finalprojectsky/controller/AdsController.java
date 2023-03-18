@@ -11,10 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.finalprojectsky.dto.ResponseWrapperComment;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.AdsService;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -32,9 +32,10 @@ public class AdsController {
 
     /**
      * Метод (эндпойнт) изменения комментария в объявлении.
-     * @param adsId - id объявления.
+     *
+     * @param adsId     - id объявления.
      * @param commentId - id комментария.
-     * @param comment - сам комментарий.
+     * @param comment   - сам комментарий.
      * @return text - сообщение о том, удалось обновить комментарий или нет.
      * @author Мухаметзянов Эдуард
      */
@@ -51,9 +52,9 @@ public class AdsController {
             consumes = {"application/json"},
             method = RequestMethod.PATCH)
     ResponseEntity<String> updateComments(@PathVariable("ads_id") Integer adsId,
-                                           @PathVariable("comments_id") Integer commentId,
-                                           @RequestBody Comment comment) {
-        if (adsService.updateCommentInAds(adsId, commentId, comment)){
+                                          @PathVariable("comments_id") Integer commentId,
+                                          @RequestBody Comment comment) {
+        if (adsService.updateCommentInAds(adsId, commentId, comment)) {
             return ResponseEntity.status(HttpStatus.FOUND).body("Comment - " + commentId + " in Ads is updated");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment - " + commentId + " in Ads is NOT updated");
@@ -62,6 +63,7 @@ public class AdsController {
 
     /**
      * Метод (эндпойнт) удаления объявления по его id.
+     *
      * @param id - id объявления, который надо удалить.
      * @return text - сообщение о том, удалось удалить объявление или нет.
      * @author Мухаметзянов Эдуард
@@ -74,7 +76,7 @@ public class AdsController {
     @RequestMapping(value = "/ads/{id}",
             method = RequestMethod.DELETE)
     ResponseEntity<String> removeAds(@PathVariable("id") Integer id) {
-        if (adsService.deleteAdsById(id)){
+        if (adsService.deleteAdsById(id)) {
             return ResponseEntity.status(HttpStatus.FOUND).body("Ads deleted");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ads NOT deleted");
@@ -134,8 +136,42 @@ public class AdsController {
         }
     }
 
+    ///ads/{id} getFullAds
 
+    @Operation(summary = "getFullAds", tags = {"Объявления"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "*/*",
+                            schema = @Schema(implementation = FullAds.class))),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
+    @RequestMapping(value = "/ads/{id}",
+            produces = {"*/*"},
+            method = RequestMethod.GET)
+    ResponseEntity<String> getAds(@Parameter(in = ParameterIn.PATH, required = true, schema = @Schema())
+                                  @PathVariable("id") Long id) {
         return null;
+
     }
 
+    // /ads/{id} updateAds (пустое)
+    @Operation(summary = "updateAds", tags = {"Объявления"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "*/*",
+                            schema = @Schema(implementation = FullAds.class))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "404", description = "Not Found")})
+    @RequestMapping(value = "/ads/{id}", //@PatchMapping "/ads/{id}"
+            produces = {"*/*"},
+            consumes = {"application/json"},
+            method = RequestMethod.PATCH)
+    ResponseEntity<FullAds> updateAds(@Parameter(in = ParameterIn.PATH,
+            required = true, schema = @Schema())
+                                      @PathVariable("id") Integer id,
+                                      @Parameter(in = ParameterIn.DEFAULT, required = true, schema = @Schema())
+                                      @Valid @RequestBody FullAds body) {
+        return null;
+    }
 }
+
