@@ -139,12 +139,7 @@ public class AdsService {
 
 
 
-    public FullAds getAdsById (Long id){
-        try {
-            return adsRepository.findById(id).orElseThrow(ChangeSetPersister.NotFoundException::new);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
 
