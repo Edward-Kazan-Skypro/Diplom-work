@@ -2,7 +2,6 @@ package pro.sky.finalprojectsky.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pro.sky.finalprojectsky.dto.NewPasswordDTO;
+import pro.sky.finalprojectsky.dto.PersonDTO;
 
 import javax.validation.Valid;
 
@@ -25,14 +26,14 @@ public class PersonController {
             description = "",
             tags={ "Пользователи" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = PersonDTO.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<User> getUser() {
+    ResponseEntity<PersonDTO> getUser() {
         return null;
     }
 
@@ -44,14 +45,16 @@ public class PersonController {
             description = "",
             tags={ "Пользователи" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = NewPassword.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = NewPasswordDTO.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<NewPassword> setPassword(@RequestBody NewPassword body);
+    ResponseEntity<NewPasswordDTO> setPassword(@RequestBody NewPasswordDTO body) {
+        return null;
+    }
 
 
     @PatchMapping(value = "/users/me",
@@ -61,7 +64,7 @@ public class PersonController {
             description = "",
             tags={ "Пользователи" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = PersonDTO.class))),
 
             @ApiResponse(responseCode = "204", description = "No Content"),
 
@@ -71,7 +74,9 @@ public class PersonController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
-    ResponseEntity<User> updateUser(@RequestBody User body){
+    //ResponseEntity<User> updateUser(@RequestBody User body)
+    ResponseEntity<PersonDTO> updateUser(@RequestBody PersonDTO body)
+    {
         return null;
     }
 
@@ -79,7 +84,7 @@ public class PersonController {
     @PatchMapping(value = "/users/me/image",
             consumes = { "multipart/form-data" })
     @Operation(summary = "updateUserImage",
-            description = "UpdateUserImage"
+            description = "UpdateUserImage",
             tags={ "Пользователи" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
