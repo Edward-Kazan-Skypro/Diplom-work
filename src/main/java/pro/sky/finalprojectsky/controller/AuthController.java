@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pro.sky.finalprojectsky.dto.LoginReq;
-import pro.sky.finalprojectsky.dto.RegisterReq;
+import pro.sky.finalprojectsky.dto.LoginReqDto;
+import pro.sky.finalprojectsky.dto.RegisterReqDto;
 import pro.sky.finalprojectsky.dto.Role;
 import pro.sky.finalprojectsky.service.AuthService;
 import static pro.sky.finalprojectsky.dto.Role.USER;
@@ -23,7 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginReq req) {
+    public ResponseEntity<?> login(@RequestBody LoginReqDto req) {
         if (authService.login(req.getUsername(), req.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
@@ -32,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterReq req) {
+    public ResponseEntity<?> register(@RequestBody RegisterReqDto req) {
         Role role = req.getRole() == null ? USER : req.getRole();
         if (authService.register(req, role)) {
             return ResponseEntity.ok().build();
