@@ -10,5 +10,5 @@ import java.util.List;
 public interface AdsRepository extends JpaRepository<FullAds, Integer> {
 
     // Метод для получения всех объявлений пользователя
-    List<FullAds> findAllByUserId (Integer userId);
+    //List<FullAds> findAllByUserId (Integer id);
 }

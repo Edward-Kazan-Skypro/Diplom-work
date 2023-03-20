@@ -25,14 +25,14 @@ public class FullAds   {
 
     private String email;
 
-   private List<String> image;
+   //private List<String> image;
 
     private String phone;
 
     private Integer price ;
     private String title ;
 
-    private List<Comment> commentList = null;
+    //private List<Comment> commentList;
 
 
 }
