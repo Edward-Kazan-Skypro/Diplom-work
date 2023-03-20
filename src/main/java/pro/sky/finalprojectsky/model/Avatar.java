@@ -4,14 +4,15 @@ import lombok.*;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 @Entity
-@Table(name = "image")
-public class Image {
+@Table(name = "avatars")
+public class Avatar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,6 +21,4 @@ public class Image {
     private byte[] image;
     private Long fileSize;
     private String mediaType;
-
-
 }
