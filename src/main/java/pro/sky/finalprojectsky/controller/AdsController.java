@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pro.sky.finalprojectsky.dto.AdsDTO;
-import pro.sky.finalprojectsky.dto.CreateAdsDTO;
-import pro.sky.finalprojectsky.dto.ResponseWrapperAds;
-import pro.sky.finalprojectsky.dto.ResponseWrapperComment;
+import pro.sky.finalprojectsky.dto.*;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.AdsService;
@@ -237,8 +234,8 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<Comment> addComments(@PathVariable("ad_pk") String adPk,
-                                        @RequestBody Comment body) {
+    ResponseEntity<CommentDto> addComments(@PathVariable("ad_pk") String adPk,
+                                           @RequestBody Comment body) {
         return null;
     }
 
@@ -301,7 +298,7 @@ public class AdsController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = Comment.class))),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<Comment> getCommentById(@PathVariable("ad_pk") String adPk, @PathVariable("id") Integer id) {
+    ResponseEntity<CommentDto> getCommentById(@PathVariable("ad_pk") String adPk, @PathVariable("id") Integer id) {
         return null;
     }
 
@@ -337,7 +334,7 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<Comment> updateSelectedComment(@PathVariable("ad_pk") String adPk, @PathVariable("id") Integer id,  @RequestBody Comment body){
+    ResponseEntity<CommentDto> updateSelectedComment(@PathVariable("ad_pk") String adPk, @PathVariable("id") Integer id,  @RequestBody Comment body){
         return null;
     }
 
