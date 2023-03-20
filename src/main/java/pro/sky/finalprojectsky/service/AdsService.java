@@ -65,7 +65,7 @@ public class AdsService {
             Comment oldComment = getCommentById(adsId, commentsId);
             if (oldComment != null) {
                 //Получим список всех комментариев в этом объявлении
-                ArrayList<Comment> commentsList = new ArrayList<>(ads.getCommentList());
+               List<Comment> commentsList = new ArrayList<>(ads.getCommentList());
                 //Переберем список комментариев и удалим из него нужный нам комментарий
                 //Точнее, учитывая особенность forEach, добавим в новый список комментариев все, кроме удаляемого
                 ArrayList<Comment> refinedCommentsList = new ArrayList<>();
@@ -93,7 +93,7 @@ public class AdsService {
         //Находим объявление по его id
         FullAds ads = getAdsById(adsId);
         //Получим все комментарии из этого объявления
-        ArrayList<Comment> allCommentsFromAds = new ArrayList<>(ads.getCommentList());
+        List<Comment> allCommentsFromAds = new ArrayList<>(ads.getCommentList());
         return allCommentsFromAds;
     }
 
