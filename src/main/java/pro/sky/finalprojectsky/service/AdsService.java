@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AdsService  {
+public class AdsService {
 
     private final AdsRepository adsRepository;
     private final CommentsRepository commentsRepository;
@@ -24,12 +24,13 @@ public class AdsService  {
 
     /**
      * Метод получения объявления по его id.
+     *
      * @param id
      * @return
      * @author Мухаметзянов Эдуард
      */
-    public FullAds getAdsById (Integer id){
-        if (adsRepository.findById(id).isPresent()){
+    public FullAds getAdsById(Integer id) {
+        if (adsRepository.findById(id).isPresent()) {
             return adsRepository.findById(id).get();
         } else {
             return null;
@@ -38,36 +39,38 @@ public class AdsService  {
 
     /**
      * Метод удаления объявления по его id.
+     *
      * @param id
      * @return
      * @author Мухаметзянов Эдуард
      */
-    public boolean deleteAdsById (Integer id){
+    public boolean deleteAdsById(Integer id) {
         adsRepository.deleteById(id);
         return adsRepository.findById(id).isEmpty();
     }
 
     /**
      * Метод обновления комментария в выбранном объявлении.
+     *
      * @param adsId
      * @param commentsId
      * @param comment
      * @return
      * @author Мухаметзянов Эдуард
      */
-    public boolean updateCommentInAds (Integer adsId, Integer commentsId, Comment comment){
-        if (adsRepository.findById(adsId).isPresent()){
+    public boolean updateCommentInAds(Integer adsId, Integer commentsId, Comment comment) {
+        if (adsRepository.findById(adsId).isPresent()) {
             //Находим объявление по его id
             FullAds ads = getAdsById(adsId);
             Comment oldComment = getCommentById(adsId, commentsId);
-            if (oldComment != null){
+            if (oldComment != null) {
                 //Получим список всех комментариев в этом объявлении
                 ArrayList<Comment> commentsList = new ArrayList<>(ads.getCommentList());
                 //Переберем список комментариев и удалим из него нужный нам комментарий
                 //Точнее, учитывая особенность forEach, добавим в новый список комментариев все, кроме удаляемого
                 ArrayList<Comment> refinedCommentsList = new ArrayList<>();
-                for (Comment c: commentsList) {
-                    if (c.getPk() != commentsId){
+                for (Comment c : commentsList) {
+                    if (c.getPk() != commentsId) {
                         refinedCommentsList.add(c);
                     }
                 }
@@ -86,7 +89,7 @@ public class AdsService  {
 
 
     //Метод для получения списка комментариев из объявления
-    public List<Comment> getCommentsListFromAds(Integer adsId){
+    public List<Comment> getCommentsListFromAds(Integer adsId) {
         //Находим объявление по его id
         FullAds ads = getAdsById(adsId);
         //Получим все комментарии из этого объявления
@@ -94,12 +97,12 @@ public class AdsService  {
         return allCommentsFromAds;
     }
 
-    public Comment getCommentById (Integer adsId, Integer commentsId){
+    public Comment getCommentById(Integer adsId, Integer commentsId) {
         ArrayList<Comment> allCommentsFromAds = new ArrayList<>(getCommentsListFromAds(adsId));
         Comment selectedComment = null;
         //Ищем нужный нам комментарий, ищем по id комментария
         for (Comment comment : allCommentsFromAds) {
-            if (comment.getPk() == commentsId){
+            if (comment.getPk() == commentsId) {
                 selectedComment = comment;
             }
         }
@@ -111,7 +114,7 @@ public class AdsService  {
 
 
     // Метод для получения всех объявлений
-    public List<FullAds> getAllAds(){
+    public List<FullAds> getAllAds() {
         // получаем все объявления с базы данных и помещаем их в коллекцию
         List<FullAds> allAds = adsRepository.findAll();
         // возвращаем коллекцию
@@ -119,7 +122,7 @@ public class AdsService  {
     }
 
     // Метод для добавления нового объявления
-    public FullAds addAds(FullAds ads){
+    public FullAds addAds(FullAds ads) {
         // сохраняем новое объявление в базе данных
         FullAds newAds = adsRepository.save(ads);
         // возвращаем новое объявление
@@ -127,11 +130,24 @@ public class AdsService  {
     }
 
     // Метод для получения моих объявлений
-    public List<FullAds> getAdsMe(Integer userId){
+    public List<FullAds> getAdsMe(Integer userId) {
         // получаем все объявления, созданные пользователем с заданным id и помещаем их в коллекцию
         List<FullAds> adsMe = adsRepository.findAllByUserId(userId);
         // возвращаем коллекцию
         return adsMe;
     }
 
-}
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
