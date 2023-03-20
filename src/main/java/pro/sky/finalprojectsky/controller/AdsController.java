@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +18,7 @@ import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.AdsService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @Slf4j
@@ -189,7 +191,7 @@ public class AdsController {
             description = "добавить картинку к объявлению",
             tags={ "Объявления" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "*/*", schema = @Schema(implementation = AdsDto.class))),
+            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "*/*", schema = @Schema(implementation = AdsDTO.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
