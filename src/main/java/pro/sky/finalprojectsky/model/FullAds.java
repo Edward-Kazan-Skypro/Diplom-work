@@ -1,13 +1,8 @@
 package pro.sky.finalprojectsky.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
-import javax.validation.Valid;
-import java.util.*;
-
 
 @Getter
 @Setter
