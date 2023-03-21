@@ -3,7 +3,7 @@ package pro.sky.finalprojectsky.dto;
 import lombok.Data;
 
 @Data
-public class CreateAdsDTO {
+public class CreateAdsDto {
 
     private String description;
 

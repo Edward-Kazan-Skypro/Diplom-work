@@ -7,16 +7,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
-public class CreatePersonDTO {
-    @Email(regexp = ".+@.+[.]..+")
+public class UserDto {
+    private Long id;
+    @Email(regexp = ".+@.+[.]..+")//regulars
     private String email;
-    @NotBlank
+    @NotBlank//not blank
     private String userName;
+    @NotBlank//not blank
+    private String secondName;
     @NotBlank
-    private String lastName;
-    @NotBlank
-    private String password;
-    @Pattern(regexp = "\\+7\\d{10}")
+    @Pattern(regexp = "\\+7\\d{10}")//regulars
     private String phone;
 
 }
