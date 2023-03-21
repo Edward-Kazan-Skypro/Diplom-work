@@ -1,0 +1,29 @@
+2023-03-20 17:56:20.797  INFO 2428 --- [main] p.s.f.FinalProjectSkyApplication         : Starting FinalProjectSkyApplication using Java 18.0.1.1 on WIN-LN05FD2P76K with PID 2428 (C:\Users\Edward\IdeaProjects\graduate-work\target\classes started by Edward in C:\Users\Edward\IdeaProjects\graduate-work)
+2023-03-20 17:56:20.801  INFO 2428 --- [main] p.s.f.FinalProjectSkyApplication         : No active profile set, falling back to 1 default profile: "default"
+2023-03-20 17:56:21.630  INFO 2428 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-03-20 17:56:21.729  INFO 2428 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 87 ms. Found 4 JPA repository interfaces.
+2023-03-20 17:56:22.450  INFO 2428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-03-20 17:56:22.461  INFO 2428 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-03-20 17:56:22.461  INFO 2428 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2023-03-20 17:56:22.597  INFO 2428 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-03-20 17:56:22.598  INFO 2428 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1731 ms
+2023-03-20 17:56:22.919  INFO 2428 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-03-20 17:56:23.144  INFO 2428 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-03-20 17:56:23.368  INFO 2428 --- [main] liquibase.database                       : Set default schema name to public
+2023-03-20 17:56:23.472  INFO 2428 --- [main] liquibase.lockservice                    : Successfully acquired change log lock
+2023-03-20 17:56:23.661  INFO 2428 --- [main] liquibase.changelog                      : Reading from public.databasechangelog
+2023-03-20 17:56:23.704  INFO 2428 --- [main] liquibase.lockservice                    : Successfully released change log lock
+2023-03-20 17:56:23.799  INFO 2428 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-03-20 17:56:23.869  INFO 2428 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.9.Final
+2023-03-20 17:56:24.089  INFO 2428 --- [main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-03-20 17:56:24.285  INFO 2428 --- [main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2023-03-20 17:56:25.134  INFO 2428 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-03-20 17:56:25.146  INFO 2428 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-03-20 17:56:25.524  WARN 2428 --- [main] o.s.security.core.userdetails.User       : User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+2023-03-20 17:56:25.840  WARN 2428 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-03-20 17:56:26.107  INFO 2428 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7d3a2459, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7d5cbcc9, org.springframework.security.web.context.SecurityContextPersistenceFilter@66b62ebd, org.springframework.security.web.header.HeaderWriterFilter@4587f0f9, org.springframework.web.filter.CorsFilter@3833897c, org.springframework.security.web.authentication.logout.LogoutFilter@46a9c368, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@62ec4146, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@18cb4ed1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@20706e70, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@519eab1e, org.springframework.security.web.session.SessionManagementFilter@145ef9e8, org.springframework.security.web.access.ExceptionTranslationFilter@3123ba75, org.springframework.security.web.access.intercept.AuthorizationFilter@7097ead6]
+2023-03-20 17:56:26.525  INFO 2428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-03-20 17:56:26.549  INFO 2428 --- [main] p.s.f.FinalProjectSkyApplication         : Started FinalProjectSkyApplication in 6.289 seconds (JVM running for 7.111)
+2023-03-20 17:56:55.396  INFO 2428 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-03-20 17:56:55.399  INFO 2428 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2023-03-20 17:56:55.405  INFO 2428 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
