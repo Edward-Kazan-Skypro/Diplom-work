@@ -10,15 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pro.sky.finalprojectsky.dto.NewPasswordDTO;
-import pro.sky.finalprojectsky.dto.PersonDTO;
+import pro.sky.finalprojectsky.dto.NewPasswordDto;
+import pro.sky.finalprojectsky.dto.UserDto;
 
 import javax.validation.Valid;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
-public class PersonController {
+public class UserController {
 
     @GetMapping(value = "/users/me",
             produces = { "*/*" })
@@ -26,14 +26,14 @@ public class PersonController {
             description = "",
             tags={ "Пользователи" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = PersonDTO.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = UserDto.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<PersonDTO> getUser() {
+    ResponseEntity<UserDto> getUser() {
         return null;
     }
 
@@ -45,14 +45,14 @@ public class PersonController {
             description = "",
             tags={ "Пользователи" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = NewPasswordDTO.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = NewPasswordDto.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<NewPasswordDTO> setPassword(@RequestBody NewPasswordDTO body) {
+    ResponseEntity<NewPasswordDto> setPassword(@RequestBody NewPasswordDto body) {
         return null;
     }
 
@@ -64,7 +64,7 @@ public class PersonController {
             description = "",
             tags={ "Пользователи" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = PersonDTO.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = UserDto.class))),
 
             @ApiResponse(responseCode = "204", description = "No Content"),
 
@@ -75,7 +75,7 @@ public class PersonController {
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
     //ResponseEntity<User> updateUser(@RequestBody User body)
-    ResponseEntity<PersonDTO> updateUser(@RequestBody PersonDTO body)
+    ResponseEntity<UserDto> updateUser(@RequestBody UserDto body)
     {
         return null;
     }

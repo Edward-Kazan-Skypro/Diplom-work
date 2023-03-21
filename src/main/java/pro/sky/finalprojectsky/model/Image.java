@@ -20,6 +20,11 @@ public class Image {
     private byte[] image;
     private Long fileSize;
     private String mediaType;
+    private String title;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fullAds_id")
+    private FullAds fullAds;
 
 
 }
