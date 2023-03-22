@@ -1,4 +1,4 @@
-package pro.sky.finalprojectsky.service;
+package pro.sky.finalprojectsky.service.impl;
 
 
 import org.springframework.stereotype.Component;
@@ -22,32 +22,7 @@ public class AdsService {
     }
 
 
-    /**
-     * Метод получения объявления по его id.
-     *
-     * @param id
-     * @return
-     * @author Мухаметзянов Эдуард
-     */
-    public FullAds getAdsById(Integer id) {
-        if (adsRepository.findById(id).isPresent()) {
-            return adsRepository.findById(id).get();
-        } else {
-            return null;
-        }
-    }
 
-    /**
-     * Метод удаления объявления по его id.
-     *
-     * @param id
-     * @return
-     * @author Мухаметзянов Эдуард
-     */
-    public boolean deleteAdsById(Integer id) {
-        adsRepository.deleteById(id);
-        return adsRepository.findById(id).isEmpty();
-    }
 
     /*public boolean updateCommentInAds(Integer adsId, Integer commentsId, Comment comment) {
         if (adsRepository.findById(adsId).isPresent()) {

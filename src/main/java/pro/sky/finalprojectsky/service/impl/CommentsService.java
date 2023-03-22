@@ -1,4 +1,4 @@
-package pro.sky.finalprojectsky.service;
+package pro.sky.finalprojectsky.service.impl;
 
 import org.springframework.stereotype.Component;
 import pro.sky.finalprojectsky.model.Comment;
