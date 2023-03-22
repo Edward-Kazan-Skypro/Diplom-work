@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.*;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
-import pro.sky.finalprojectsky.service.AdsService;
+import pro.sky.finalprojectsky.service.impl.AdsService;
 
 import javax.validation.Valid;
 import java.util.List;

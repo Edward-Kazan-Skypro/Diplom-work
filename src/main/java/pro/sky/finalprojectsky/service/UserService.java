@@ -1,4 +1,4 @@
 package pro.sky.finalprojectsky.service;
 
-public interface PersonService {
+public interface UserService {
 }
