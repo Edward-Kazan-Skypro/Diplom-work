@@ -2,8 +2,8 @@ package pro.sky.finalprojectsky.model;
 
 import lombok.*;
 import pro.sky.finalprojectsky.dto.Role;
-
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @NoArgsConstructor
@@ -11,8 +11,8 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode
 @ToString
-@Table(name = "persons")
-public class Person {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +29,14 @@ public class Person {
     @Column(name = "user_role")
     private Role role;
 
+    //здесь - связь между автором комментария и комментариями этого автора к этому объявлению
+    @OneToMany(mappedBy = "user")
+    private Collection<Comment> comment;
+
+    //здесь - связь между аватаркой пользователя и пользователем
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
 }
 
 

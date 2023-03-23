@@ -437,7 +437,7 @@ paths:
         '401':
           content: {}
           description: Unauthorized
-
+        
   /ads/me:
     get:
       operationId: getAdsMeUsingGET

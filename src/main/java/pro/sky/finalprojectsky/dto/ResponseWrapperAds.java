@@ -8,5 +8,5 @@ import java.util.List;
 public class ResponseWrapperAds {
 
     private int count;
-    private List<AdsDTO> result = new ArrayList<>();
+    private List<AdsDto> result = new ArrayList<>();
 }
