@@ -22,3 +22,4 @@ public interface CommentMapper {
     Comment commentToEntity (CommentDto commentDto);
 
 }
+
