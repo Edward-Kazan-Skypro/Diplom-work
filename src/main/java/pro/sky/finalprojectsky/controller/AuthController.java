@@ -1,5 +1,8 @@
 package pro.sky.finalprojectsky.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,19 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login",
+            consumes = { "application/json" })
+    @Operation(summary = "Авторизация пользователя",
+            description = "",
+            tags={ "Авторизация" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+
+            @ApiResponse(responseCode = "404", description = "Not Found") })
     public ResponseEntity<?> login(@RequestBody LoginReqDto loginReqDto) {
         if (authService.login(loginReqDto.getUsername(), loginReqDto.getPassword())) {
             return ResponseEntity.ok().build();
@@ -35,7 +50,19 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register",
+            consumes = { "application/json" })
+    @Operation(summary = "Регистрация пользователя",
+            description = "",
+            tags={ "Регистрация" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created"),
+
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+
+            @ApiResponse(responseCode = "404", description = "Not Found") })
     public ResponseEntity<?> register(@RequestBody RegisterReqDto registerReqDto) {
         Role role = registerReqDto.getRole() == null ? USER : registerReqDto.getRole();
         if (authService.register(registerReqDto, role)) {

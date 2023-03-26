@@ -2,21 +2,20 @@ package pro.sky.finalprojectsky.service.impl;
 
 
 import org.springframework.stereotype.Component;
-import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.CommentsRepository;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Component
-public class AdsService {
+public class AdsServiceImpl {
 
     private final AdsRepository adsRepository;
     private final CommentsRepository commentsRepository;
 
 
-    public AdsService(AdsRepository adsRepository, CommentsRepository commentsRepository) {
+    public AdsServiceImpl(AdsRepository adsRepository, CommentsRepository commentsRepository) {
         this.adsRepository = adsRepository;
         this.commentsRepository = commentsRepository;
     }

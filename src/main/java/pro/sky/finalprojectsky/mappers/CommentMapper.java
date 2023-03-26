@@ -11,14 +11,14 @@ public interface CommentMapper {
 
     CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
-    @Mapping(target = "author", source = "author.id")
+   /* @Mapping(target = "author", source = "author.id")
     @Mapping(target = "pk", source = "id")
-    @Mapping(target = "createdAt", source = "createdAt")
+    @Mapping(target = "createdAt", source = "createdAt")*/
     CommentDto commentToDto (Comment commentEntity);
 
-    @Mapping(target = "author", ignore = true)
+    /*@Mapping(target = "author", ignore = true)
     @Mapping(target = "id", source = "pk")
-    @Mapping(target = "createdAt", source = "createdAt")
+    @Mapping(target = "createdAt", source = "createdAt")*/
     Comment commentToEntity (CommentDto commentDto);
 
 }
