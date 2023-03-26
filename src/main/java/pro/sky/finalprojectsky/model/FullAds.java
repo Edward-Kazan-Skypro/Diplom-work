@@ -30,7 +30,8 @@ public class FullAds   {
     private Collection<Comment> comments;
 
     //здесь - связь между объявлением и картинками к этому объявлению
-    @OneToMany(mappedBy = "fullAds")
-    private Collection<Image> images;
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
 }
