@@ -13,37 +13,18 @@ import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.NewPasswordDto;
 import pro.sky.finalprojectsky.dto.UserDto;
 
-import javax.validation.Valid;
-
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 public class UserController {
 
-    @GetMapping(value = "/users/me",
-            produces = { "*/*" })
-    @Operation(summary = "getUser",
-            description = "",
-            tags={ "Пользователи" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = UserDto.class))),
-
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-
-            @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<UserDto> getUser() {
-        return null;
-    }
-
-
+    //1u new
     @PostMapping(value = "/users/set_password",
-            produces = { "*/*" },
-            consumes = { "application/json" })
+            produces = {"application/json"},
+            consumes = {"application/json"})
     @Operation(summary = "setPassword",
-            description = "",
-            tags={ "Пользователи" })
+            description = "setPassword",
+            tags = {"Пользователи"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = NewPasswordDto.class))),
 
@@ -51,20 +32,39 @@ public class UserController {
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+            @ApiResponse(responseCode = "404", description = "Not Found")})
     ResponseEntity<NewPasswordDto> setPassword(@RequestBody NewPasswordDto body) {
         return null;
     }
 
-
-    @PatchMapping(value = "/users/me",
-            produces = { "*/*" },
-            consumes = { "application/json" })
-    @Operation(summary = "updateUser",
-            description = "",
-            tags={ "Пользователи" })
+    //2u new
+    @GetMapping(value = "/users/me",
+            produces = {"application/json"})
+    @Operation(summary = "Получить информацию об авторизованном пользователе",
+            description = "getUser",
+            tags = {"Пользователи"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = UserDto.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))),
+
+            @ApiResponse(responseCode = "401", description = "Unauthorized"),
+
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+
+            @ApiResponse(responseCode = "404", description = "Not Found")})
+    ResponseEntity<UserDto> getUser() {
+        return null;
+    }
+
+
+    //3u new
+    @PatchMapping(value = "/users/me",
+            produces = {"application/json"},
+            consumes = {"application/json"})
+    @Operation(summary = "Обновить информацию об авторизованном пользователе",
+            description = "updateUser",
+            tags = {"Пользователи"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))),
 
             @ApiResponse(responseCode = "204", description = "No Content"),
 
@@ -72,27 +72,23 @@ public class UserController {
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+            @ApiResponse(responseCode = "404", description = "Not Found")})
 
-    //ResponseEntity<User> updateUser(@RequestBody User body)
-    ResponseEntity<UserDto> updateUser(@RequestBody UserDto body)
-    {
+    ResponseEntity<UserDto> updateUser(@RequestBody UserDto body) {
         return null;
     }
 
-
+    //4u new
     @PatchMapping(value = "/users/me/image",
-            consumes = { "multipart/form-data" })
-    @Operation(summary = "updateUserImage",
-            description = "UpdateUserImage",
-            tags={ "Пользователи" })
+            consumes = {"multipart/form-data"})
+    @Operation(summary = "Обновить аватар авторизованного пользователя",
+            description = "updateUserImage",
+            tags = {"Пользователи"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
 
-            @ApiResponse(responseCode = "404", description = "Not Found") })
-
-    ResponseEntity<Void> updateUserImage(@Parameter(description = "file detail") @Valid @RequestPart("file") MultipartFile image){
-     return null;
+            @ApiResponse(responseCode = "404", description = "Not Found")})
+    ResponseEntity<Void> updateUserImage(@Parameter(description = "file detail") @RequestPart("file") MultipartFile image) {
+        return null;
     }
-
 }
