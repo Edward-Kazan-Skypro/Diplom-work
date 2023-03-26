@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
-@Slf4j
-@CrossOrigin(value = "http://localhost:3000")
-@RestController
+//@Slf4j
+//@CrossOrigin(value = "http://localhost:3000")
+//@RestController
 public class ImageController {
 
     @PatchMapping(value = "/image/{id}",
