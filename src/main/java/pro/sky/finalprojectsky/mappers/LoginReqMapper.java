@@ -22,4 +22,6 @@ public interface LoginReqMapper {
             @Mapping(target = "userName", source = "loginReqDto.username")
     })
     User dtoToEntity (LoginReqDto loginReqDto);
+
+
 }
