@@ -21,10 +21,14 @@ public class Image {
     private Long fileSize;
     private String mediaType;
     private String title;
+    private String imageURL;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //Нет смысла делать связь между сущностями:
+    //одно объявление - одна картинка,
+    //значит просто храним адрес (как текст) этой картинки,
+    //чтобы она загружалась в объявление
+
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fullAds_id")
-    private FullAds fullAds;
-
-
+    private FullAds fullAds;*/
 }
