@@ -11,27 +11,17 @@ import java.util.Collection;
 public class FullAds   {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer pk;
+    private Integer id;
     private String authorFirstName;
-
     private String authorLastName;
-
     private String description;
-
     private String email;
-
     private String phone;
-
     private Integer price;
     private String title;
+    private String imageURL;
 
     //здесь - связь между объявлением и списком комментариев
-    @OneToMany(mappedBy = "fullAds")
-    private Collection<Comment> comments;
-
-    //здесь - связь между объявлением и картинками к этому объявлению
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private Image image;
-
+    //Вопрос целесообразности этой связи?
+    //Мы же формируем полный текст объявления используя маппинг полей из AdsDto и UserDto
 }

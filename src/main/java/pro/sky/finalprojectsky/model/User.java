@@ -18,6 +18,8 @@ public class User {
     private Long id;
     @Column(name = "user_name")
     private String userName;
+    @Column(name = "first_name")
+    private String firstName;
     @Column(name = "second_name")
     private String secondName;
     @Column(name = "email")
@@ -26,17 +28,12 @@ public class User {
     private String phone;
     @Column(name = "password")
     private String password;
+
+    @Column(name = "avatar")
+    private String avatarURL;
+
     @Column(name = "user_role")
     private Role role;
-
-    //здесь - связь между автором комментария и комментариями этого автора к этому объявлению
-    @OneToMany(mappedBy = "user")
-    private Collection<Comment> comment;
-
-    //здесь - связь между аватаркой пользователя и пользователем
-    @OneToOne
-    @JoinColumn(name = "avatar_id")
-    private Avatar avatar;
 }
 
 

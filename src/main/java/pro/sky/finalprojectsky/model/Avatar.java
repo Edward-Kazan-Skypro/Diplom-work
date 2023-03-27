@@ -21,11 +21,6 @@ public class Avatar {
     private byte[] image;
     private Long fileSize;
     private String mediaType;
-
     private String title;
-
-    //здесь - связь между автаркой и пользователем
-    @OneToOne (mappedBy = "avatar")
-    private User user;
-
+    private String avatarURL;
 }
