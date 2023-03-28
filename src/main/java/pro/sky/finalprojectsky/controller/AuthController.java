@@ -43,7 +43,7 @@ public class AuthController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
     public ResponseEntity<?> login(@RequestBody LoginReqDto loginReqDto) {
-        if (authService.login(loginReqDto.getUsername(), loginReqDto.getPassword())) {
+        if (authService.login(loginReqDto.getEmailAsUserName(), loginReqDto.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

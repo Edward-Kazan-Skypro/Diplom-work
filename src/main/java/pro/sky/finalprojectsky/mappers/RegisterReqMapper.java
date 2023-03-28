@@ -12,14 +12,30 @@ public interface RegisterReqMapper {
     RegisterReqMapper INSTANCE = Mappers.getMapper(RegisterReqMapper.class);
 
     @Mappings({
-            @Mapping(target = "username", source = "userName"),
-            @Mapping(target = "lastName", source = "secondName")
+            //username
+            @Mapping(target = "emailAsUserName", source = "userEntity.emailAsUserName"),
+            //password
+            @Mapping(target = "password", source = "userEntity.password"),
+            //firstName
+            @Mapping(target = "firstName", source = "userEntity.firstName"),
+            //lastName
+            @Mapping(target = "lastName", source = "userEntity.lastName"),
+            //phone
+            @Mapping(target = "phone", source = "userEntity.phone")
     })
     RegisterReqDto userToDto (User userEntity);
 
     @Mappings({
-            @Mapping(target = "userName", source = "username"),
-            @Mapping(target = "secondName", source = "lastName")
+            //emailAsUserName
+            @Mapping(target = "emailAsUserName", source = "registerRegDto.emailAsUserName"),
+            //password
+            @Mapping(target = "password", source = "registerRegDto.password"),
+            //firstName
+            @Mapping(target = "firstName", source = "registerRegDto.firstName"),
+            //lastName
+            @Mapping(target = "lastName", source = "registerRegDto.lastName"),
+            //phone
+            @Mapping(target = "phone", source = "registerRegDto.phone")
     })
     User dtoToEntity (RegisterReqDto registerRegDto);
 }

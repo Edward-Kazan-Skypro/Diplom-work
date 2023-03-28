@@ -13,13 +13,13 @@ public interface LoginReqMapper {
 
     @Mappings({
             @Mapping(target = "password", source = "userEntity.password"),
-            @Mapping(target = "username", source = "userEntity.userName")
+            @Mapping(target = "emailAsUserName", source = "userEntity.emailAsUserName")
     })
     LoginReqDto userToDto (User userEntity);
 
     @Mappings({
             @Mapping(target = "password", source = "loginReqDto.password"),
-            @Mapping(target = "userName", source = "loginReqDto.username")
+            @Mapping(target = "emailAsUserName", source = "loginReqDto.emailAsUserName")
     })
     User dtoToEntity (LoginReqDto loginReqDto);
 }

@@ -11,13 +11,13 @@ import javax.validation.constraints.Pattern;
 public class UserDto {
     private Long id;
     @Email(regexp = ".+@.+[.]..+")//regulars
-    private String email;
+    private String emailAsUserName;
     @NotBlank//not blank
     private String firstName;
     @NotBlank//not blank
-    private String secondName;
+    private String lastName;
     @NotBlank
     @Pattern(regexp = "\\+7\\d{10}")//regulars
     private String phone;
-    private Image image;
+    private String avatarURL;
 }

@@ -1,12 +1,15 @@
 package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Data
 public class RegisterReqDto {
-    private String username;
+    @Email(regexp = ".+@.+[.]..+")//regulars
+    private String emailAsUserName;
     private String password;
     private String firstName;
     private String lastName;
