@@ -14,9 +14,7 @@ import pro.sky.finalprojectsky.dto.*;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.impl.AdsServiceImpl;
-
 import java.util.List;
-
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -227,7 +225,7 @@ public class AdsController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
     ResponseEntity<Void> deleteSelectedComment(@PathVariable("adId") Integer adId,
-                                               @PathVariable("id") Integer commentId) {
+                                               @PathVariable("commentId") Integer commentId) {
         return null;
     }
 
