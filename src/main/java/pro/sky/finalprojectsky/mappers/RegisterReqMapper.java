@@ -11,9 +11,9 @@ import pro.sky.finalprojectsky.model.User;
 public interface RegisterReqMapper {
     RegisterReqMapper INSTANCE = Mappers.getMapper(RegisterReqMapper.class);
 
-    @Mappings({
+   @Mappings({
             //username
-            @Mapping(target = "emailAsUserName", source = "userEntity.emailAsUserName"),
+            @Mapping(target = "userName", source = "userEntity.email"),
             //password
             @Mapping(target = "password", source = "userEntity.password"),
             //firstName
@@ -26,8 +26,8 @@ public interface RegisterReqMapper {
     RegisterReqDto userToDto (User userEntity);
 
     @Mappings({
-            //emailAsUserName
-            @Mapping(target = "emailAsUserName", source = "registerRegDto.emailAsUserName"),
+            //username
+            @Mapping(target = "email", source = "registerRegDto.userName"),
             //password
             @Mapping(target = "password", source = "registerRegDto.password"),
             //firstName

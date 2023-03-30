@@ -2,80 +2,69 @@ package pro.sky.finalprojectsky.service.impl;
 
 
 import org.springframework.stereotype.Component;
+import pro.sky.finalprojectsky.dto.*;
+import pro.sky.finalprojectsky.mappers.AdsMapper;
+import pro.sky.finalprojectsky.mappers.CommentMapper;
+import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
+import pro.sky.finalprojectsky.model.User;
 import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.CommentsRepository;
+import pro.sky.finalprojectsky.repository.UserRepository;
+import pro.sky.finalprojectsky.service.AdsService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static pro.sky.finalprojectsky.dto.Role.USER;
 
 @Component
-public class AdsServiceImpl {
+public class AdsServiceImpl implements AdsService {
 
     private final AdsRepository adsRepository;
     private final CommentsRepository commentsRepository;
 
+    private final UserRepository userRepository;
 
-    public AdsServiceImpl(AdsRepository adsRepository, CommentsRepository commentsRepository) {
+
+    public AdsServiceImpl(AdsRepository adsRepository,
+                          CommentsRepository commentsRepository,
+                          UserRepository userRepository) {
         this.adsRepository = adsRepository;
         this.commentsRepository = commentsRepository;
+        this.userRepository = userRepository;
     }
 
-
-
-
-    /*public boolean updateCommentInAds(Integer adsId, Integer commentsId, Comment comment) {
-        if (adsRepository.findById(adsId).isPresent()) {
-            //Находим объявление по его id
-            FullAds ads = getAdsById(adsId);
-            Comment oldComment = getCommentById(adsId, commentsId);
-            if (oldComment != null) {
-                //Получим список всех комментариев в этом объявлении
-               List<Comment> commentsList = new ArrayList<>(ads.getCommentList());
-                //Переберем список комментариев и удалим из него нужный нам комментарий
-                //Точнее, учитывая особенность forEach, добавим в новый список комментариев все, кроме удаляемого
-                ArrayList<Comment> refinedCommentsList = new ArrayList<>();
-                for (Comment c : commentsList) {
-                    if (c.getPk() != commentsId) {
-                        refinedCommentsList.add(c);
-                    }
-                }
-                //Теперь у нас есть очищенный список комментариев.
-                //Добавим к нему комментарий
-                refinedCommentsList.add(comment);
-                //Добавим список комментариев с новым комментарием к объявлению.
-                ads.setCommentList(refinedCommentsList);
-                //Сохраним объявление с обновленным списком комментариев
-                adsRepository.save(ads);
-                return true;
-            }
+    public boolean removeAds (Integer id){
+        if (adsRepository.existsById(id)){
+            adsRepository.deleteById(id);
+            return true;
         }
         return false;
-    }*/
+    }
 
-
-    //Метод для получения списка комментариев из объявления
-   /* public List<Comment> getCommentsListFromAds(Integer adsId) {
-        //Находим объявление по его id
-        FullAds ads = getAdsById(adsId);
-        //Получим все комментарии из этого объявления
-        List<Comment> allCommentsFromAds = new ArrayList<>(ads.getCommentList());
-        return allCommentsFromAds;
-    }*/
-
-    /*public Comment getCommentById(Integer adsId, Integer commentsId) {
-        ArrayList<Comment> allCommentsFromAds = new ArrayList<>(getCommentsListFromAds(adsId));
-        Comment selectedComment = null;
-        //Ищем нужный нам комментарий, ищем по id комментария
-        for (Comment comment : allCommentsFromAds) {
-            if (comment.getPk() == commentsId) {
-                selectedComment = comment;
+    @Override
+    public CommentDto updateAdsComment(Integer adId, Integer commentId, Comment newComment) {
+        if (adsRepository.existsById(adId)){
+            //найдем объявление
+            FullAds fullAds = adsRepository.getReferenceById(adId);
+            //получаем из объявления список комментариев
+            ArrayList<Comment> commentArrayList = (ArrayList<Comment>) fullAds.getComments();
+            //в списке ищем комментарий, который будем обновлять
+            Comment comment = new Comment();
+            for (Comment c: commentArrayList) {
+                if (c.getPk() == commentId){
+                    comment = newComment;
+                    break;
+                }
             }
+            //сохраняем обновленный комментарий в БД
+            commentsRepository.save(comment);
         }
-        //А вдруг комментария с таким id нет?
-        //При создании нового комментария значения все его значения полей null
-        //Тогда пусть в вызывающем методе будет проверка на null найденного комментария
-        return selectedComment;
-    }*/
+        //вернем ДТО
+        return CommentMapper.INSTANCE.commentToDto(commentsRepository.getReferenceById(commentId));
+    }
 
 
     // Метод для получения всех объявлений
@@ -101,18 +90,4 @@ public class AdsServiceImpl {
         // возвращаем коллекцию
         return null;
     }
-
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
+}

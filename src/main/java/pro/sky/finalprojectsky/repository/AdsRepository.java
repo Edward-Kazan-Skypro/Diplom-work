@@ -6,6 +6,7 @@ import pro.sky.finalprojectsky.model.FullAds;
 
 @Repository
 public interface AdsRepository extends JpaRepository<FullAds, Integer> {
+    void deleteById(Integer id);
 
     // Метод для получения всех объявлений пользователя
     //List<FullAds> findAllByUserId (Integer id);
