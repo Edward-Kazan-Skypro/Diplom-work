@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.*;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
-import pro.sky.finalprojectsky.service.impl.AdsServiceImpl;
+import pro.sky.finalprojectsky.service.AdsService;
 import java.util.List;
 
 @Slf4j
@@ -22,10 +22,10 @@ import java.util.List;
 @RestController
 public class AdsController {
 
-    private final AdsServiceImpl adsServiceImpl;
+    private final AdsService adsService;
 
-    public AdsController(AdsServiceImpl adsServiceImpl) {
-        this.adsServiceImpl = adsServiceImpl;
+    public AdsController(AdsService adsService) {
+        this.adsService = adsService;
     }
 
     //--------------------------------------------------------------
@@ -96,7 +96,7 @@ public class AdsController {
 
             @ApiResponse(responseCode = "403", description = "Forbidden") })
     ResponseEntity<String> removeAds(@PathVariable("id") Integer id){
-        if (adsServiceImpl.removeAds(id)) {
+        if (adsService.removeAds(id)) {
             return ResponseEntity.status(HttpStatus.OK).body("Объявление удалено");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление с таким id отсутствует");
@@ -255,7 +255,7 @@ public class AdsController {
                                                      @PathVariable("commentId") Integer commentId,
                                                      @RequestBody Comment body){
             return ResponseEntity.status(HttpStatus.OK).
-                    body(adsServiceImpl.
+                    body(adsService.
                             updateAdsComment(adId, commentId, body));
     }
 }
