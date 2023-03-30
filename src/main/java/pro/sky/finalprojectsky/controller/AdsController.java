@@ -7,13 +7,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.*;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
-import pro.sky.finalprojectsky.service.impl.AdsServiceImpl;
+import pro.sky.finalprojectsky.service.AdsService;
 import java.util.List;
 
 @Slf4j
@@ -21,10 +22,10 @@ import java.util.List;
 @RestController
 public class AdsController {
 
-    private final AdsServiceImpl adsServiceImpl;
+    private final AdsService adsService;
 
-    public AdsController(AdsServiceImpl adsServiceImpl) {
-        this.adsServiceImpl = adsServiceImpl;
+    public AdsController(AdsService adsService) {
+        this.adsService = adsService;
     }
 
     //--------------------------------------------------------------
@@ -65,7 +66,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
     ResponseEntity<AdsDto> addAd(@RequestParam(value="properties", required=false)  CreateAdsDto properties,
-                                 @RequestPart("file") MultipartFile image){
+                                 @RequestPart("image") MultipartFile image){
         return null;
     }
 
@@ -94,8 +95,12 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden") })
-    ResponseEntity<Void> removeAds(@PathVariable("id") Integer id){
-        return null;
+    ResponseEntity<String> removeAds(@PathVariable("id") Integer id){
+        if (adsService.removeAds(id)) {
+            return ResponseEntity.status(HttpStatus.OK).body("Объявление удалено");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление с таким id отсутствует");
+        }
     }
 
 
@@ -151,14 +156,14 @@ public class AdsController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
     ResponseEntity<List<byte[]>> updateImage(@PathVariable("id") Integer id,
-                                             @RequestPart("file") MultipartFile image){
+                                             @RequestPart("image") MultipartFile image){
         return null;
     }
 
     //Comment block
 
     //1c new
-    @GetMapping(value = "/ads/{id}/comments",
+    @GetMapping(value = "/ads/{adsId}/comments",
             produces = { "application/json" })
     @Operation(summary = "Получить комментарии объявления",
             description = "getComments",
@@ -167,13 +172,13 @@ public class AdsController {
             @ApiResponse(responseCode = "200", description = "OK"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<ResponseWrapperComment> getComments(@PathVariable("id") Integer id) {
+    ResponseEntity<ResponseWrapperComment> getComments(@PathVariable("adsId") Integer adsId) {
         return  null;
     }
 
 
     //2c new
-    @PostMapping(value = "/ads/{id}/comments",
+    @PostMapping(value = "/ads/{adsId}/comments",
             produces = { "application/json" },
             consumes = { "application/json" })
     @Operation(summary = "Добавить комментарий к объявлению",
@@ -182,15 +187,15 @@ public class AdsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Comment.class))),
+                            schema = @Schema(implementation = CommentDto.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<CommentDto> addComment(@PathVariable("id") Integer id,
-                                           @RequestBody Comment body) {
+    ResponseEntity<String> addComment(@PathVariable("adsId") Integer adsId,
+                                           @RequestBody CommentDto commentDtoBody) {
         return null;
     }
 
@@ -234,7 +239,7 @@ public class AdsController {
             produces = { "application/json" },
             consumes = { "application/json" })
     @Operation(summary = "Обновить комментарий",
-            description = "updateComments",
+            description = "updateAdsComment",
             tags={ "Комментарии" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -246,10 +251,12 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<CommentDto> updateSelectedComment(@PathVariable("adId") Integer adId,
+    ResponseEntity<CommentDto> updateAdsComment(@PathVariable("adId") Integer adId,
                                                      @PathVariable("commentId") Integer commentId,
                                                      @RequestBody Comment body){
-        return null;
+            return ResponseEntity.status(HttpStatus.OK).
+                    body(adsService.
+                            updateAdsComment(adId, commentId, body));
     }
 }
 

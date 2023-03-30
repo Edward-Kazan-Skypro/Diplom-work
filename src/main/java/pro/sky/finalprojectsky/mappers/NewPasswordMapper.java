@@ -11,7 +11,7 @@ import pro.sky.finalprojectsky.model.User;
 public interface NewPasswordMapper {
     NewPasswordMapper INSTANCE = Mappers.getMapper(NewPasswordMapper.class);
 
-    @Mappings({
+   @Mappings({
             @Mapping(target = "newPassword", ignore = true),
             @Mapping(target = "currentPassword", ignore = true)
     })

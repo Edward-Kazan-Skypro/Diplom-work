@@ -1,6 +1,7 @@
 package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
+import pro.sky.finalprojectsky.model.Avatar;
 import pro.sky.finalprojectsky.model.Image;
 
 import javax.validation.constraints.Email;
@@ -11,7 +12,7 @@ import javax.validation.constraints.Pattern;
 public class UserDto {
     private Long id;
     @Email(regexp = ".+@.+[.]..+")//regulars
-    private String emailAsUserName;
+    private String email;
     @NotBlank//not blank
     private String firstName;
     @NotBlank//not blank
@@ -19,5 +20,5 @@ public class UserDto {
     @NotBlank
     @Pattern(regexp = "\\+7\\d{10}")//regulars
     private String phone;
-    private String avatarURL;
+    private Avatar avatar;
 }

@@ -11,11 +11,11 @@ import pro.sky.finalprojectsky.model.User;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mappings({
+   @Mappings({
             //id
             @Mapping(target = "id", source = "userEntity.id"),
-            //emailAsUserName
-            @Mapping(target = "emailAsUserName", source = "userEntity.emailAsUserName"),
+            //email = userName
+            @Mapping(target = "email", source = "userEntity.email"),
             //firstName
             @Mapping(target = "firstName", source = "userEntity.firstName"),
             //lastName
@@ -23,15 +23,15 @@ public interface UserMapper {
             //phone
             @Mapping(target = "phone", source = "userEntity.phone"),
             //avatarURL
-            @Mapping(target = "avatarURL", source = "userEntity.avatarURL")
+            @Mapping(target = "avatar", source = "userEntity.avatar")
     })
     UserDto userToDto (User userEntity);
 
-    @Mappings({
+   @Mappings({
             //id - не маппим, т.к. у сущности авто получение id
 
-            //emailAsUserName
-            @Mapping(target = "emailAsUserName", source = "userDto.emailAsUserName"),
+            //email = userName
+            @Mapping(target = "email", source = "userDto.email"),
             //firstName
             @Mapping(target = "firstName", source = "userDto.firstName"),
             //lastName
@@ -39,7 +39,7 @@ public interface UserMapper {
             //phone
             @Mapping(target = "phone", source = "userDto.phone"),
             //avatarURL
-            @Mapping(target = "avatarURL", source = "userDto.avatarURL")
+            @Mapping(target = "avatar", source = "userDto.avatar")
     })
     User dtoToEntity (UserDto userDto);
 }

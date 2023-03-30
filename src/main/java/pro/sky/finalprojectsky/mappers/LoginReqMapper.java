@@ -11,15 +11,15 @@ import pro.sky.finalprojectsky.model.User;
 public interface LoginReqMapper {
     LoginReqMapper INSTANCE = Mappers.getMapper(LoginReqMapper.class);
 
-    @Mappings({
+   @Mappings({
             @Mapping(target = "password", source = "userEntity.password"),
-            @Mapping(target = "emailAsUserName", source = "userEntity.emailAsUserName")
+            @Mapping(target = "userName", source = "userEntity.email")
     })
     LoginReqDto userToDto (User userEntity);
 
-    @Mappings({
+   @Mappings({
             @Mapping(target = "password", source = "loginReqDto.password"),
-            @Mapping(target = "emailAsUserName", source = "loginReqDto.emailAsUserName")
+            @Mapping(target = "email", source = "loginReqDto.userName")
     })
     User dtoToEntity (LoginReqDto loginReqDto);
 }

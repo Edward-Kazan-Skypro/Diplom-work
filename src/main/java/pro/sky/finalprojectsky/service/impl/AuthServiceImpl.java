@@ -35,13 +35,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean register(RegisterReqDto registerReqDto, Role role) {
-        if (manager.userExists(registerReqDto.getEmailAsUserName())) {
+        if (manager.userExists(registerReqDto.getUserName())) {
             return false;
         }
         manager.createUser(
                 User.withDefaultPasswordEncoder()
                         .password(registerReqDto.getPassword())
-                        .username(registerReqDto.getEmailAsUserName())
+                        .username(registerReqDto.getUserName())
                         .roles(role.name())
                         .build()
         );

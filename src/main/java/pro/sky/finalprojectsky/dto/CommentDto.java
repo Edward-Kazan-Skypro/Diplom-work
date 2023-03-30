@@ -2,15 +2,18 @@ package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
 
-import java.sql.Timestamp;
-
 @Data
 public class CommentDto {
-
-    private int authorId;
+    //id автора комментария
+    private int author;
+    //ссылка на аватар автора комментария
+    private String authorImage;
+    //имя создателя комментария
     private String authorFirstName;
-    private String authorImageURL;
-    private Timestamp createdAt;
-    private int commentId;
+    //дата и время создания комментария
+    private Long createdAt;
+    //id комментария
+    private int pk;
+    //текст комментария
     private String text;
 }
