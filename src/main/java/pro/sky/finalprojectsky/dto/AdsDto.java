@@ -5,7 +5,7 @@ import pro.sky.finalprojectsky.model.Image;
 
 @Data
 public class AdsDto {
-    private int pk;
+    private int id;
 
     private int author;
 
@@ -14,6 +14,4 @@ public class AdsDto {
     private int price;
 
     private String title;
-
-    private String description;
 }
