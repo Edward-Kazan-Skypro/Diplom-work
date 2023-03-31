@@ -1,12 +1,14 @@
 package pro.sky.finalprojectsky.dto;
 
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Data
 public class ResponseWrapperAds {
 
     private int count;
-    private final List<AdsDto> result = new ArrayList<>();
+    private List<AdsDto> result = new ArrayList<>();
 }

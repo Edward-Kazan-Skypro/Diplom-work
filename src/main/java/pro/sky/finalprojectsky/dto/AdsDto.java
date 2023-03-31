@@ -1,18 +1,17 @@
 package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
+import pro.sky.finalprojectsky.model.Image;
 
 @Data
 public class AdsDto {
-    private int adId;
+    private int id;
 
-    private int authorId;
+    private int author;
 
-    private String imageURL;
+    private Image image;
 
     private int price;
 
     private String title;
-
-    private String description;
 }
