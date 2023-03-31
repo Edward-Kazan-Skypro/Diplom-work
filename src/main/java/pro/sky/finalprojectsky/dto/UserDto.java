@@ -20,5 +20,5 @@ public class UserDto {
     @NotBlank
     @Pattern(regexp = "\\+7\\d{10}")//regulars
     private String phone;
-    private Avatar avatar;
+    private String image;
 }
