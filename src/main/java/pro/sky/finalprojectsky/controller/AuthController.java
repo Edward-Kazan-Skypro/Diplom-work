@@ -3,7 +3,6 @@ package pro.sky.finalprojectsky.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import pro.sky.finalprojectsky.dto.LoginReqDto;
 import pro.sky.finalprojectsky.dto.RegisterReqDto;
 import pro.sky.finalprojectsky.dto.Role;
 import pro.sky.finalprojectsky.service.AuthService;
+
 import static pro.sky.finalprojectsky.dto.Role.USER;
 
 @Slf4j
@@ -43,7 +43,7 @@ public class AuthController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
     public ResponseEntity<?> login(@RequestBody LoginReqDto loginReqDto) {
-        if (authService.login(loginReqDto.getEmailAsUserName(), loginReqDto.getPassword())) {
+        if (authService.login(loginReqDto.getUserName(), loginReqDto.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

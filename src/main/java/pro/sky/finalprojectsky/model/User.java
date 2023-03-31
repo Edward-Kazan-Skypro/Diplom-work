@@ -5,6 +5,7 @@ import pro.sky.finalprojectsky.dto.Role;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -17,12 +18,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    //Если исходить из фронта, то при заполнении поля userName запрашивается ввод email
-    //т.е. userName = email
+    //username = email
     @Email(regexp = ".+@.+[.]..+")//regulars
-    @Column(name = "email_as_userName")
-    private String emailAsUserName;
+    @Column(name = "email")
+    private String email;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
@@ -31,10 +30,17 @@ public class User {
     private String phone;
     @Column(name = "password")
     private String password;
-    @Column(name = "avatar")
-    private String avatarURL;
     @Column(name = "user_role")
     private Role role;
+
+    //здесь - связь между автором комментария и комментариями этого автора к этому объявлению
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comment;
+
+    //здесь - связь между аватаркой пользователя и пользователем
+    @OneToOne
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
 }
 
 

@@ -9,9 +9,4 @@ public class ResponseWrapperComment {
 
     private int count;
     private List<CommentDto> result = new ArrayList<>();
-
-    public ResponseWrapperComment getResponseWrapperComment(){
-
-        return new ResponseWrapperComment();
-    }
 }
