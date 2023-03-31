@@ -1,4 +1,4 @@
 package pro.sky.finalprojectsky.service;
 
-public interface AvatarService {
+public class AvatarService {
 }
