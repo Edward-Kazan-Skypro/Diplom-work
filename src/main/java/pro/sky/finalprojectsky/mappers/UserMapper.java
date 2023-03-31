@@ -22,8 +22,8 @@ public interface UserMapper {
             @Mapping(target = "lastName", source = "userEntity.lastName"),
             //phone
             @Mapping(target = "phone", source = "userEntity.phone"),
-            //avatarURL
-            @Mapping(target = "avatar", source = "userEntity.avatar")
+            //imageURL
+            @Mapping(target = "image", ignore = true)
     })
     UserDto userToDto (User userEntity);
 
@@ -38,8 +38,8 @@ public interface UserMapper {
             @Mapping(target = "lastName", source = "userDto.lastName"),
             //phone
             @Mapping(target = "phone", source = "userDto.phone"),
-            //avatarURL
-            @Mapping(target = "avatar", source = "userDto.avatar")
+            //imageURL
+            @Mapping(target = "image", ignore = true)
     })
     User dtoToEntity (UserDto userDto);
 }

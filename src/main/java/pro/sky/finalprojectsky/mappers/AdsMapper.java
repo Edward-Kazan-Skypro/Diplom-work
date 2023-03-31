@@ -1,9 +1,6 @@
 package pro.sky.finalprojectsky.mappers;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.CreateAdsDto;
@@ -17,11 +14,16 @@ public interface AdsMapper {
 
     AdsMapper INSTANCE = Mappers.getMapper(AdsMapper.class);
 
+    //imageURL
+    @Mapping(target = "image", ignore = true)
     AdsDto adsToAdsDto(FullAds fullAds);
 
+    @Mapping(target = "image", ignore = true)
     FullAds adsDtoToAds(AdsDto adsDto);
 
+    @Mapping(target = "image", ignore = true)
     FullAdsDto fullAdsToFullAdsDto(FullAds fullAds);
+    @Mapping(target = "image", ignore = true)
     FullAds fullAdsDtoToFullAds(FullAdsDto fullAdsDto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
