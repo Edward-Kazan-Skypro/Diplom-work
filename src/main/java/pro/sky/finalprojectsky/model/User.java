@@ -40,7 +40,7 @@ public class User {
     //здесь - связь между аватаркой пользователя и пользователем
     @OneToOne
     @JoinColumn(name = "avatar_id")
-    private Avatar avatar;
+    private Avatar image;
 }
 
 
