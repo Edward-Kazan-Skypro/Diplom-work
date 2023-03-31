@@ -38,7 +38,6 @@ public class AdsService {
         return false;
     }
 
-    @Override
     public CommentDto updateAdsComment(Integer adId, Integer commentId, Comment newComment) {
         if (adsRepository.existsById(adId)){
             //найдем объявление
