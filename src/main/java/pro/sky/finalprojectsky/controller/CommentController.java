@@ -66,23 +66,6 @@ public class CommentController {
     }
 
     //3c new
-    @GetMapping(value = "/ads/{adId}/comments/{commentId}",
-            produces = { "application/json" })
-    @Operation(summary = "Получить комментарий объявления",
-            description = "getComments",
-            tags={ "Комментарии" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class))),
-
-            @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<CommentDto> getCommentById(@PathVariable("adId") Integer adId,
-                                              @PathVariable("commentId") Integer commentId) {
-        return null;
-    }
-
-    //4c new
     @DeleteMapping(value = "/ads/{adId}/comments/{commentId}")
     @Operation(summary = "Удалить комментарий",
             description = "deleteSelectedComment",
@@ -100,7 +83,7 @@ public class CommentController {
         return null;
     }
 
-    //5c new
+    //4c new
     @PatchMapping(value = "/ads/{adId}/comments/{commentId}",
             produces = { "application/json" },
             consumes = { "application/json" })

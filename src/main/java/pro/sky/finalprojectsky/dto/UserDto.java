@@ -13,6 +13,7 @@ public class UserDto {
     private Long id;
     @Email(regexp = ".+@.+[.]..+")//regulars
     private String email;
+
     @NotBlank//not blank
     private String firstName;
     @NotBlank//not blank

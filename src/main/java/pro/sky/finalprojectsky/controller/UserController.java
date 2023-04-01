@@ -26,7 +26,7 @@ public class UserController {
             description = "setPassword",
             tags = {"Пользователи"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*", schema = @Schema(implementation = NewPasswordDto.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = NewPasswordDto.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 

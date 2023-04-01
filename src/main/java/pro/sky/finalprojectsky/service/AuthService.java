@@ -34,13 +34,13 @@ public class AuthService {
 
 
     public boolean register(RegisterReqDto registerReqDto, Role role) {
-        if (manager.userExists(registerReqDto.getUserName())) {
+        if (manager.userExists(registerReqDto.getUsername())) {
             return false;
         }
         manager.createUser(
                 User.withDefaultPasswordEncoder()
                         .password(registerReqDto.getPassword())
-                        .username(registerReqDto.getUserName())
+                        .username(registerReqDto.getUsername())
                         .roles(role.name())
                         .build()
         );
