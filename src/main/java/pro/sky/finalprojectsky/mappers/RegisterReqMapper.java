@@ -13,7 +13,7 @@ public interface RegisterReqMapper {
 
    @Mappings({
             //username
-            @Mapping(target = "userName", source = "userEntity.email"),
+            @Mapping(target = "username", source = "userEntity.email"),
             //password
             @Mapping(target = "password", source = "userEntity.password"),
             //firstName
@@ -27,7 +27,7 @@ public interface RegisterReqMapper {
 
     @Mappings({
             //username
-            @Mapping(target = "email", source = "registerRegDto.userName"),
+            @Mapping(target = "email", source = "registerRegDto.username"),
             //password
             @Mapping(target = "password", source = "registerRegDto.password"),
             //firstName

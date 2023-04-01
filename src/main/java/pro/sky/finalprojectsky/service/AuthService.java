@@ -47,3 +47,11 @@ public class AuthService {
         return true;
     }
 }
+    /*private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    @NotBlank
+    @Pattern(regexp = "\\+7\\d{10}")//regulars
+    private String phone;
+    private Role role;*/
