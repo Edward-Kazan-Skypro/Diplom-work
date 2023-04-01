@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 @Data
 public class RegisterReqDto {
     @Email(regexp = ".+@.+[.]..+")//regulars
-    private String userName;
+    private String username;
     private String password;
     private String firstName;
     private String lastName;
