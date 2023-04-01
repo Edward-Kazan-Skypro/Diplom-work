@@ -3,8 +3,10 @@ package pro.sky.finalprojectsky.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.UserDto;
+import pro.sky.finalprojectsky.model.Avatar;
 import pro.sky.finalprojectsky.model.User;
 
 @Mapper
@@ -23,9 +25,14 @@ public interface UserMapper {
             //phone
             @Mapping(target = "phone", source = "userEntity.phone"),
             //imageURL
-            @Mapping(target = "image", ignore = true)
+            @Mapping(target = "image", qualifiedByName = "buildLinkToAvatar")
     })
     UserDto userToDto (User userEntity);
+
+   @Named(value = "buildLinkToAvatar")
+   default String buildLinkToAvatar(Avatar image){
+       return "/pictures/" + image.getTitle();
+   }
 
    @Mappings({
             //id - не маппим, т.к. у сущности авто получение id
