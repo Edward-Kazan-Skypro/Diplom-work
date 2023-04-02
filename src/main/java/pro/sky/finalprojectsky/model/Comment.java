@@ -1,11 +1,8 @@
 package pro.sky.finalprojectsky.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 
 @Data
@@ -37,6 +34,6 @@ public class Comment   {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fullAds_id")
-    private FullAds fullAds;
+    private Ads ads;
 }
 
