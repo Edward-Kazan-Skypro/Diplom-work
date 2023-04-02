@@ -1,9 +1,6 @@
 package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
-import pro.sky.finalprojectsky.model.Avatar;
-import pro.sky.finalprojectsky.model.Image;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

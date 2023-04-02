@@ -13,7 +13,7 @@ import pro.sky.finalprojectsky.model.User;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-   @Mappings({
+    @Mappings({
             //id
             @Mapping(target = "id", source = "userEntity.id"),
             //email = userName
@@ -24,17 +24,19 @@ public interface UserMapper {
             @Mapping(target = "lastName", source = "userEntity.lastName"),
             //phone
             @Mapping(target = "phone", source = "userEntity.phone"),
-            //imageURL
+            //avatarURL
             @Mapping(target = "image", qualifiedByName = "buildLinkToAvatar")
     })
     UserDto userToDto (User userEntity);
 
-   @Named(value = "buildLinkToAvatar")
-   default String buildLinkToAvatar(Avatar image){
-       return "/pictures/" + image.getTitle();
-   }
 
-   @Mappings({
+    @Named(value = "buildLinkToAvatar")
+    default String buildLinkToAvatar(Avatar image) {
+        return "/user/" + image.getId() + "/image";
+    }
+
+    @Mappings({
+
             //id - не маппим, т.к. у сущности авто получение id
 
             //email = userName
@@ -45,7 +47,7 @@ public interface UserMapper {
             @Mapping(target = "lastName", source = "userDto.lastName"),
             //phone
             @Mapping(target = "phone", source = "userDto.phone"),
-            //imageURL
+            //avatarURL
             @Mapping(target = "image", ignore = true)
     })
     User dtoToEntity (UserDto userDto);

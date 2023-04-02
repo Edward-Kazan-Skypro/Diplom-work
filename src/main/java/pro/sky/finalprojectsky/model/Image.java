@@ -23,5 +23,5 @@ public class Image {
     private String title;
 
     @OneToOne (mappedBy = "image")
-    private FullAds fullAds;
+    private Ads ads;
 }

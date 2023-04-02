@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 @Builder
 public class AdsDto {
-    private int id;
+    private Integer id;
 
-    private int author;
+    private Integer author;
 
     private String image;
 
-    private int price;
+    private Integer price;
 
     private String title;
 }

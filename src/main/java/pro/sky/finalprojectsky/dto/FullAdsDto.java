@@ -1,7 +1,7 @@
 package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
-import pro.sky.finalprojectsky.model.Image;
+
 
 @Data
 public class FullAdsDto {
@@ -12,7 +12,7 @@ public class FullAdsDto {
     private String email;
     private String image;
     private String phone;
-    private Integer pk;
+    private Integer id;
     private Integer price;
     private String title;
 }

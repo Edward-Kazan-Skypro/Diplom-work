@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import pro.sky.finalprojectsky.dto.*;
 import pro.sky.finalprojectsky.mappers.CommentMapper;
 import pro.sky.finalprojectsky.model.Comment;
-import pro.sky.finalprojectsky.model.FullAds;
+import pro.sky.finalprojectsky.model.Ads;
 import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.CommentsRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
@@ -41,9 +41,9 @@ public class AdsService {
     public CommentDto updateAdsComment(Integer adId, Integer commentId, Comment newComment) {
         if (adsRepository.existsById(adId)){
             //найдем объявление
-            FullAds fullAds = adsRepository.getReferenceById(adId);
+            Ads ads = adsRepository.getReferenceById(adId);
             //получаем из объявления список комментариев
-            ArrayList<Comment> commentArrayList = (ArrayList<Comment>) fullAds.getComments();
+            ArrayList<Comment> commentArrayList = (ArrayList<Comment>) ads.getComments();
             //в списке ищем комментарий, который будем обновлять
             Comment comment = new Comment();
             for (Comment c: commentArrayList) {
@@ -61,23 +61,23 @@ public class AdsService {
 
 
     // Метод для получения всех объявлений
-    public List<FullAds> getAllAds() {
+    public List<Ads> getAllAds() {
         // получаем все объявления с базы данных и помещаем их в коллекцию
-        List<FullAds> allAds = adsRepository.findAll();
+        List<Ads> allAds = adsRepository.findAll();
         // возвращаем коллекцию
         return allAds;
     }
 
     // Метод для добавления нового объявления
-    public FullAds addAds(FullAds ads) {
+    public Ads addAds(Ads ads) {
         // сохраняем новое объявление в базе данных
-        FullAds newAds = adsRepository.save(ads);
+        Ads newAds = adsRepository.save(ads);
         // возвращаем новое объявление
         return newAds;
     }
 
     // Метод для получения моих объявлений
-    public List<FullAds> getAdsMe(Integer userId) {
+    public List<Ads> getAdsMe(Integer userId) {
         // получаем все объявления, созданные пользователем с заданным id и помещаем их в коллекцию
         //List<FullAds> adsMe = adsRepository.findAllByUserId(userId);
         // возвращаем коллекцию

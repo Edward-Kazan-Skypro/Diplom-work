@@ -4,7 +4,6 @@ import lombok.*;
 import pro.sky.finalprojectsky.dto.Role;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -17,10 +16,10 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "author")
     private Integer id;
-    //username = email
     @Email(regexp = ".+@.+[.]..+")//regulars
-    @Column(name = "email")
+    @Column(name = "email_as_userName")
     private String email;
     @Column(name = "first_name")
     private String firstName;
@@ -30,17 +29,12 @@ public class User {
     private String phone;
     @Column(name = "password")
     private String password;
-    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
     private Role role;
-
-    //здесь - связь между автором комментария и комментариями этого автора к этому объявлению
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comment;
-
-    //здесь - связь между аватаркой пользователя и пользователем
+    @OneToMany
+    @JoinColumn(name = "ads")
+    private List<Ads> adsList;
     @OneToOne
     @JoinColumn(name = "avatar_id")
     private Avatar image;
 }
-
-
