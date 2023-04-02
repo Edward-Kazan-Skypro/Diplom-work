@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.AddDefaultCharsetFilter;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ import java.util.logging.Logger;
 
 public class CommentController {
 
-    Logger logger = (Logger) LoggerFactory.getLogger(AdsController.class);
+    Logger logger = (Logger) LoggerFactory.getLogger(CommentController.class);
 
 
     private final AdsService adsService;
@@ -53,7 +52,7 @@ public class CommentController {
     @GetMapping("/{adKey}/comments")
     public ResponseWrapper<CommentDto> getComments(@PathVariable int adKey) {
         logger.info("Request for get ad comment");
-        return AddDefaultCharsetFilter.ResponseWrapper.of(commentsService.getComments(adKey));
+        return ResponseWrapper.of(commentsService.getComments(adKey));
     }
 
     @Operation(summary = "Написать комментарий к объявлению",
