@@ -39,8 +39,8 @@ public class User {
 
     //здесь - связь между аватаркой пользователя и пользователем
     @OneToOne
-    @JoinColumn(name = "avatar_id")
-    private Avatar image;
+    @JoinColumn(name = "image_id")
+    private Image image;
 }
 
 

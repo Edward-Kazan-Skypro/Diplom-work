@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Lob//large object binary
     @Type(type = "binary")
     private byte[] image;
@@ -23,5 +23,9 @@ public class Image {
     private String title;
 
     @OneToOne (mappedBy = "image")
-    private FullAds fullAds;
+    private Ads ads;
+
+    @OneToOne (mappedBy = "image")
+    private User user;
+
 }

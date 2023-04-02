@@ -5,32 +5,29 @@ import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Entity(name = "fullAds")
-public class FullAds   {
+@Entity(name = "ads")
+public class Ads {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String authorFirstName;
-
-    private String authorLastName;
+    //здесь - связь между объявлением и автором этого объявления
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private User author;
 
     private String description;
-
-    private String email;
 
     //здесь - связь между объявлением и картинками к этому объявлению
     @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
 
-    private String phone;
-
     private Integer price;
 
     private String title;
 
     //здесь - связь между объявлением и списком комментариев
-    @OneToMany(mappedBy = "fullAds")
+    @OneToMany(mappedBy = "ads")
     private List<Comment> comments;
 }

@@ -1,11 +1,8 @@
 package pro.sky.finalprojectsky.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 
 @Data
@@ -22,12 +19,8 @@ public class Comment   {
     private User user;
     //ссылка на аватар автора комментария
     @OneToOne
-    @JoinColumn(name = "avatar_id")
-    private Avatar avatar;
-    //имя создателя комментария
-    //не понял как сделать еще одну связь к сущности User,
-    //чтобы получать оттуда authorFirstName
-    private String authorFirstName;
+    @JoinColumn(name = "author_image_id")
+    private Image image;
 
     //дата и время создания комментария
     private Long createdAt;
@@ -36,7 +29,7 @@ public class Comment   {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fullAds_id")
-    private FullAds fullAds;
+    @JoinColumn(name = "ads_id")
+    private Ads ads;
 }
 

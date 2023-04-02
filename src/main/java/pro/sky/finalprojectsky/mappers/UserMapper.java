@@ -6,14 +6,14 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.UserDto;
-import pro.sky.finalprojectsky.model.Avatar;
+import pro.sky.finalprojectsky.model.Image;
 import pro.sky.finalprojectsky.model.User;
 
 @Mapper
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-   @Mappings({
+    @Mappings({
             //id
             @Mapping(target = "id", source = "userEntity.id"),
             //email = userName
@@ -25,16 +25,16 @@ public interface UserMapper {
             //phone
             @Mapping(target = "phone", source = "userEntity.phone"),
             //imageURL
-            @Mapping(target = "image", qualifiedByName = "buildLinkToAvatar")
+            @Mapping(target = "image", qualifiedByName = "buildLinkToAvatarImage")
     })
-    UserDto userToDto (User userEntity);
+    UserDto userToDto(User userEntity);
 
-   @Named(value = "buildLinkToAvatar")
-   default String buildLinkToAvatar(Avatar image){
-       return "/pictures/" + image.getTitle();
-   }
+    @Named(value = "buildLinkToAvatarImage")
+    default String buildLinkToAvatarImage(Image image) {
+        return "/pictures/" + image.getTitle();
+    }
 
-   @Mappings({
+    @Mappings({
             //id - не маппим, т.к. у сущности авто получение id
 
             //email = userName
@@ -48,5 +48,5 @@ public interface UserMapper {
             //imageURL
             @Mapping(target = "image", ignore = true)
     })
-    User dtoToEntity (UserDto userDto);
+    User dtoToEntity(UserDto userDto);
 }
