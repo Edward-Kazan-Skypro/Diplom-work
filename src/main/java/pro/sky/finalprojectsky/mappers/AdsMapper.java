@@ -26,7 +26,7 @@ public interface AdsMapper {
 
     @Named(value = "buildLinkToAuthor")
     default Integer buildLinkToAuthor(User author) {
-        return Integer.valueOf("/ads/" + author.getId() + "/author");
+        return author.getId();
     }
 
     @Mappings({

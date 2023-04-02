@@ -75,7 +75,12 @@ public class AdsController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Ads.class))),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<Ads> getAds(@PathVariable("id") Integer id){
+    ResponseEntity<String> getAds(@PathVariable("id") Integer id){
+        /*if (adsService.getAds(id)){
+            return ResponseEntity.status(HttpStatus.OK).body("Информация об объявлении получена");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление не найдено");
+        }*/
         return null;
     }
 
@@ -115,8 +120,12 @@ public class AdsController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
-    ResponseEntity<AdsDto> updateAds(@PathVariable("id") Integer id, @RequestBody CreateAdsDto body){
-        return null;
+    ResponseEntity<String> updateAds(@PathVariable("id") Integer id, @RequestBody AdsDto adsDto){
+        if (adsService.updateAds(id, adsDto)){
+            return ResponseEntity.status(HttpStatus.OK).body("Информация об объявлении обновлена");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление не найдено");
+        }
     }
 
 
