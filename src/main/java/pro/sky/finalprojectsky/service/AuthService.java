@@ -34,16 +34,24 @@ public class AuthService {
 
 
     public boolean register(RegisterReqDto registerReqDto, Role role) {
-        if (manager.userExists(registerReqDto.getUserName())) {
+        if (manager.userExists(registerReqDto.getUsername())) {
             return false;
         }
         manager.createUser(
                 User.withDefaultPasswordEncoder()
                         .password(registerReqDto.getPassword())
-                        .username(registerReqDto.getUserName())
+                        .username(registerReqDto.getUsername())
                         .roles(role.name())
                         .build()
         );
         return true;
     }
 }
+    /*private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    @NotBlank
+    @Pattern(regexp = "\\+7\\d{10}")//regulars
+    private String phone;
+    private Role role;*/

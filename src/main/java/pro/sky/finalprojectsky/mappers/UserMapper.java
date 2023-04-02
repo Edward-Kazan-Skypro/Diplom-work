@@ -29,12 +29,14 @@ public interface UserMapper {
     })
     UserDto userToDto (User userEntity);
 
+
     @Named(value = "buildLinkToAvatar")
     default String buildLinkToAvatar(Avatar image) {
         return "/user/" + image.getId() + "/image";
     }
 
     @Mappings({
+
             //id - не маппим, т.к. у сущности авто получение id
 
             //email = userName

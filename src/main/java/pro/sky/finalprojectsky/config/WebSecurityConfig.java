@@ -44,7 +44,4 @@ public class WebSecurityConfig {
                 .httpBasic(withDefaults());
         return http.build();
     }
-
-
 }
-

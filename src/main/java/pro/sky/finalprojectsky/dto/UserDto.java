@@ -7,9 +7,10 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class UserDto {
-    private Long id;
+    private Integer id;
     @Email(regexp = ".+@.+[.]..+")//regulars
     private String email;
+
     @NotBlank//not blank
     private String firstName;
     @NotBlank//not blank

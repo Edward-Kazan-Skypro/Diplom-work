@@ -7,5 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 public class LoginReqDto {
     private String password;
-    private String userName;
+    private String username;
 }

@@ -37,6 +37,4 @@ public class User {
     @OneToOne
     @JoinColumn(name = "avatar_id")
     private Avatar image;
-
 }
-
