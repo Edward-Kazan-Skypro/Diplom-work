@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.*;
-import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.FullAds;
 import pro.sky.finalprojectsky.service.AdsService;
 import java.util.List;
@@ -39,9 +38,9 @@ public class AdsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "OK",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))) })
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class))) })
 
-    ResponseEntity<ResponseWrapperAds> getALLAds(){
+    ResponseEntity<ResponseWrapper> getALLAds(){
         return null;
     }
 
@@ -128,7 +127,7 @@ public class AdsController {
             description = "getAdsMe",
             tags={ "Объявления" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
@@ -136,7 +135,7 @@ public class AdsController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
-    ResponseEntity<ResponseWrapperAds> getAdsMe(){
+    ResponseEntity<ResponseWrapper> getAdsMe(){
         return null;
     }
 

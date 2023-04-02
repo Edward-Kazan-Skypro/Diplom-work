@@ -2,18 +2,18 @@ package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Data
 public class CommentDto {
-    //id автора комментария
-    private int author;
-    //ссылка на аватар автора комментария
-    private String authorImage;
-    //имя создателя комментария
-    private String authorFirstName;
-    //дата и время создания комментария
-    private Long createdAt;
-    //id комментария
+
     private int pk;
-    //текст комментария
-    private String text;
-}
+
+    private int author;
+
+    private String createdAt;
+
+    @NotBlank
+    @Size(min = 8)
+    private String text;}

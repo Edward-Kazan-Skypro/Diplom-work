@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.RegisterReqDto;
-import pro.sky.finalprojectsky.model.User;
+import pro.sky.finalprojectsky.entity.User;
 
 @Mapper
 public interface RegisterReqMapper {

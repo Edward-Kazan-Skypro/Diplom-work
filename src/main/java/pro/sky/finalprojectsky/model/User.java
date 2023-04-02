@@ -4,7 +4,6 @@ import lombok.*;
 import pro.sky.finalprojectsky.dto.Role;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -14,7 +13,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Table(name = "users")
-public class User {
+public class User extends pro.sky.finalprojectsky.entity.User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,6 +40,11 @@ public class User {
     @OneToOne
     @JoinColumn(name = "avatar_id")
     private Avatar image;
+
+    @Override
+    public void eraseCredentials() {
+
+    }
 }
 
 

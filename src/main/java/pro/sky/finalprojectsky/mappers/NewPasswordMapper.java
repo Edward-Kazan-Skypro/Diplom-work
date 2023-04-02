@@ -5,13 +5,13 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.NewPasswordDto;
-import pro.sky.finalprojectsky.model.User;
+import pro.sky.finalprojectsky.entity.User;
 
 @Mapper
 public interface NewPasswordMapper {
     NewPasswordMapper INSTANCE = Mappers.getMapper(NewPasswordMapper.class);
 
-   @Mappings({
+    @Mappings({
             @Mapping(target = "newPassword", ignore = true),
             @Mapping(target = "currentPassword", ignore = true)
     })

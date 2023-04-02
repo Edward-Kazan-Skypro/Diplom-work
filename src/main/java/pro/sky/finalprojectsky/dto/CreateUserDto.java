@@ -12,15 +12,12 @@ import static pro.sky.finalprojectsky.constant.Registr.EMAIL_REGISTR;
 import static pro.sky.finalprojectsky.constant.Registr.PHONE_REGISTR;
 
 @Data
-public class RegisterReqDto {
+public class CreateUserDto {
 
-    @Email(regexp= EMAIL_REGISTR)
+
+    @Email(regexp = EMAIL_REGISTR)
     @Schema(example = "user@user.ru")
-    private String username;
-
-    @NotBlank
-    @Size(min = 8)
-    private String password;
+    private String email;
 
     @NotBlank
     @Size(min = 3)
@@ -31,8 +28,10 @@ public class RegisterReqDto {
     private String lastName;
 
     @NotBlank
+    @Size(min = 8)
+    private String password;
+
     @Pattern(regexp = PHONE_REGISTR)
     private String phone;
 
-    private Role role;
 }

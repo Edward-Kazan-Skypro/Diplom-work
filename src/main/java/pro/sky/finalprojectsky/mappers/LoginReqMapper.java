@@ -5,19 +5,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.LoginReqDto;
-import pro.sky.finalprojectsky.model.User;
+import pro.sky.finalprojectsky.entity.User;
 
 @Mapper
 public interface LoginReqMapper {
     LoginReqMapper INSTANCE = Mappers.getMapper(LoginReqMapper.class);
 
-   @Mappings({
+    @Mappings({
             @Mapping(target = "password", source = "userEntity.password"),
             @Mapping(target = "userName", source = "userEntity.email")
     })
     LoginReqDto userToDto (User userEntity);
 
-   @Mappings({
+    @Mappings({
             @Mapping(target = "password", source = "loginReqDto.password"),
             @Mapping(target = "email", source = "loginReqDto.userName")
     })

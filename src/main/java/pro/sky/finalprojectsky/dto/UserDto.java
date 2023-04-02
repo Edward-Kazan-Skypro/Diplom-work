@@ -1,24 +1,34 @@
 package pro.sky.finalprojectsky.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import pro.sky.finalprojectsky.model.Avatar;
-import pro.sky.finalprojectsky.model.Image;
+
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
+import static pro.sky.finalprojectsky.constant.Registr.EMAIL_REGISTR;
+import static pro.sky.finalprojectsky.constant.Registr.PHONE_REGISTR;
 @Data
 public class UserDto {
-    private Long id;
-    @Email(regexp = ".+@.+[.]..+")//regulars
+
+
+    private int id;
+
+    @Email(regexp = EMAIL_REGISTR)
+    @Schema(example = "user@user.ru")
     private String email;
-    @NotBlank//not blank
-    private String firstName;
-    @NotBlank//not blank
-    private String lastName;
+
     @NotBlank
-    @Pattern(regexp = "\\+7\\d{10}")//regulars
+    @Size(min = 3)
+    private String firstName;
+
+    @NotBlank
+    @Size(min = 3)
+    private String lastName;
+
+    @Pattern(regexp = PHONE_REGISTR)
     private String phone;
-    private String image;
 }

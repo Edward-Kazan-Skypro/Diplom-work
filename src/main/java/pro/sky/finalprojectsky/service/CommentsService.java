@@ -1,25 +1,63 @@
 package pro.sky.finalprojectsky.service;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Component;
-import pro.sky.finalprojectsky.model.Comment;
-import pro.sky.finalprojectsky.repository.CommentsRepository;
+import pro.sky.finalprojectsky.dto.CommentDto;
 
+import java.util.List;
+/**
+ * Интерфейс сервиса для работы с комментариями
+ */
 @Component
-public class CommentsService {
+public interface CommentsService {
+    /**
+     * Добавление комментария к объявлению
+     *
+     * @param adKey         ID объявления
+     * @param commentDto Объект комментария
+     * @return AdsComment
+     */
+    CommentDto addComment(long adKey, CommentDto commentDto);
 
-    private final CommentsRepository commentsRepository;
+    /**
+     * Получение всех комментариев определённого объявления
+     *
+     * @param adKey ID объявления
+     * @return Collection<AdsComment>
+     */
+    List<CommentDto> getComments(long adKey);
 
-    public CommentsService(CommentsRepository commentsRepository) {
-        this.commentsRepository = commentsRepository;
-    }
+    /**
+     * Получение комментария по ID
+     *
+     * @param id    ID комментария
+     * @param adKey ID объявления
+     * @return AdsComment
+     */
+    CommentDto getComment(long adKey, long id);
 
-    //Нужен метод для поиска комментария
-    //Проблема в том, что комментарий не отдельная сущность, а часть сущности объявление
-    //И в одном объявлении может быть несколько комментариев
-    //Поэтому, чтобы найти комментарий, надо вначале найти объявление, в котором будем искать комментарий
-    //И уже в найденном объявления искать этот комментарий
+    /**
+     * Удаление комментария по ID
+     *
+     * @param id             ID комментария
+     * @param adKey          ID объявления
+     * @param authentication Аутентифицированный пользователь
+     * @return Возвращает true если комментарий удалён, иначе false.
+     */
+    boolean deleteComment(long adKey, long id, Authentication authentication);
 
-    public Comment findCommentById(Integer id){
-            return commentsRepository.findById(id).orElse(new Comment());
-    }
+    /**
+     * Изменение комментария по ID
+     *
+     * @param id               ID комментария
+     * @param adKey            ID объявления
+     * @param updateComment Изменённый комментарий
+     * @param authentication   Аутентифицированный пользователь
+     * @return AdsComment      Изменённый комментарий.
+     */
+    CommentDto updateComment(long adKey, long id, CommentDto updateComment, Authentication authentication);
+
+    boolean deleteComment(long adKey, long id, org.springframework.security.core.Authentication authentication);
+
+    CommentDto updateComment(long adKey, long id, CommentDto updateComment, org.springframework.security.core.Authentication authentication);
 }

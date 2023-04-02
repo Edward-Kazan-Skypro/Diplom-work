@@ -5,12 +5,15 @@ import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.dto.FullAdsDto;
+import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.model.FullAds;
 
 import java.util.Collection;
-
+/**
+ * Interface of ads mapper
+ */
 @Mapper
-public interface AdsMapper {
+public interface AdsMapper extends WebMapper<AdsDto, Ads>{
 
     AdsMapper INSTANCE = Mappers.getMapper(AdsMapper.class);
 
