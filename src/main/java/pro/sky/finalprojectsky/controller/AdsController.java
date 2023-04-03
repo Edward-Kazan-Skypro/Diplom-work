@@ -31,17 +31,17 @@ public class AdsController {
 
     //1a new
     @GetMapping(value = "/ads",
-            produces = { "application/json" })
+            produces = {"application/json"})
     @Operation(summary = "",
             description = "Получить все объявления",
-            tags={ "Объявления" })
+            tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "OK",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))) })
-
-    ResponseEntity<ResponseWrapperAds> getALLAds(){
-        return null;
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class)))})
+    ResponseEntity<String> getALLAds() {
+        adsService.getAllAds();
+        return ResponseEntity.status(HttpStatus.OK).body("Получен список всех объявлений");
     }
 
     //2a new
@@ -75,14 +75,12 @@ public class AdsController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Ads.class))),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<String> getAds(@PathVariable("id") Integer id){
-        /*if (adsService.getAds(id)){
-            return ResponseEntity.status(HttpStatus.OK).body("Информация об объявлении получена");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление не найдено");
-        }*/
-        return null;
+    ResponseEntity<String> getAds(@PathVariable("id") Integer id) {
+        adsService.getAds(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Получена полная информация об объявлении");
     }
+
+
 
     //4a new
     @DeleteMapping(value = "/ads/{id}")
@@ -144,8 +142,9 @@ public class AdsController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
-    ResponseEntity<ResponseWrapperAds> getAdsMe(){
-        return null;
+    ResponseEntity<String> getAdsMe(){
+        adsService.getAdsMe();
+        return ResponseEntity.status(HttpStatus.OK).body("Получен список объявлений авторизованного пользователя");
     }
 
     //7a new

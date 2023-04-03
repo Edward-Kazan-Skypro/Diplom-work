@@ -2,12 +2,14 @@ package pro.sky.finalprojectsky.service;
 
 
 import org.mapstruct.factory.Mappers;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import pro.sky.finalprojectsky.dto.*;
 import pro.sky.finalprojectsky.mappers.AdsMapper;
 import pro.sky.finalprojectsky.mappers.CommentMapper;
 import pro.sky.finalprojectsky.exceptions.AdsNotFoundException;
 import pro.sky.finalprojectsky.exceptions.UserNotFoundException;
+import pro.sky.finalprojectsky.mappers.FullAdsMapper;
 import pro.sky.finalprojectsky.model.Comment;
 import pro.sky.finalprojectsky.model.Ads;
 import pro.sky.finalprojectsky.model.User;
@@ -16,6 +18,7 @@ import pro.sky.finalprojectsky.repository.CommentsRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 @Component
@@ -26,6 +29,7 @@ public class AdsService {
 
     private final UserRepository userRepository;
     private final AdsMapper adsMapper = Mappers.getMapper(AdsMapper.class);
+    private final FullAdsMapper fullAdsMapper = Mappers.getMapper(FullAdsMapper.class);
 
 
     public AdsService(AdsRepository adsRepository,
@@ -65,13 +69,14 @@ public class AdsService {
         return CommentMapper.INSTANCE.commentToDto(commentsRepository.getReferenceById(commentId));
     }
 
-
-    // Метод для получения всех объявлений
-    public List<Ads> getAllAds() {
-        // получаем все объявления с базы данных и помещаем их в коллекцию
+    /**
+     * Метод получения всех объявлений
+     *
+     * @return список объявлений
+     */
+    public List<AdsDto> getAllAds() {
         List<Ads> allAds = adsRepository.findAll();
-        // возвращаем коллекцию
-        return allAds;
+        return AdsMapper.INSTANCE.adsListToAdsDto(allAds);
     }
 
     // Метод для добавления нового объявления
@@ -82,12 +87,17 @@ public class AdsService {
         return newAds;
     }
 
-    // Метод для получения моих объявлений
-    public List<Ads> getAdsMe(Integer userId) {
-        // получаем все объявления, созданные пользователем с заданным id и помещаем их в коллекцию
-        //List<FullAds> adsMe = adsRepository.findAllByUserId(userId);
-        // возвращаем коллекцию
-        return null;
+    /**
+     * Метод получения объявлений авторизованного пользователя
+     *
+     * @return список объявлений пользователя
+     */
+
+    public List<AdsDto> getAdsMe() {
+        User user = userRepository.findById(Integer.valueOf(SecurityContextHolder.getContext()
+                .getAuthentication().getName())).orElseThrow((UserNotFoundException::new));
+        List<Ads> adsList = adsRepository.findAllByUserId(user.getId());
+        return adsMapper.adsListToAdsDto(adsList);
     }
 
     /**
@@ -96,28 +106,16 @@ public class AdsService {
      * @param id идентификатор объявления
      * @return полная информация об объявлении
      */
-    //не добавила картинку, затрудняюсь
-    public FullAdsDto getAds(Integer id) {
-        Ads ads = adsRepository.findById(id).orElseThrow(AdsNotFoundException::new);
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        FullAdsDto fullAdsDto = new FullAdsDto();
-        fullAdsDto.setId(ads.getId());
-        fullAdsDto.setAuthorFirstName(user.getFirstName());
-        fullAdsDto.setAuthorLastName(user.getLastName());
-        fullAdsDto.setDescription(ads.getDescription());
-        fullAdsDto.setEmail(user.getEmail());
-        fullAdsDto.setPhone(user.getPhone());
-        fullAdsDto.setPrice(ads.getPrice());
-        fullAdsDto.setTitle(ads.getTitle());
-        return fullAdsDto;
-    }
 
+    public FullAdsDto getAds(Integer id) {
+        return fullAdsMapper.adsToFullAdsDto(adsRepository.findById(id).orElseThrow((AdsNotFoundException::new)));
+    }
 
 
     /**
      * Метод обновления информации об объявлении
      *
-     * @param id     идентификатор объявления
+     * @param id   идентификатор объявления
      * @param body передаваемая информация
      * @return обновленная информация
      */

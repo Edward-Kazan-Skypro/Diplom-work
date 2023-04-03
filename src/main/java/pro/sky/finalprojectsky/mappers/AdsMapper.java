@@ -3,9 +3,12 @@ package pro.sky.finalprojectsky.mappers;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 import pro.sky.finalprojectsky.dto.AdsDto;
+import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.model.Ads;
 import pro.sky.finalprojectsky.model.Image;
 import pro.sky.finalprojectsky.model.User;
+
+import java.util.List;
 
 
 @Mapper
@@ -34,4 +37,10 @@ public interface AdsMapper {
             @Mapping(target = "author", ignore = true)
     })
     Ads adsDtoToAds(AdsDto adsDto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+            nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+    Ads createAdsToAds(CreateAdsDto createAdsDto);
+
+    List<AdsDto> adsListToAdsDto(List<Ads> adsList);
 }
