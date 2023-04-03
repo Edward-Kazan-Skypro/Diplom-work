@@ -1,11 +1,10 @@
-package pro.sky.finalprojectsky.mappers;
+package pro.sky.finalprojectsky.mapper;
 
+import org.mapstruct.Mapper;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Interface of WebMapper
- */
+//@Mapper
 public interface WebMapper<D, E> {
 
     E toEntity(D dto);

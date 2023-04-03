@@ -1,5 +1,4 @@
-package pro.sky.finalprojectsky.controller;
-
+package pro.sky.finalprojectsky.config;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -20,4 +19,6 @@ public class BasicAuthCorsFilter extends OncePerRequestFilter {
         httpServletResponse.addHeader("Access-Control-Allow-Credentials", "true");
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
+
+
 }
