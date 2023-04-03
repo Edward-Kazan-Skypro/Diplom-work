@@ -2,21 +2,26 @@ package pro.sky.finalprojectsky.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.factory.Mappers;
+
 import pro.sky.finalprojectsky.dto.CommentDto;
-import pro.sky.finalprojectsky.model.Comment;
-import pro.sky.finalprojectsky.model.User;
+
+import pro.sky.finalprojectsky.entity.AdsComment;
+
 
 @Mapper
-public interface CommentMapper {
-    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
+public interface CommentMapper extends WebMapper<CommentDto, AdsComment> {
 
-    CommentDto commentToDto (Comment commentEntity);
+    @Override
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    AdsComment toEntity(CommentDto dto);
 
-    Comment commentToEntity (CommentDto commentDto);
+    @Override
+    @Mapping(target = "author", source = "author.id")
+    @Mapping(source = "id", target = "pk")
+    @Mapping(target = "createdAt", source = "entity.createdAt", dateFormat = "yyyy-MM-dd HH:mm:ss")
+    CommentDto toDto(AdsComment entity);
 }
-
 /* @Mapping(target = "author", source = "author.id")
     @Mapping(target = "pk", source = "id")
     @Mapping(target = "createdAt", source = "createdAt")*/

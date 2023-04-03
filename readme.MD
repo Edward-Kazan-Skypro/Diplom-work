@@ -65,7 +65,7 @@ Docker образ
 
 Запустить Docker образ
 
-Запустить метод main в файле HomeworkApplication.java
+Запустить метод main в файле FinalProjectSkyApplication.java
 
 После выполнения всех действий сайт будет доступен по ссылке http://localhost:3000 и Swagger по ссылке.
 (RU) Дипломный проект
@@ -135,6 +135,6 @@ Docker образ
 
 Запустить Docker образ
 
-Запустить метод main в файле HomeworkApplication.java
+Запустить метод main в файле FinalProjectSkyApplication.java
 
 После выполнения всех действий сайт будет доступен по ссылке http://localhost:3000 и Swagger по ссылке.
