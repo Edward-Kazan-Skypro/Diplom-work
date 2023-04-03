@@ -1,9 +1,18 @@
 package pro.sky.finalprojectsky.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import pro.sky.finalprojectsky.model.Comment;
+import pro.sky.finalprojectsky.entity.AdsComment;
 
-@Repository
-public interface CommentsRepository extends JpaRepository<Comment, Integer> {
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Repository AdsCommentRepository (advertisement comment/комментарий в объявлениях).
+ */
+public interface CommentsRepository extends JpaRepository<AdsComment, Long> {
+
+    List<AdsComment> findAllByAdsId(long adsId);
+
+    Optional<AdsComment> findByIdAndAdsId(long id, long adsId);
+
 }
