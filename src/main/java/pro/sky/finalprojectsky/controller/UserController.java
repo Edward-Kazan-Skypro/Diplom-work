@@ -1,7 +1,6 @@
 package pro.sky.finalprojectsky.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.NewPasswordDto;
 import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.service.ImageService;

@@ -2,7 +2,6 @@ package pro.sky.finalprojectsky.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 
 

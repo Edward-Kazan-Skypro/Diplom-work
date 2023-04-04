@@ -1,15 +1,12 @@
 package pro.sky.finalprojectsky.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
-import pro.sky.finalprojectsky.dto.AdsCommentDto;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.dto.FullAdsDto;
@@ -24,7 +21,6 @@ import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.ImageService;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,8 +39,6 @@ public class AdsServiceImpl implements AdsService {
     private final ImageService imagesService;
 
     private final AdsMapper adsMapper;
-
-    private final AdsCommentMapper adsCommentMapper;
 
     @Override
     public AdsDto createAds(CreateAdsDto createAdsDto, MultipartFile imageFile) throws IOException {

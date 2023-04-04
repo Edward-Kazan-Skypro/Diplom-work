@@ -1,7 +1,6 @@
 package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
-
 import java.util.Collection;
 import java.util.List;
 

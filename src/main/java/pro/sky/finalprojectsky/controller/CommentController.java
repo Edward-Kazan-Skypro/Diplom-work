@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.security.core.Authentication;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +14,19 @@ import pro.sky.finalprojectsky.dto.ResponseWrapper;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.CommentService;
 import javax.servlet.http.HttpServletResponse;
-import java.util.logging.Logger;
+
 
 
 @CrossOrigin(value = "http://localhost:3000")
 //@RequiredArgsConstructor
 @RestController
 public class CommentController {
-    //Logger logger = (Logger) LoggerFactory.getLogger(CommentController.class);
     private final AdsService adsService;
     private final CommentService commentsService;
 
-    public CommentController(AdsService adsService, CommentService commentsService) {
+    public CommentController(AdsService adsService, CommentService commentService) {
         this.adsService = adsService;
-        this.commentsService = commentsService;
+        this.commentsService = commentService;
     }
     @GetMapping(value = "/ads/{adsId}/comments",
             produces = { "application/json" })
@@ -40,7 +38,6 @@ public class CommentController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
     public ResponseWrapper<CommentDto> getComments(@PathVariable("adsId") Integer adsId) {
-        //logger.info("Request for get ad comment");
         return ResponseWrapper.of(commentsService.getComments(adsId));
     }
 

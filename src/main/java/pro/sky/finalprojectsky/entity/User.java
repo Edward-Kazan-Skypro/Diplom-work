@@ -2,7 +2,6 @@ package pro.sky.finalprojectsky.entity;
 
 import lombok.*;
 import pro.sky.finalprojectsky.dto.Role;
-
 import javax.persistence.*;
 
 
