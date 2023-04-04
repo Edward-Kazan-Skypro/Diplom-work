@@ -4,7 +4,7 @@ public final class Regexp {
 
     public static final String EMAIL_REGEXP = ".+@.+[.]..+";
 
-    public static final String PHONE_REGEXP = "\\+7\\d{10}";
+    public static final String PHONE_REGEXP = "^\\+\\d\\(\\d\\d\\d\\)\\d\\d\\d\\-\\d\\d\\-\\d\\d$";
 
     private Regexp() {
     }
