@@ -5,31 +5,31 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.security.core.Authentication;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.finalprojectsky.dto.CommentDto;
+import pro.sky.finalprojectsky.dto.AdsCommentDto;
 import pro.sky.finalprojectsky.dto.ResponseWrapper;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.CommentService;
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.logging.Logger;
 
 
 @CrossOrigin(value = "http://localhost:3000")
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @RestController
 public class CommentController {
-    //Logger logger = (Logger) LoggerFactory.getLogger(CommentController.class);
+    Logger logger = LoggerFactory.getLogger(CommentController.class);
+
     private final AdsService adsService;
     private final CommentService commentsService;
 
-    public CommentController(AdsService adsService, CommentService commentsService) {
-        this.adsService = adsService;
-        this.commentsService = commentsService;
-    }
     @GetMapping(value = "/ads/{adsId}/comments",
             produces = { "application/json" })
     @Operation(summary = "Получить комментарии объявления",
@@ -39,30 +39,30 @@ public class CommentController {
             @ApiResponse(responseCode = "200", description = "OK"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    public ResponseWrapper<CommentDto> getComments(@PathVariable("adsId") Integer adsId) {
-        //logger.info("Request for get ad comment");
-        return ResponseWrapper.of(commentsService.getComments(adsId));
+    public ResponseWrapper<AdsCommentDto> getAdsComments(@PathVariable("adsId") Integer adsId) {
+        logger.info("Request for get ad comment");
+        return ResponseWrapper.of(commentsService.getAdsComments(adsId));
     }
 
     @PostMapping(value = "/ads/{adsId}/comments",
             produces = { "application/json" },
             consumes = { "application/json" })
     @Operation(summary = "Добавить комментарий к объявлению",
-            description = "addComment",
+            description = "addAdsComment",
             tags={ "Комментарии" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class))),
+                            schema = @Schema(implementation = AdsCommentDto.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    public CommentDto addComment(@PathVariable("adsId") Integer adsId,
-                                      @RequestBody CommentDto commentDto) {
-        return commentsService.addComment(adsId, commentDto);
+    public AdsCommentDto addAdsComment(@PathVariable("adsId") Integer adsId,
+                                       @RequestBody AdsCommentDto adsCommentDto) {
+        return commentsService.addAdsComment(adsId, adsCommentDto);
     }
 
     @DeleteMapping(value = "/ads/{adId}/comments/{commentId}")
@@ -77,40 +77,56 @@ public class CommentController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("adId") Integer adId,
+    public ResponseEntity<HttpStatus> deleteAdsComment(@PathVariable("adId") Integer adId,
                                                     @PathVariable("commentId") Integer commentId,
                                                     Authentication authentication  ) {
-        if (commentsService.deleteComment(adId, commentId, authentication)) {
+        if (commentsService.deleteAdsComment(adId, commentId, authentication)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
     }
+    @Operation(summary = "Поиск комментария по id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Найденный комментарий",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AdsCommentDto.class)
+                            )
+                    )
+            },
+            tags = "Comments"
+    )
+    @GetMapping("/{adKey}/comments/{id}")
+    public AdsCommentDto getAdsComment(@PathVariable Integer adKey, @PathVariable Integer id) {
+        logger.info("Request for get ad comment");
+        return commentsService.getAdsComment(adKey, id);
+    }
 
-    @PatchMapping(value = "/ads/{adId}/comments/{commentId}",
-            produces = { "application/json" },
-            consumes = { "application/json" })
-    @Operation(summary = "Обновить комментарий",
-            description = "updateAdsComment",
-            tags={ "Комментарии" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class))),
-
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-
-            @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<CommentDto> updateComment(@PathVariable("adId") Integer adId,
-                                                @PathVariable("commentId") Integer commentId,
-                                                @RequestBody CommentDto updateCommentDto,
-                                                Authentication authentication){
-        CommentDto updatedCommentDto = commentsService.updateComment(adId, commentId,
-                updateCommentDto, authentication);
-        if (updateCommentDto.equals(updatedCommentDto)) {
+    @Operation(summary = "Изменение комментария",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Измененный комментарий",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = AdsCommentDto.class)
+                            )
+                    )
+            },
+            tags = "Comments"
+    )
+    @PatchMapping("/{adKey}/comments/{id}")
+    public ResponseEntity<AdsCommentDto> updateAdsComment(@PathVariable Integer adKey, @PathVariable Integer id,
+                                                          @RequestBody AdsCommentDto updateAdsCommentDto,
+                                                          Authentication authentication) {
+        logger.info("Request for update ad comment");
+        AdsCommentDto updatedAdsCommentDto = commentsService.updateAdsComment(adKey, id,
+                updateAdsCommentDto, authentication);
+        if (updateAdsCommentDto.equals(updatedAdsCommentDto)) {
             return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(updatedCommentDto);
+        return ResponseEntity.ok(updatedAdsCommentDto);
     }
 }
