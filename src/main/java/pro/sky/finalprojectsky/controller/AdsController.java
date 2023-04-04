@@ -6,15 +6,21 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.*;
-import pro.sky.finalprojectsky.model.Ads;
+import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.service.AdsService;
-import java.util.List;
+import pro.sky.finalprojectsky.service.ImageService;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -23,11 +29,12 @@ public class AdsController {
 
     private final AdsService adsService;
 
-    public AdsController(AdsService adsService) {
-        this.adsService = adsService;
-    }
+    private final ImageService imageService;
 
-    //Ads block
+    public AdsController(AdsService adsService, ImageService imageService) {
+        this.adsService = adsService;
+        this.imageService = imageService;
+    }
 
     //1a new
     @GetMapping(value = "/ads",
@@ -38,17 +45,20 @@ public class AdsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "OK",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))) })
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AdsDto[].class))) })
 
-    ResponseEntity<ResponseWrapperAds> getALLAds(){
-        return null;
+    public ResponseWrapper<AdsDto> getALLAds(){
+        return ResponseWrapper.of(adsService.getAllAds());
     }
 
     //2a new
     @PostMapping(value = "/ads",
             produces = { "application/json" },
             consumes = { "multipart/form-data" })
-    @Operation(summary = "addImageToAds",
+    @SneakyThrows
+    @ExceptionHandler
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @Operation(summary = "addAd",
             description = "Добавить объявление",
             tags={ "Объявления" })
     @ApiResponses(value = {
@@ -60,9 +70,9 @@ public class AdsController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
-    ResponseEntity<AdsDto> addAd(@RequestParam(value="properties", required=false)  CreateAdsDto properties,
-                                 @RequestPart("image") MultipartFile image){
-        return null;
+    public ResponseEntity<AdsDto> addAd(@RequestPart("image") MultipartFile image,
+                                 @RequestPart("properties") @Valid CreateAdsDto dto){
+        return ResponseEntity.ok(adsService.createAds(dto, image));
     }
 
     //3a new
@@ -75,13 +85,8 @@ public class AdsController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Ads.class))),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<String> getAds(@PathVariable("id") Integer id){
-        /*if (adsService.getAds(id)){
-            return ResponseEntity.status(HttpStatus.OK).body("Информация об объявлении получена");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление не найдено");
-        }*/
-        return null;
+    public FullAdsDto getAds(@PathVariable("id") Integer id){
+        return adsService.getFullAdsDto(id);
     }
 
     //4a new
@@ -95,14 +100,12 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden") })
-    ResponseEntity<String> removeAds(@PathVariable("id") Integer id){
-        if (adsService.removeAds(id)) {
-            return ResponseEntity.status(HttpStatus.OK).body("Объявление удалено");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление с таким id отсутствует");
+    public ResponseEntity<HttpStatus> removeAds(@PathVariable Integer id, Authentication authentication) throws IOException {
+        if (adsService.removeAds(id, authentication)) {
+            return ResponseEntity.ok().build();
         }
+        return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
     }
-
 
     //5a new
     @PatchMapping(value = "/ads/{id}",
@@ -120,12 +123,14 @@ public class AdsController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
 
-    ResponseEntity<String> updateAds(@PathVariable("id") Integer id, @RequestBody AdsDto adsDto){
-        if (adsService.updateAds(id, adsDto)){
-            return ResponseEntity.status(HttpStatus.OK).body("Информация об объявлении обновлена");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Объявление не найдено");
+    public ResponseEntity<AdsDto> updateAds(@PathVariable("id") Integer id,
+                                     Authentication authentication,
+                                     @RequestBody AdsDto updatedAdsDto){
+        AdsDto updateAdsDto = adsService.updateAds(id, updatedAdsDto, authentication);
+        if (updateAdsDto.equals(updatedAdsDto)) {
+            return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
         }
+        return ResponseEntity.ok(updateAdsDto);
     }
 
 
@@ -136,19 +141,19 @@ public class AdsController {
             description = "getAdsMe",
             tags={ "Объявления" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapperAds.class))),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AdsDto[].class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-
-    ResponseEntity<ResponseWrapperAds> getAdsMe(){
-        return null;
+    public ResponseWrapper<AdsDto> getAdsMe(){
+        return ResponseWrapper.of(adsService.getAdsMe());
     }
 
     //7a new
+    @SneakyThrows
     @PatchMapping(value = "/ads/{id}/image",
             produces = { "application/octet-stream" },
             consumes = { "multipart/form-data" })
@@ -156,12 +161,15 @@ public class AdsController {
             description = "updateImage",
             tags={ "Объявления" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "application/octet-stream", array = @ArraySchema(schema = @Schema(implementation = byte[].class)))),
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/octet-stream",
+                            array = @ArraySchema(schema = @Schema(implementation = AdsDto.class)))),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<List<byte[]>> updateImage(@PathVariable("id") Integer id,
-                                             @RequestPart("image") MultipartFile image){
-        return null;
+    public ResponseEntity<AdsDto> updateImage(@PathVariable("id") Integer id,
+                                             @RequestPart("image") MultipartFile image,
+                                             Authentication authentication){
+        return ResponseEntity.ok(imageService.updateAdsImage(image, authentication, id));
     }
 }
 
