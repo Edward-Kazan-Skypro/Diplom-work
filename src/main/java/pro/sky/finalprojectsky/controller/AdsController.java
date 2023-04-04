@@ -169,7 +169,7 @@ public class AdsController {
     public ResponseEntity<AdsDto> updateImage(@PathVariable("id") Integer id,
                                              @RequestPart("image") MultipartFile image,
                                              Authentication authentication){
-        return ResponseEntity.ok(imageService.updateImage(image, authentication, id));
+        return ResponseEntity.ok(imageService.updateAdsImage(image, authentication, id));
     }
 }
 

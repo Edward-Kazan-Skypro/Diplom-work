@@ -11,13 +11,18 @@ import java.io.IOException;
 
 @Component
 public interface ImageService {
-    Image uploadImage(MultipartFile imageFile, Ads ads) throws IOException;
+    Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException;
 
-    AdsDto updateImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException;
+    AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException;
 
-    Image getImage(Integer id);
+    Image getAdsImage(Integer id);
 
     byte[] getImageBytesArray(Integer id);
 
-    void removeImage(Integer id) throws IOException;
+    void removeAdsImage(Integer id) throws IOException;
+
+    boolean uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
+
+    boolean updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
+
 }
