@@ -28,6 +28,8 @@ public class Image {
     private String filePath;
     @OneToOne
     private Ads ads;
+    @OneToOne
+    private User user;
 
     public String toString() {
         return "AdsEntity(id=" + this.getId() + ", image=" + java.util.Arrays.toString(this.getImage()) + ")";

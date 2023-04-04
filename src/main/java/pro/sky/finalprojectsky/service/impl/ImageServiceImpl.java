@@ -28,7 +28,6 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
-    //Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     @Value("${path.to.images.folder}")
 
@@ -43,8 +42,7 @@ public class ImageServiceImpl implements ImageService {
     private final AdsMapper adsMapper;
 
     @Override
-    public Image uploadImage(MultipartFile imageFile, Ads ads) throws IOException {
-        //logger.info("Was invoked method for upload image");
+    public Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException {
         Path filePath = Path.of(imagesDir, "ads_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
@@ -62,14 +60,13 @@ public class ImageServiceImpl implements ImageService {
         images.setMediaType(imageFile.getContentType());
         images.setImage(imageFile.getBytes());
         images.setAds(ads);
+        images.setUser(null);
         return imagesRepository.save(images);
     }
 
     @Override
-    public AdsDto updateImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException {
-        //logger.info("Was invoked method for update image");
+    public AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException {
         Ads ads = adsRepository.findById(adsId).orElseThrow(() -> new NotFoundException("Объявление с id " + adsId + " не найдено!"));
-        //logger.warn("ad by id {} not found", adsId);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
             Image updatedImage = imagesRepository.findByAdsId(adsId);
@@ -93,33 +90,77 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String getExtensions(String fileName) {
-        //logger.info("Was invoked method for get extensions");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Image getImage(Integer id) {
-        //logger.info("Was invoked method for get image by id");
+    public Image getAdsImage(Integer id) {
         return imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
     }
 
     @Transactional(readOnly = true)
     @Override
     public byte[] getImageBytesArray(Integer id) {
-        //logger.info("Was invoked method for get image bates array");
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
         return images.getImage();
     }
 
     @Override
-    public void removeImage(Integer id) throws IOException {
-        //logger.info("Was invoked method for delete image by id");
+    public void removeAdsImage(Integer id) throws IOException {
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
-        //logger.warn("image by id {} not found", id);
         Path filePath = Path.of(images.getFilePath());
         images.getAds().setImage(null);
         imagesRepository.deleteById(id);
         Files.deleteIfExists(filePath);
+    }
+
+    @Override
+    public  boolean uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException {
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new NotFoundException("Пользователь с именем " + authentication.getName() + " не найден!"));
+        Path filePath = Path.of(imagesDir, "ads_" + user.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+        try (
+                InputStream is = imageFile.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
+        ) {
+            bis.transferTo(bos);
+        }
+        Image images = new Image();
+        images.setFilePath(filePath.toString());
+        images.setFileSize(imageFile.getSize());
+        images.setMediaType(imageFile.getContentType());
+        images.setImage(imageFile.getBytes());
+        images.setAds(null);
+        images.setUser(user);
+        imagesRepository.save(images);
+        return true;
+    }
+    @Override
+    public  boolean updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException{
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new NotFoundException("Пользователь с именем " + authentication.getName() + " не найден!"));
+        if (user.getRole().getAuthority().equals("USER")) {
+            Image updatedImage = imagesRepository.findByAdsId(user.getId());
+            Path filePath = Path.of(updatedImage.getFilePath());
+            Files.deleteIfExists(filePath);
+            try (
+                    InputStream is = imageFile.getInputStream();
+                    OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                    BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                    BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
+            ) {
+                bis.transferTo(bos);
+            }
+            updatedImage.setFileSize(imageFile.getSize());
+            updatedImage.setMediaType(imageFile.getContentType());
+            updatedImage.setImage(imageFile.getBytes());
+            user.setImage(imagesRepository.save(updatedImage));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }

@@ -18,7 +18,6 @@ public class Ads {
     private User author;
     private int price;
     private String title;
-    private String description;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Image image;
 }
