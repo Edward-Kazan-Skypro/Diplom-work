@@ -2,19 +2,49 @@ package pro.sky.finalprojectsky.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import pro.sky.finalprojectsky.dto.CommentDto;
+import pro.sky.finalprojectsky.dto.AdsCommentDto;
 import java.util.List;
 
 @Component
 public interface CommentService {
 
-    CommentDto addComment(Integer adId, CommentDto commentDto);
+    AdsCommentDto addAdsComment(Integer adKey, AdsCommentDto adsCommentDto);
 
-    List<CommentDto> getComments(Integer adId);
+    /**
+     * Получение всех комментариев определённого объявления
+     *
+     * @param adKey ID объявления
+     * @return Collection<AdsComment>
+     */
+    List<AdsCommentDto> getAdsComments(Integer adKey);
 
-    CommentDto getComment(Integer adId, Integer commentId);
+    /**
+     * Получение комментария по ID
+     *
+     * @param id    ID комментария
+     * @param adKey ID объявления
+     * @return AdsComment
+     */
+    AdsCommentDto getAdsComment(Integer adKey, Integer id);
 
-    boolean deleteComment(Integer adId, Integer commentId, Authentication authentication);
+    /**
+     * Удаление комментария по ID
+     *
+     * @param id             ID комментария
+     * @param adKey          ID объявления
+     * @param authentication Аутентифицированный пользователь
+     * @return Возвращает true если комментарий удалён, иначе false.
+     */
+    boolean deleteAdsComment(Integer adKey, Integer id, Authentication authentication);
 
-    CommentDto updateComment(Integer adId, Integer commentId, CommentDto updateComment, Authentication authentication);
+    /**
+     * Изменение комментария по ID
+     *
+     * @param id               ID комментария
+     * @param adKey            ID объявления
+     * @param updateAdsComment Изменённый комментарий
+     * @param authentication   Аутентифицированный пользователь
+     * @return AdsComment      Изменённый комментарий.
+     */
+    AdsCommentDto updateAdsComment(Integer adKey, Integer id, AdsCommentDto updateAdsComment, Authentication authentication);
 }
