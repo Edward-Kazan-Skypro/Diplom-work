@@ -29,11 +29,11 @@ public class AdsController {
 
     private final AdsService adsService;
 
-    private final ImageService imagesService;
+    private final ImageService imageService;
 
-    public AdsController(AdsService adsService, ImageService imagesService) {
+    public AdsController(AdsService adsService, ImageService imageService) {
         this.adsService = adsService;
-        this.imagesService = imagesService;
+        this.imageService = imageService;
     }
 
     //1a new
@@ -169,7 +169,7 @@ public class AdsController {
     public ResponseEntity<AdsDto> updateImage(@PathVariable("id") Integer id,
                                              @RequestPart("image") MultipartFile image,
                                              Authentication authentication){
-        return ResponseEntity.ok(imagesService.updateImage(image, authentication, id));
+        return ResponseEntity.ok(imageService.updateImage(image, authentication, id));
     }
 }
 
