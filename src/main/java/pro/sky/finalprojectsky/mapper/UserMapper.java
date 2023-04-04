@@ -9,7 +9,6 @@ import pro.sky.finalprojectsky.entity.User;
 
 @Mapper
 public interface UserMapper extends WebMapper<UserDto, User> {
-
     CreateUserDto toCreateUserDto(User entity);
 
     User createUserDtoToEntity(CreateUserDto dto);

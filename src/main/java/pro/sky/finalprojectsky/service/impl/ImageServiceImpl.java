@@ -28,7 +28,7 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
-    Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
+    //Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     @Value("${path.to.images.folder}")
 
@@ -44,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image uploadImage(MultipartFile imageFile, Ads ads) throws IOException {
-        logger.info("Was invoked method for upload image");
+        //logger.info("Was invoked method for upload image");
         Path filePath = Path.of(imagesDir, "ads_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
@@ -67,9 +67,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public AdsDto updateImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException {
-        logger.info("Was invoked method for update image");
+        //logger.info("Was invoked method for update image");
         Ads ads = adsRepository.findById(adsId).orElseThrow(() -> new NotFoundException("Объявление с id " + adsId + " не найдено!"));
-        logger.warn("ad by id {} not found", adsId);
+        //logger.warn("ad by id {} not found", adsId);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
             Image updatedImage = imagesRepository.findByAdsId(adsId);
@@ -93,30 +93,30 @@ public class ImageServiceImpl implements ImageService {
     }
 
     private String getExtensions(String fileName) {
-        logger.info("Was invoked method for get extensions");
+        //logger.info("Was invoked method for get extensions");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Image getImage(Integer id) {
-        logger.info("Was invoked method for get image by id");
+        //logger.info("Was invoked method for get image by id");
         return imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
     }
 
     @Transactional(readOnly = true)
     @Override
     public byte[] getImageBytesArray(Integer id) {
-        logger.info("Was invoked method for get image bates array");
+        //logger.info("Was invoked method for get image bates array");
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
         return images.getImage();
     }
 
     @Override
     public void removeImage(Integer id) throws IOException {
-        logger.info("Was invoked method for delete image by id");
+        //logger.info("Was invoked method for delete image by id");
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
-        logger.warn("image by id {} not found", id);
+        //logger.warn("image by id {} not found", id);
         Path filePath = Path.of(images.getFilePath());
         images.getAds().setImage(null);
         imagesRepository.deleteById(id);

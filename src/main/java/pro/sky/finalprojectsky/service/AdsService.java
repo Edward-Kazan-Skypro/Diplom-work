@@ -12,7 +12,6 @@ import java.util.List;
 
 @Component
 public interface AdsService {
-
     AdsDto createAds(CreateAdsDto createAdsDto, MultipartFile imageFile) throws IOException;
     Ads getAds(Integer id);
     FullAdsDto getFullAdsDto(Integer id);

@@ -19,7 +19,7 @@ import javax.validation.ValidationException;
 @Service
 
 public class AuthServiceImpl implements AuthService {
-    Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
+    //Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final PasswordEncoder passwordEncoder;
 
@@ -29,25 +29,25 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void login(String username, String password) {
-        logger.info("Was invoked method for user authorization");
+        //logger.info("Was invoked method for user authorization");
         UserDetails user = userDetailsService.loadUserByUsername(username);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            logger.warn("the password is incorrect");
+            //logger.warn("the password is incorrect");
             throw new BadCredentialsException("Неверно указан пароль!");
         }
     }
 
     @Override
     public void register(User user) {
-        logger.info("Was invoked method for user registration");
+        //logger.info("Was invoked method for user registration");
         if (userRepository.existsByEmail(user.getEmail())) {
-            logger.warn("user already exists");
+            //logger.warn("user already exists");
             throw new ValidationException(String.format("Пользователь \"%s\" уже зарегистрирован!", user.getEmail()));
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        logger.info("user registered");
+        //logger.info("user registered");
         userRepository.save(user);
     }
 }

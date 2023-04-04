@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 
 public class AdsServiceImpl implements AdsService {
-    Logger logger = LoggerFactory.getLogger(AdsServiceImpl.class);
+    //Logger logger = LoggerFactory.getLogger(AdsServiceImpl.class);
 
     private final AdsRepository adsRepository;
 
@@ -70,22 +70,22 @@ public class AdsServiceImpl implements AdsService {
     @Transactional(readOnly = true)
     @Override
     public FullAdsDto getFullAdsDto(Integer id) {
-        logger.info("Was invoked method for get full ad dto");
+        //logger.info("Was invoked method for get full ad dto");
         return adsMapper.toFullAdsDto(adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!")));
     }
 
     @Override
     public List<AdsDto> getAllAds() {
-        logger.info("Was invoked method for get all ads");
+        //logger.info("Was invoked method for get all ads");
         return adsMapper.toDto(adsRepository.findAll());
     }
 
     @Override
     public boolean removeAds(Integer id, Authentication authentication) throws IOException {
-        logger.info("Was invoked method for delete ad by id");
+        //logger.info("Was invoked method for delete ad by id");
         Ads ads = adsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
-        logger.warn("Ad by id {} not found", id);
+        //logger.warn("Ad by id {} not found", id);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
             List<Integer> adsComments = adsCommentRepository.findAll().stream()
@@ -95,18 +95,18 @@ public class AdsServiceImpl implements AdsService {
             adsCommentRepository.deleteAllById(adsComments);
             imagesService.removeImage(ads.getImage().getId());
             adsRepository.delete(ads);
-            logger.info("ad deleted");
+            //logger.info("ad deleted");
             return true;
         }
-        logger.warn("ad not deleted");
+        //logger.warn("ad not deleted");
         return false;
     }
 
     @Override
     public AdsDto updateAds(Integer id, AdsDto updateAdsDto, Authentication authentication) {
-        logger.info("Was invoked method for update ad by id");
+        //logger.info("Was invoked method for update ad by id");
         Ads updatedAds = adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
-        logger.warn("Ad by id {} not found", id);
+        //logger.warn("Ad by id {} not found", id);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         if (updatedAds.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
             updatedAds.setTitle(updateAdsDto.getTitle());
@@ -115,14 +115,14 @@ public class AdsServiceImpl implements AdsService {
             adsRepository.save(updatedAds);
             return adsMapper.toDto(updatedAds);
         }
-        logger.info("ad updated");
+        //logger.info("ad updated");
         return updateAdsDto;
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<AdsDto> getAdsMe() {
-        logger.info("Was invoked method for get all my ads");
+        //logger.info("Was invoked method for get all my ads");
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
         List<Ads> adsList = adsRepository.findAllByAuthorId(user.getId());

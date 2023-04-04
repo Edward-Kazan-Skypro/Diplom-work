@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface AdsRepository extends JpaRepository<Ads, Integer> {
 
-    List<Ads> findAllByAuthorId(long id);
+    List<Ads> findAllByAuthorId(Integer id);
 
 }

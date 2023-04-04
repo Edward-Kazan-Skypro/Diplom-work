@@ -8,7 +8,6 @@ import pro.sky.finalprojectsky.entity.AdsComment;
 @Mapper
 public interface AdsCommentMapper extends WebMapper<AdsCommentDto, AdsComment> {
 
-
     @Override
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "createdAt", ignore = true)

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 //@RequiredArgsConstructor
 @RestController
 public class CommentController {
-    Logger logger = (Logger) LoggerFactory.getLogger(CommentController.class);
+    //Logger logger = (Logger) LoggerFactory.getLogger(CommentController.class);
     private final AdsService adsService;
     private final CommentService commentsService;
 

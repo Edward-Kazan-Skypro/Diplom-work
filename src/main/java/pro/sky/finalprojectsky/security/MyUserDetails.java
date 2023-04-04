@@ -17,5 +17,4 @@ public class MyUserDetails extends org.springframework.security.core.userdetails
     @Override
     public void eraseCredentials() {
     }
-
 }

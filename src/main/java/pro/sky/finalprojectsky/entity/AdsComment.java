@@ -20,14 +20,10 @@ public class AdsComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @ManyToOne
     private User author;
-
     private LocalDateTime createdAt;
-
     private String text;
-
     @ManyToOne
     private Ads ads;
 }

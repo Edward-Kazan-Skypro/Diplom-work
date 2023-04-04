@@ -11,14 +11,10 @@ import static pro.sky.finalprojectsky.constant.Regexp.EMAIL_REGEXP;
 
 @Data
 public class LoginReqDto {
-
-
     @Email(regexp = EMAIL_REGEXP)
     @Schema(example = "user@user.ru")
     private String username;
-
     @NotBlank
     @Size(min = 8)
     private String password;
-
 }
