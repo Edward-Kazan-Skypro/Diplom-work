@@ -6,11 +6,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class NewPasswordDto {
+public class AdsCommentDto {
+    private int pk;
+    private int author;
+    private String createdAt;
     @NotBlank
     @Size(min = 8)
-    private String currentPassword;
-    @NotBlank
-    @Size(min = 8)
-    private String newPassword;
+    private String text;
 }
