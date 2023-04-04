@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,21 +11,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.finalprojectsky.dto.LoginReqDto;
 import pro.sky.finalprojectsky.dto.RegisterReqDto;
-import pro.sky.finalprojectsky.dto.Role;
 import pro.sky.finalprojectsky.service.AuthService;
-
-import static pro.sky.finalprojectsky.dto.Role.USER;
+import javax.validation.Valid;
+import pro.sky.finalprojectsky.mapper.UserMapper;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 //@RequiredArgsConstructor
 public class AuthController {
-
     private final AuthService authService;
+    private final UserMapper userMapper;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService,
+                          UserMapper userMapper) {
         this.authService = authService;
+        this.userMapper = userMapper;
     }
 
     @PostMapping(value = "/login",
@@ -42,12 +42,9 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    public ResponseEntity<?> login(@RequestBody LoginReqDto loginReqDto) {
-        if (authService.login(loginReqDto.getUserName(), loginReqDto.getPassword())) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+    public ResponseEntity<Void> login(@RequestBody LoginReqDto req) {
+        authService.login(req.getUsername(), req.getPassword());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(value = "/register",
@@ -63,12 +60,8 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    public ResponseEntity<?> register(@RequestBody RegisterReqDto registerReqDto) {
-        Role role = registerReqDto.getRole() == null ? USER : registerReqDto.getRole();
-        if (authService.register(registerReqDto, role)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<Void> register(@Valid @RequestBody RegisterReqDto req) {
+        authService.register(userMapper.toEntity(req));
+        return ResponseEntity.ok().build();
     }
 }

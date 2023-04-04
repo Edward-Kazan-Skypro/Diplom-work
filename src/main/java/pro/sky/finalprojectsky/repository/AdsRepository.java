@@ -1,13 +1,11 @@
 package pro.sky.finalprojectsky.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import pro.sky.finalprojectsky.model.FullAds;
+import pro.sky.finalprojectsky.entity.Ads;
+import java.util.List;
 
-@Repository
-public interface AdsRepository extends JpaRepository<FullAds, Integer> {
-    void deleteById(Integer id);
+public interface AdsRepository extends JpaRepository<Ads, Integer> {
 
-    // Метод для получения всех объявлений пользователя
-    //List<FullAds> findAllByUserId (Integer id);
+    List<Ads> findAllByAuthorId(Integer id);
+
 }

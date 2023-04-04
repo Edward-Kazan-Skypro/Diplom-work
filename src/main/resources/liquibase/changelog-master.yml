@@ -1,3 +1,12 @@
 databaseChangeLog:
-  - include:
-      file: liquibase/scripts/users.sql
+  - changeSet:
+      id: 1
+      author: team_unit
+
+  - changeSet:
+      id: 2
+      author: team_unit
+
+  - changeSet:
+      id: 3
+      author: team_unit
