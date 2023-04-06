@@ -12,6 +12,7 @@ import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.dto.FullAdsDto;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.AdsComment;
+import pro.sky.finalprojectsky.entity.Image;
 import pro.sky.finalprojectsky.entity.User;
 import pro.sky.finalprojectsky.mapper.AdsCommentMapper;
 import pro.sky.finalprojectsky.mapper.AdsMapper;
@@ -43,13 +44,44 @@ public class AdsServiceImpl implements AdsService {
 
     @Override
     public AdsDto createAds(CreateAdsDto createAdsDto, MultipartFile imageFile) throws IOException {
+        //Сохраним картинку в БД
+        Image adsImage = imagesService.saveImage(imageFile);
+        System.out.println("id saved image " + adsImage.getId() + " ******************************");
+
+        Ads ads = new Ads();
+        adsRepository.save(ads);
+        System.out.println("id saved empty ads " + ads.getId() + " ******************************");
+
+        //Получаем юзера
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
+        //Создаем объявление из входящего ДТО
+        //А что в составе ДТО?
+        System.out.println(createAdsDto + "\n" + "-----------------------------------------");
+        //Заполним поля объявления доступными данными
+        ads.setPrice(createAdsDto.getPrice());
+        ads.setTitle(createAdsDto.getTitle());
+        ads.setDescription(createAdsDto.getDescription());
+        adsImage.setAds(ads);
+        ads.setImage(adsImage);
+
+        ads.setAuthor(user);
+        //А что в составе entity?
+        System.out.println(" ------  ads entity " + ads.getId() + " -----------------------------------------");
+        System.out.println(" ------  ads image id " + ads.getImage().getId() + " -----------------------------------------");
+        return adsMapper.toDto(ads);
+        //return adsMapper.toDto(ads);
+        /*//Осталось незаполненным одно поле - id загруженной картинки
+        //Чтобы получить id - надо сохранить картинку в БД
+        //А чтобы сохранить картинку - надо файл с картинкой и объявлением отправить в imagesService
+        imagesService.uploadAdsImage(imageFile, adsRepository.save(ads));
+        //Сохранили, теперь получим id картинки
+        int idImage = imagesService.
 
         Ads ads = adsMapper.toEntity(createAdsDto);
         ads.setAuthor(user);
         ads.setImage(imagesService.uploadAdsImage(imageFile, adsRepository.save(ads)));
-        return adsMapper.toDto(adsRepository.save(ads));
+        */
     }
 
     @Transactional(readOnly = true)

@@ -41,7 +41,13 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException {
-        Path filePath = Path.of(imagesDir, "ads_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
+        int idAdsImage = saveImage(imageFile).getId();
+
+        System.out.println("id saved image " + idAdsImage + " -----------------------");
+        //adsImage.setAds(ads);
+        return null;
+        //return imagesRepository.save(imageFile);
+        /*Path filePath = Path.of(imagesDir, "ads_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
@@ -59,7 +65,30 @@ public class ImageServiceImpl implements ImageService {
         images.setImage(imageFile.getBytes());
         images.setAds(ads);
         images.setUser(null);
-        return imagesRepository.save(images);
+        return imagesRepository.save(images);*/
+    }
+
+    @Override
+    public Image saveImage(MultipartFile imageFile) throws IOException{
+        Path filePath = Path.of(imagesDir, getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+        try (
+                InputStream is = imageFile.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
+        ) {
+            bis.transferTo(bos);
+        }
+        Image image = new Image();
+        image.setFilePath(filePath.toString());
+        image.setFileSize(imageFile.getSize());
+        image.setMediaType(imageFile.getContentType());
+        image.setImage(imageFile.getBytes());
+        image.setAds(null);
+        image.setUser(null);
+        return imagesRepository.save(image);
     }
 
     @Override
