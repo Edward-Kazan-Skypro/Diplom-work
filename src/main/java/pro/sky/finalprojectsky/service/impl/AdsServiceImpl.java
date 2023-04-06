@@ -18,13 +18,14 @@ import pro.sky.finalprojectsky.mapper.AdsMapper;
 import pro.sky.finalprojectsky.repository.AdsCommentRepository;
 import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
+import pro.sky.finalprojectsky.security.SecurityUtils;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.ImageService;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Service
 
@@ -73,7 +74,8 @@ public class AdsServiceImpl implements AdsService {
         Ads ads = adsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+        //if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+        if (SecurityUtils.checkPermissionToAds(ads)) {
             List<Integer> adsComments = adsCommentRepository.findAll().stream()
                     .filter(adsComment -> adsComment.getAds().getId() == ads.getId())
                     .map(AdsComment::getId)
@@ -90,7 +92,13 @@ public class AdsServiceImpl implements AdsService {
     public AdsDto updateAds(Integer id, AdsDto updateAdsDto, Authentication authentication) {
         Ads updatedAds = adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (updatedAds.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+       /* if (updatedAds.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+            updatedAds.setTitle(updateAdsDto.getTitle());
+            updatedAds.setPrice(updateAdsDto.getPrice());
+            adsRepository.save(updatedAds);
+            return adsMapper.toDto(updatedAds);
+        }*/
+        if (SecurityUtils.checkPermissionToAds(updatedAds)){
             updatedAds.setTitle(updateAdsDto.getTitle());
             updatedAds.setPrice(updateAdsDto.getPrice());
             adsRepository.save(updatedAds);

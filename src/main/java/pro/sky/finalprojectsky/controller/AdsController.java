@@ -56,8 +56,9 @@ public class AdsController {
             produces = { "application/json" },
             consumes = { "multipart/form-data" })
     @SneakyThrows
-    @ExceptionHandler
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    //@ExceptionHandler
+    //@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER')")
     @Operation(summary = "addAd",
             description = "Добавить объявление",
             tags={ "Объявления" })
@@ -125,12 +126,12 @@ public class AdsController {
 
     public ResponseEntity<AdsDto> updateAds(@PathVariable("id") Integer id,
                                      Authentication authentication,
-                                     @RequestBody AdsDto updatedAdsDto){
-        AdsDto updateAdsDto = adsService.updateAds(id, updatedAdsDto, authentication);
-        if (updateAdsDto.equals(updatedAdsDto)) {
+                                     @RequestBody AdsDto updateAdsDto){
+        AdsDto updatedAdsDto = adsService.updateAds(id, updateAdsDto, authentication);
+        if (updatedAdsDto.equals(updateAdsDto)) {
             return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(updateAdsDto);
+        return ResponseEntity.ok(updatedAdsDto);
     }
 
 

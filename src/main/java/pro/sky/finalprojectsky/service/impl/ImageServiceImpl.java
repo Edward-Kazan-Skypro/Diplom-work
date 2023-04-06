@@ -23,7 +23,7 @@ import java.util.Objects;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @RequiredArgsConstructor
-@Transactional
+//@Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
 
@@ -108,7 +108,7 @@ public class ImageServiceImpl implements ImageService {
     public void removeAdsImage(Integer id) throws IOException {
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
         Path filePath = Path.of(images.getFilePath());
-        images.getAds().setImage(null);
+        //images.getAds().setImage(null);
         imagesRepository.deleteById(id);
         Files.deleteIfExists(filePath);
     }

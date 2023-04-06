@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 public class CommentDto {
     private int pk;
     private int author;
-    private String createdAt;
+    private long createdAt;
     @NotBlank
     @Size(min = 8)
     private String text;
