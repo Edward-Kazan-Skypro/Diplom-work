@@ -10,6 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Ads {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

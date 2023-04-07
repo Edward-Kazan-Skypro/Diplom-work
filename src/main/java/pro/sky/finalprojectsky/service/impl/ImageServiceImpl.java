@@ -115,7 +115,7 @@ public class ImageServiceImpl implements ImageService {
             ads.setImage(imagesRepository.save(updatedImage));
             adsRepository.save(ads);
         }
-        return adsMapper.toDto(ads);
+        return adsMapper.convertEntityToAdsDto(ads);
     }
 
     private String getExtensions(String fileName) {

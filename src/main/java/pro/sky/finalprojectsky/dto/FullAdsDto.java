@@ -1,7 +1,9 @@
 package pro.sky.finalprojectsky.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 public class FullAdsDto {
     private String authorFirstName;
