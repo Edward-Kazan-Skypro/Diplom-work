@@ -15,6 +15,8 @@ import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.CommentRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import pro.sky.finalprojectsky.security.SecurityUtils;
@@ -41,7 +43,11 @@ public class CommentServiceImpl implements CommentService {
         AdsComment adsComment = commentMapper.toEntity(commentDto);
         adsComment.setAuthor(user);
         adsComment.setAds(adsRepository.findById(adId).orElseThrow());
-        adsComment.setCreatedAt(LocalDateTime.now());
+        //adsComment.setCreatedAt(LocalDateTime.now());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+        long date = zdt.toInstant().toEpochMilli();
+        adsComment.setCreatedAt(date);
         commentRepository.save(adsComment);
         return commentMapper.toDto(adsComment);
     }
