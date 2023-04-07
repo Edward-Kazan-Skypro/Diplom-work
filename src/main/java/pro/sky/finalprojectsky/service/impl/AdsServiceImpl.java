@@ -1,6 +1,7 @@
 package pro.sky.finalprojectsky.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.AddDefaultCharsetFilter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.webjars.NotFoundException;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.dto.FullAdsDto;
+import pro.sky.finalprojectsky.dto.ResponseWrapper;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.AdsComment;
 import pro.sky.finalprojectsky.entity.Image;
@@ -23,6 +25,7 @@ import pro.sky.finalprojectsky.security.SecurityUtils;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.ImageService;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,42 +49,31 @@ public class AdsServiceImpl implements AdsService {
     public AdsDto createAds(CreateAdsDto createAdsDto, MultipartFile imageFile) throws IOException {
         //Сохраним картинку в БД
         Image adsImage = imagesService.saveImage(imageFile);
-        System.out.println("id saved image " + adsImage.getId() + " ******************************");
-
         Ads ads = new Ads();
         adsRepository.save(ads);
-        System.out.println("id saved empty ads " + ads.getId() + " ******************************");
-
         //Получаем юзера
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
-        //Создаем объявление из входящего ДТО
-        //А что в составе ДТО?
-        System.out.println(createAdsDto + "\n" + "-----------------------------------------");
         //Заполним поля объявления доступными данными
         ads.setPrice(createAdsDto.getPrice());
         ads.setTitle(createAdsDto.getTitle());
         ads.setDescription(createAdsDto.getDescription());
         adsImage.setAds(ads);
         ads.setImage(adsImage);
-
         ads.setAuthor(user);
-        //А что в составе entity?
+        adsRepository.save(ads);
         System.out.println(" ------  ads entity " + ads.getId() + " -----------------------------------------");
         System.out.println(" ------  ads image id " + ads.getImage().getId() + " -----------------------------------------");
-        return adsMapper.toDto(ads);
+        AdsDto adsDto = new AdsDto();
+        adsDto.setPk(ads.getId());
+        adsDto.setPrice(ads.getPrice());
+        adsDto.setDescription(ads.getDescription());
+        adsDto.setTitle(ads.getTitle());
+        adsDto.setAuthor(user.getId());
+        adsDto.setImage(adsImage.getFilePath());
+        System.out.println(" ------  adsDto.getImage() " + adsDto.getImage() + " ----------------------------");
+        return adsDto;
         //return adsMapper.toDto(ads);
-        /*//Осталось незаполненным одно поле - id загруженной картинки
-        //Чтобы получить id - надо сохранить картинку в БД
-        //А чтобы сохранить картинку - надо файл с картинкой и объявлением отправить в imagesService
-        imagesService.uploadAdsImage(imageFile, adsRepository.save(ads));
-        //Сохранили, теперь получим id картинки
-        int idImage = imagesService.
-
-        Ads ads = adsMapper.toEntity(createAdsDto);
-        ads.setAuthor(user);
-        ads.setImage(imagesService.uploadAdsImage(imageFile, adsRepository.save(ads)));
-        */
     }
 
     @Transactional(readOnly = true)
@@ -145,6 +137,19 @@ public class AdsServiceImpl implements AdsService {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
         List<Ads> adsList = adsRepository.findAllByAuthorId(user.getId());
-        return adsMapper.toDto(adsList);
+        List<AdsDto> adsDtoList = new ArrayList<>();
+        for (Ads ads: adsList) {
+            AdsDto adsDto = new AdsDto();
+            adsDto.setPk(ads.getId());
+            adsDto.setPrice(ads.getPrice());
+            adsDto.setDescription(ads.getDescription());
+            adsDto.setTitle(adsDto.getTitle());
+            adsDto.setAuthor(user.getId());
+            adsDto.setImage(ads.getImage().getFilePath());
+            adsDtoList.add(adsDto);
+        }
+        System.out.println(adsDtoList);
+        return adsDtoList;
+        //return adsMapper.toDto(adsList);
     }
 }
