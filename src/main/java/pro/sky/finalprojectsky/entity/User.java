@@ -3,6 +3,7 @@ package pro.sky.finalprojectsky.entity;
 import lombok.*;
 import pro.sky.finalprojectsky.dto.Role;
 import javax.persistence.*;
+import java.util.Collection;
 
 
 /**
@@ -28,4 +29,6 @@ public class User {
     private Role role;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Image image;
+    @OneToMany(mappedBy = "author")
+    private Collection<Ads> ads;
 }

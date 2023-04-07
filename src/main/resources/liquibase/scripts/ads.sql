@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS ads
     author_id   integer REFERENCES users (id),
     price       int  NOT NULL,
     title       varchar,
+    description varchar,
     image_id    integer REFERENCES images (id)
 );

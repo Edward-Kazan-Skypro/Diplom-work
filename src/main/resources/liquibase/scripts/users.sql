@@ -11,5 +11,4 @@ CREATE TABLE IF NOT EXISTS users
     last_name  varchar NOT NULL,
     phone      varchar NOT NULL,
     role       varchar NOT NULL
-
 );

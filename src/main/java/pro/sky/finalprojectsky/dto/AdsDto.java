@@ -6,7 +6,9 @@ import javax.validation.constraints.Size;
 
 @Data
 public class AdsDto {
+    //ads id
     private int pk;
+    //user id
     private int author;
     private String image;
     private int price;

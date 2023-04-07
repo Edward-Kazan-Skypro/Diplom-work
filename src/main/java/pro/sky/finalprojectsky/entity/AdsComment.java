@@ -21,7 +21,7 @@ public class AdsComment {
     private Integer id;
     @ManyToOne
     private User author;
-    private LocalDateTime createdAt;
+    private long createdAt;
     private String text;
     @ManyToOne
     private Ads ads;

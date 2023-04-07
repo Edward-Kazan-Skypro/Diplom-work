@@ -56,9 +56,7 @@ public class AdsController {
             produces = { "application/json" },
             consumes = { "multipart/form-data" })
     @SneakyThrows
-    //@ExceptionHandler
-    //@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @Operation(summary = "addAd",
             description = "Добавить объявление",
             tags={ "Объявления" })

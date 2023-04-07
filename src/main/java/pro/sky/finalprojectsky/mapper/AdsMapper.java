@@ -2,10 +2,13 @@ package pro.sky.finalprojectsky.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.dto.FullAdsDto;
 import pro.sky.finalprojectsky.entity.Ads;
+import pro.sky.finalprojectsky.entity.Image;
+import pro.sky.finalprojectsky.entity.User;
 
 @Mapper
 public interface AdsMapper extends WebMapper<AdsDto, Ads> {
@@ -23,8 +26,23 @@ public interface AdsMapper extends WebMapper<AdsDto, Ads> {
 
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "image", ignore = true)
-    @Mapping(source = "pk", target = "id")
+    @Mapping(target = "id", ignore = true)
     Ads toEntity(CreateAdsDto dto);
+
+    /*@Named(value = "getUserId")
+    default Integer getUserId (User user){
+        return user.getId();
+    }
+
+    @Named(value = "getImageId")
+    default Integer getImageId (Image image){
+        return image.getId();
+    }
+
+    @Named(value = "getAdsId")
+    default Integer getAdsId (Ads ads){
+        return ads.getId();
+    }*/
 
     @Mapping(target = "authorFirstName", source = "author.firstName")
     @Mapping(target = "authorLastName", source = "author.lastName")
