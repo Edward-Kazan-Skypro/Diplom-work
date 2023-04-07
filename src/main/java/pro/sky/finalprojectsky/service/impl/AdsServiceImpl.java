@@ -1,7 +1,6 @@
 package pro.sky.finalprojectsky.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.AddDefaultCharsetFilter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,12 +10,10 @@ import org.webjars.NotFoundException;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.dto.FullAdsDto;
-import pro.sky.finalprojectsky.dto.ResponseWrapper;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.AdsComment;
 import pro.sky.finalprojectsky.entity.Image;
 import pro.sky.finalprojectsky.entity.User;
-import pro.sky.finalprojectsky.mapper.AdsCommentMapper;
 import pro.sky.finalprojectsky.mapper.AdsMapper;
 import pro.sky.finalprojectsky.repository.AdsCommentRepository;
 import pro.sky.finalprojectsky.repository.AdsRepository;
@@ -29,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Transactional
+
 @RequiredArgsConstructor
 @Service
 
@@ -49,31 +46,13 @@ public class AdsServiceImpl implements AdsService {
     public AdsDto createAds(CreateAdsDto createAdsDto, MultipartFile imageFile) throws IOException {
         //Сохраним картинку в БД
         Image adsImage = imagesService.saveImage(imageFile);
-        Ads ads = new Ads();
-        adsRepository.save(ads);
         //Получаем юзера
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
-        //Заполним поля объявления доступными данными
-        ads.setPrice(createAdsDto.getPrice());
-        ads.setTitle(createAdsDto.getTitle());
-        ads.setDescription(createAdsDto.getDescription());
-        adsImage.setAds(ads);
-        ads.setImage(adsImage);
-        ads.setAuthor(user);
+        Ads ads = adsMapper.convertCreateAdsDtoToEntity(createAdsDto, user, adsImage);
         adsRepository.save(ads);
-        System.out.println(" ------  ads entity " + ads.getId() + " -----------------------------------------");
-        System.out.println(" ------  ads image id " + ads.getImage().getId() + " -----------------------------------------");
-        AdsDto adsDto = new AdsDto();
-        adsDto.setPk(ads.getId());
-        adsDto.setPrice(ads.getPrice());
-        adsDto.setDescription(ads.getDescription());
-        adsDto.setTitle(ads.getTitle());
-        adsDto.setAuthor(user.getId());
-        adsDto.setImage(adsImage.getFilePath());
-        System.out.println(" ------  adsDto.getImage() " + adsDto.getImage() + " ----------------------------");
-        return adsDto;
-        //return adsMapper.toDto(ads);
+        return adsMapper.convertEntityToAdsDto(ads);
+
     }
 
     @Transactional(readOnly = true)
@@ -85,12 +64,17 @@ public class AdsServiceImpl implements AdsService {
     @Transactional(readOnly = true)
     @Override
     public FullAdsDto getFullAdsDto(Integer id) {
-        return adsMapper.toFullAdsDto(adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!")));
+        return adsMapper.convertEntityToFullAdsDto(adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!")));
     }
 
     @Override
     public List<AdsDto> getAllAds() {
-        return adsMapper.toDto(adsRepository.findAll());
+        ArrayList<Ads> adsArrayList = new ArrayList<>(adsRepository.findAll());
+        ArrayList<AdsDto> adsDtoArrayList = new ArrayList<>();
+        for (Ads ads: adsArrayList){
+            adsDtoArrayList.add(adsMapper.convertEntityToAdsDto(ads));
+        }
+        return adsDtoArrayList;
     }
 
     @Override
@@ -116,17 +100,11 @@ public class AdsServiceImpl implements AdsService {
     public AdsDto updateAds(Integer id, AdsDto updateAdsDto, Authentication authentication) {
         Ads updatedAds = adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-       /* if (updatedAds.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
-            updatedAds.setTitle(updateAdsDto.getTitle());
-            updatedAds.setPrice(updateAdsDto.getPrice());
-            adsRepository.save(updatedAds);
-            return adsMapper.toDto(updatedAds);
-        }*/
         if (SecurityUtils.checkPermissionToAds(updatedAds)){
             updatedAds.setTitle(updateAdsDto.getTitle());
             updatedAds.setPrice(updateAdsDto.getPrice());
             adsRepository.save(updatedAds);
-            return adsMapper.toDto(updatedAds);
+            return adsMapper.convertEntityToAdsDto(updatedAds);
         }
         return updateAdsDto;
     }
@@ -139,17 +117,8 @@ public class AdsServiceImpl implements AdsService {
         List<Ads> adsList = adsRepository.findAllByAuthorId(user.getId());
         List<AdsDto> adsDtoList = new ArrayList<>();
         for (Ads ads: adsList) {
-            AdsDto adsDto = new AdsDto();
-            adsDto.setPk(ads.getId());
-            adsDto.setPrice(ads.getPrice());
-            adsDto.setDescription(ads.getDescription());
-            adsDto.setTitle(adsDto.getTitle());
-            adsDto.setAuthor(user.getId());
-            adsDto.setImage(ads.getImage().getFilePath());
-            adsDtoList.add(adsDto);
+            adsDtoList.add(adsMapper.convertEntityToAdsDto(ads));
         }
-        System.out.println(adsDtoList);
         return adsDtoList;
-        //return adsMapper.toDto(adsList);
     }
 }
