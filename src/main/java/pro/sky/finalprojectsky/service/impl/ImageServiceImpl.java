@@ -70,7 +70,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image saveImage(MultipartFile imageFile) throws IOException{
-        Path filePath = Path.of(imagesDir, getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
+        String fileName = imageFile.getOriginalFilename();
+        Path filePath = Path.of(imagesDir, fileName);
+        //Path filePath = Path.of(imagesDir, getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
