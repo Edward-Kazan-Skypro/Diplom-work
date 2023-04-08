@@ -6,19 +6,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
-import pro.sky.finalprojectsky.dto.CommentDto;
-import pro.sky.finalprojectsky.dto.ResponseWrapper;
+import pro.sky.finalprojectsky.dto.AdsCommentDto;
 import pro.sky.finalprojectsky.entity.AdsComment;
-import pro.sky.finalprojectsky.mapper.CommentMapper;
+import pro.sky.finalprojectsky.mapper.AdsCommentMapper;
 import pro.sky.finalprojectsky.entity.User;
+import pro.sky.finalprojectsky.repository.AdsCommentRepository;
 import pro.sky.finalprojectsky.repository.AdsRepository;
-import pro.sky.finalprojectsky.repository.CommentRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
-
 import pro.sky.finalprojectsky.security.SecurityUtils;
 import pro.sky.finalprojectsky.service.CommentService;
 
@@ -29,18 +27,18 @@ public class CommentServiceImpl implements CommentService {
 
     private final AdsRepository adsRepository;
 
-    private final CommentRepository commentRepository;
-
     private final UserRepository userRepository;
 
-    private final CommentMapper commentMapper;
+    private final AdsCommentRepository adsCommentRepository;
+
+    private final AdsCommentMapper adsCommentMapper;
 
 
     @Override
-    public CommentDto addComment(Integer adId, CommentDto commentDto) {
+    public AdsCommentDto addComment(Integer adId, AdsCommentDto adsCommentDto) {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
-        AdsComment adsComment = commentMapper.toEntity(commentDto);
+        AdsComment adsComment = adsCommentMapper.toEntity(adsCommentDto);
         adsComment.setAuthor(user);
         adsComment.setAds(adsRepository.findById(adId).orElseThrow());
         //adsComment.setCreatedAt(LocalDateTime.now());
@@ -48,33 +46,32 @@ public class CommentServiceImpl implements CommentService {
         ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         long date = zdt.toInstant().toEpochMilli();
         adsComment.setCreatedAt(date);
-        commentRepository.save(adsComment);
-        return commentMapper.toDto(adsComment);
+        adsCommentRepository.save(adsComment);
+        return adsCommentMapper.toDto(adsComment);
     }
 
 
     @Transactional(readOnly = true)
     @Override
-    public List<CommentDto> getComments(Integer adId) {
-        List<AdsComment> commentList = commentRepository.findAllByAdsId(adId);
-        return commentMapper.toDto(commentList);
-        //return (List<CommentDto>) commentMapper.toDto((AdsComment) commentList);
+    public List<AdsCommentDto> getComments(Integer adId) {
+        List<AdsComment> commentList = adsCommentRepository.findAllByAdsId(adId);
+        return adsCommentMapper.toDto(commentList);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CommentDto getComment(Integer adId, Integer commentId) {
-        AdsComment adsComment = commentRepository.findById(commentId)
+    public AdsCommentDto getComment(Integer adId, Integer commentId) {
+        AdsComment adsComment = adsCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + commentId + " не найден!"));
         if (adsComment.getAds().getId() != adId) {
             throw new NotFoundException("Комментарий с id " + commentId + " не принадлежит объявлению с id " + adId);
         }
-        return commentMapper.toDto(adsComment);
+        return adsCommentMapper.toDto(adsComment);
     }
 
     @Override
     public boolean deleteComment(Integer adId, Integer commentId, Authentication authentication) {
-        AdsComment adsComment = commentRepository.findById(commentId)
+        AdsComment adsComment = adsCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + commentId + " не найден!"));
         //User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         //if (adsComment.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
@@ -82,16 +79,16 @@ public class CommentServiceImpl implements CommentService {
             if (adsComment.getAds().getId() != adId) {
                 throw new NotFoundException("Комментарий с id " + commentId + " не принадлежит объявлению с id " + adId);
             }
-            commentRepository.delete(adsComment);
+            adsCommentRepository.delete(adsComment);
             return true;
         }
         return false;
     }
 
     @Override
-    public CommentDto updateComment(Integer adId, Integer commentId, CommentDto updateComment, Authentication authentication) {
+    public AdsCommentDto updateComment(Integer adId, Integer commentId, AdsCommentDto updateComment, Authentication authentication) {
 
-        AdsComment updatedComment = commentRepository.findById(commentId)
+        AdsComment updatedComment = adsCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + commentId + " не найден!"));
         //User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         //if (updatedComment.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
@@ -100,8 +97,8 @@ public class CommentServiceImpl implements CommentService {
                 throw new NotFoundException("Комментарий с id " + commentId + " не принадлежит объявлению с id " + adId);
             }
             updatedComment.setText(updateComment.getText());
-            commentRepository.save(updatedComment);
-            return commentMapper.toDto(updatedComment);
+            adsCommentRepository.save(updatedComment);
+            return adsCommentMapper.toDto(updatedComment);
         }
         return updateComment;
     }

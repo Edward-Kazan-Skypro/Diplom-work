@@ -46,26 +46,6 @@ public class ImageServiceImpl implements ImageService {
         System.out.println("id saved image " + idAdsImage + " -----------------------");
         //adsImage.setAds(ads);
         return null;
-        //return imagesRepository.save(imageFile);
-        /*Path filePath = Path.of(imagesDir, "ads_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
-        try (
-                InputStream is = imageFile.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
-        ) {
-            bis.transferTo(bos);
-        }
-        Image images = new Image();
-        images.setFilePath(filePath.toString());
-        images.setFileSize(imageFile.getSize());
-        images.setMediaType(imageFile.getContentType());
-        images.setImage(imageFile.getBytes());
-        images.setAds(ads);
-        images.setUser(null);
-        return imagesRepository.save(images);*/
     }
 
     @Override
