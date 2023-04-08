@@ -1,10 +1,10 @@
 -- liquibase formatted sql
 
--- changeset team_unit:3
+-- changeset team_unit:4
 
 CREATE TABLE IF NOT EXISTS users
 (
-    id         BIGSERIAL PRIMARY KEY,
+    id         SERIAL PRIMARY KEY,
     email      varchar NOT NULL,
     password   varchar NOT NULL,
     first_name varchar NOT NULL,

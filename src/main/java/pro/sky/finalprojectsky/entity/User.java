@@ -27,7 +27,7 @@ public class User {
     private String phone;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private Image image;
     @OneToMany(mappedBy = "author")
     private Collection<Ads> ads;
