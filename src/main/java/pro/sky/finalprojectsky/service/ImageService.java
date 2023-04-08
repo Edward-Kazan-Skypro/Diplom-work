@@ -11,6 +11,8 @@ import java.io.IOException;
 
 @Component
 public interface ImageService {
+
+    Image saveImage(MultipartFile imageFile) throws IOException;
     Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException;
 
     AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException;

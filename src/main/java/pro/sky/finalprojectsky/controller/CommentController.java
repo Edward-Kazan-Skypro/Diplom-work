@@ -16,7 +16,6 @@ import pro.sky.finalprojectsky.service.CommentService;
 import javax.servlet.http.HttpServletResponse;
 
 
-
 @CrossOrigin(value = "http://localhost:3000")
 //@RequiredArgsConstructor
 @RestController

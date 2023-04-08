@@ -1,12 +1,12 @@
 -- liquibase formatted sql
 
--- changeset team_unit:1
+-- changeset team_unit:2
 
 CREATE TABLE IF NOT EXISTS ads_comment
 (
-    id         BIGSERIAL PRIMARY KEY,
+    id         SERIAL PRIMARY KEY,
     author_id  integer REFERENCES users (id),
-    created_at timestamp,
+    created_at bigint,
     text       text,
     ads_id     integer REFERENCES ads (id)
 );

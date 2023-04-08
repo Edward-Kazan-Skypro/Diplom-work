@@ -19,7 +19,7 @@ import javax.validation.ValidationException;
 import java.util.List;
 import static pro.sky.finalprojectsky.dto.Role.USER;
 
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
