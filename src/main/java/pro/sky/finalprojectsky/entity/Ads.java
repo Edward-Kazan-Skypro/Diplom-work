@@ -20,6 +20,6 @@ public class Ads {
     private int price;
     private String title;
     private String description;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "ads")
     private Image image;
 }

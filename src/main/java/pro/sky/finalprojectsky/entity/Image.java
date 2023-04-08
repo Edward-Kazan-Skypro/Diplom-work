@@ -26,8 +26,10 @@ public class Image {
     private String mediaType;
     private String filePath;
     @OneToOne
+    @JoinColumn(name = "ads_id")
     private Ads ads;
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public String toString() {

@@ -1,12 +1,18 @@
 databaseChangeLog:
-  - changeSet:
-      id: 1
-      author: team_unit
+  - include:
+      file: liquibase/scripts/users.sql
 
-  - changeSet:
-      id: 2
-      author: team_unit
 
-  - changeSet:
-      id: 3
-      author: team_unit
+  - include:
+      file: liquibase/scripts/ads.sql
+
+  - include:
+      file: liquibase/scripts/images.sql
+
+
+  - include:
+      file: liquibase/scripts/ads_comment.sql
+
+
+
+
