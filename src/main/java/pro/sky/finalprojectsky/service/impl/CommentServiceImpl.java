@@ -20,7 +20,7 @@ import java.util.List;
 import pro.sky.finalprojectsky.security.SecurityUtils;
 import pro.sky.finalprojectsky.service.CommentService;
 
-@Transactional
+
 @RequiredArgsConstructor
 @Service
 public class CommentServiceImpl implements CommentService {

@@ -22,4 +22,5 @@ public class Ads {
     private String description;
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "ads")
     private Image image;
+
 }

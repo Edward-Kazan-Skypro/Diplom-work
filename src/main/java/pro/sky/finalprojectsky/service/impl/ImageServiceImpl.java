@@ -8,13 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 import pro.sky.finalprojectsky.dto.AdsDto;
+import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
 import pro.sky.finalprojectsky.entity.User;
 import pro.sky.finalprojectsky.mapper.AdsMapper;
+import pro.sky.finalprojectsky.mapper.UserMapper;
 import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.ImageRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
+import pro.sky.finalprojectsky.security.SecurityUtils;
 import pro.sky.finalprojectsky.service.ImageService;
 import java.io.*;
 import java.nio.file.Files;
@@ -23,7 +26,6 @@ import java.util.Objects;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @RequiredArgsConstructor
-//@Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
 
@@ -39,20 +41,20 @@ public class ImageServiceImpl implements ImageService {
 
     private final AdsMapper adsMapper;
 
+    private final UserMapper userMapper;
+
     @Override
     public Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException {
-        int idAdsImage = saveImage(imageFile).getId();
-
-        System.out.println("id saved image " + idAdsImage + " -----------------------");
-        //adsImage.setAds(ads);
-        return null;
+        Image image = this.saveImage(imageFile);
+        ads.setImage(image);
+        adsRepository.save(ads);
+        return image;
     }
 
     @Override
     public Image saveImage(MultipartFile imageFile) throws IOException{
         String fileName = imageFile.getOriginalFilename();
         Path filePath = Path.of(imagesDir, fileName);
-        //Path filePath = Path.of(imagesDir, getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
@@ -76,23 +78,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException {
         Ads ads = adsRepository.findById(adsId).orElseThrow(() -> new NotFoundException("Объявление с id " + adsId + " не найдено!"));
-        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
-            Image updatedImage = imagesRepository.findByAdsId(adsId);
-            Path filePath = Path.of(updatedImage.getFilePath());
-            Files.deleteIfExists(filePath);
-            try (
-                    InputStream is = imageFile.getInputStream();
-                    OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                    BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                    BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
-            ) {
-                bis.transferTo(bos);
-            }
-            updatedImage.setFileSize(imageFile.getSize());
-            updatedImage.setMediaType(imageFile.getContentType());
-            updatedImage.setImage(imageFile.getBytes());
-            ads.setImage(imagesRepository.save(updatedImage));
+        if (SecurityUtils.checkPermissionToAds(ads)) {
+            Image updatedImage = this.saveImage(imageFile);
+            updatedImage.setAds(ads);
+            ads.setImage(updatedImage);
             adsRepository.save(ads);
         }
         return adsMapper.convertEntityToAdsDto(ads);
@@ -119,57 +108,24 @@ public class ImageServiceImpl implements ImageService {
     public void removeAdsImage(Integer id) throws IOException {
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
         Path filePath = Path.of(images.getFilePath());
-        //images.getAds().setImage(null);
         imagesRepository.deleteById(id);
         Files.deleteIfExists(filePath);
     }
 
     @Override
-    public  boolean uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException {
+    public  Image uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException {
+        Image image = this.saveImage(imageFile);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new NotFoundException("Пользователь с именем " + authentication.getName() + " не найден!"));
-        Path filePath = Path.of(imagesDir, "ads_" + user.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
-        try (
-                InputStream is = imageFile.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
-        ) {
-            bis.transferTo(bos);
-        }
-        Image images = new Image();
-        images.setFilePath(filePath.toString());
-        images.setFileSize(imageFile.getSize());
-        images.setMediaType(imageFile.getContentType());
-        images.setImage(imageFile.getBytes());
-        images.setAds(null);
-        images.setUser(user);
-        imagesRepository.save(images);
-        return true;
+        user.setImage(image);
+        userRepository.save(user);
+        return image;
     }
     @Override
-    public  boolean updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException{
+    public UserDto updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException{
+        Image image = this.saveImage(imageFile);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new NotFoundException("Пользователь с именем " + authentication.getName() + " не найден!"));
-        if (user.getRole().getAuthority().equals("USER")) {
-            Image updatedImage = imagesRepository.findByAdsId(user.getId());
-            Path filePath = Path.of(updatedImage.getFilePath());
-            Files.deleteIfExists(filePath);
-            try (
-                    InputStream is = imageFile.getInputStream();
-                    OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                    BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                    BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
-            ) {
-                bis.transferTo(bos);
-            }
-            updatedImage.setFileSize(imageFile.getSize());
-            updatedImage.setMediaType(imageFile.getContentType());
-            updatedImage.setImage(imageFile.getBytes());
-            user.setImage(imagesRepository.save(updatedImage));
-            userRepository.save(user);
-            return true;
-        }
-        return false;
+        user.setImage(image);
+        userRepository.save(user);
+        return userMapper.convertEntityToUserDto(user);
     }
 }

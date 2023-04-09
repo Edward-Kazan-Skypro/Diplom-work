@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-
 public class AdsServiceImpl implements AdsService {
 
     private final AdsRepository adsRepository;
