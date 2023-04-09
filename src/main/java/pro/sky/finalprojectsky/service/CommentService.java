@@ -3,7 +3,7 @@ package pro.sky.finalprojectsky.service;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import pro.sky.finalprojectsky.dto.AdsCommentDto;
-import pro.sky.finalprojectsky.dto.CommentDto;
+
 import java.util.List;
 
 @Component

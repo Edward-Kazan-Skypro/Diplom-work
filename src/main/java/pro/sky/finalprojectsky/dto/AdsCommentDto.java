@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 public class AdsCommentDto {
     private int id;
     private int author;
-    private String createdAt;
+    private long createdAt;
     @NotBlank
     @Size(min = 8)
     private String text;
