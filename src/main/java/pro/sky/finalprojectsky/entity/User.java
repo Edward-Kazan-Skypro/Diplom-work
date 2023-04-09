@@ -5,10 +5,6 @@ import pro.sky.finalprojectsky.dto.Role;
 import javax.persistence.*;
 import java.util.Collection;
 
-
-/**
- * Class of User (user/пользователь).
- */
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -16,6 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

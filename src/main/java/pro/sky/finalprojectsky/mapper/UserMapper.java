@@ -2,21 +2,32 @@ package pro.sky.finalprojectsky.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import pro.sky.finalprojectsky.dto.CreateUserDto;
 import pro.sky.finalprojectsky.dto.RegisterReqDto;
 import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.User;
 
 @Mapper
-public interface UserMapper extends WebMapper<UserDto, User> {
-    CreateUserDto toCreateUserDto(User entity);
+public interface UserMapper {
+    default User convertRegisterReqDtoToEntity(RegisterReqDto dto) {
+        return User
+                .builder()
+                .email(dto.getUsername())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .password(dto.getPassword())
+                .phone(dto.getPhone())
+                .build();
+    }
 
-    User createUserDtoToEntity(CreateUserDto dto);
-
-    @Mapping(source = "email", target = "username")
-    RegisterReqDto toDtoRegReq(User entity);
-
-    @Mapping(target = "role", defaultValue = "USER")
-    @Mapping(source = "username", target = "email")
-    User toEntity(RegisterReqDto dto);
+    default UserDto convertEntityToUserDto(User user) {
+        return UserDto
+                .builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .phone(user.getPhone())
+                .email(user.getEmail())
+                .image(user.getImage().getFilePath())
+                .build();
+    }
 }

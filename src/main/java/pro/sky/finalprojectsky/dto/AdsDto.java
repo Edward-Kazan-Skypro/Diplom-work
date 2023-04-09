@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Builder
 public class AdsDto {
     //ads id
-    private int pk;
+    private int id;
     //user id
     private int author;
     private String image;
@@ -26,8 +26,8 @@ public class AdsDto {
     public AdsDto() {
     }
 
-    public AdsDto(int pk, int author, String image, int price, String title, String description) {
-        this.pk = pk;
+    public AdsDto(int id, int author, String image, int price, String title, String description) {
+        this.id = id;
         this.author = author;
         this.image = image;
         this.price = price;

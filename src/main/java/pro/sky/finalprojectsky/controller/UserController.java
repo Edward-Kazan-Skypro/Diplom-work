@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.NewPasswordDto;
 import pro.sky.finalprojectsky.dto.UserDto;
+import pro.sky.finalprojectsky.entity.Image;
 import pro.sky.finalprojectsky.service.ImageService;
 import pro.sky.finalprojectsky.service.UserService;
 
@@ -108,12 +109,8 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "OK"),
 
             @ApiResponse(responseCode = "404", description = "Not Found")})
-    public ResponseEntity<String> updateUserImage(@RequestPart("image") MultipartFile image,
-                                         Authentication authentication) {
-        if (imageService.updateUserImage(image, authentication)){
-            return ResponseEntity.ok().body("Аватарка пользователя обновлена");
-        } else {
-            return ResponseEntity.ok().body("Аватарка пользователя НЕ обновлена");
-        }
+    public ResponseEntity<UserDto> updateUserImage(@RequestPart("image") MultipartFile image,
+                                                 Authentication authentication) {
+        return ResponseEntity.ok(imageService.updateUserImage(image, authentication));
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.AdsDto;
+import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
 import java.io.IOException;
@@ -23,8 +24,8 @@ public interface ImageService {
 
     void removeAdsImage(Integer id) throws IOException;
 
-    boolean uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
+    Image uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
 
-    boolean updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
+    UserDto updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
 
 }

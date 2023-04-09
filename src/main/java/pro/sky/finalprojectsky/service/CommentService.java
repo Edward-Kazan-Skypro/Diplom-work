@@ -2,19 +2,20 @@ package pro.sky.finalprojectsky.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import pro.sky.finalprojectsky.dto.AdsCommentDto;
 import pro.sky.finalprojectsky.dto.CommentDto;
 import java.util.List;
 
 @Component
 public interface CommentService {
 
-    CommentDto addComment(Integer adId, CommentDto commentDto);
+    AdsCommentDto addComment(Integer adId, AdsCommentDto adsCommentDto);
 
-    List<CommentDto> getComments(Integer adId);
+    List<AdsCommentDto> getComments(Integer adId);
 
-    CommentDto getComment(Integer adId, Integer commentId);
+    AdsCommentDto getComment(Integer adId, Integer commentId);
 
     boolean deleteComment(Integer adId, Integer commentId, Authentication authentication);
 
-    CommentDto updateComment(Integer adId, Integer commentId, CommentDto updateComment, Authentication authentication);
+    AdsCommentDto updateComment(Integer adId, Integer commentId, AdsCommentDto updateComment, Authentication authentication);
 }

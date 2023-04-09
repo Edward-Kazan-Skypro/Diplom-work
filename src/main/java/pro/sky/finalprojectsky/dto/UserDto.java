@@ -1,6 +1,7 @@
 package pro.sky.finalprojectsky.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import static pro.sky.finalprojectsky.constant.Regexp.EMAIL_REGEXP;
 import static pro.sky.finalprojectsky.constant.Regexp.PHONE_REGEXP;
 
 @Data
+@Builder
 public class UserDto {
     private Integer id;
     @Email(regexp = EMAIL_REGEXP)
@@ -23,4 +25,6 @@ public class UserDto {
     private String lastName;
     @Pattern(regexp = PHONE_REGEXP)
     private String phone;
+
+    private String image;
 }

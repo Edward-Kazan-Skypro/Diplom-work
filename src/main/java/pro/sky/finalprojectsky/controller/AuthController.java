@@ -61,7 +61,7 @@ public class AuthController {
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterReqDto req) {
-        authService.register(userMapper.toEntity(req));
+        authService.register(userMapper.convertRegisterReqDtoToEntity(req));
         return ResponseEntity.ok().build();
     }
 }

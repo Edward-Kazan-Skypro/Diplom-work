@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pro.sky.finalprojectsky.dto.AdsCommentDto;
 import pro.sky.finalprojectsky.dto.CommentDto;
 import pro.sky.finalprojectsky.dto.ResponseWrapper;
 import pro.sky.finalprojectsky.service.AdsService;
@@ -36,7 +37,7 @@ public class CommentController {
             @ApiResponse(responseCode = "200", description = "OK"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    public ResponseWrapper<CommentDto> getComments(@PathVariable("adsId") Integer adsId) {
+    public ResponseWrapper<AdsCommentDto> getComments(@PathVariable("adsId") Integer adsId) {
         return ResponseWrapper.of(commentsService.getComments(adsId));
     }
 
@@ -56,9 +57,9 @@ public class CommentController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    public CommentDto addComment(@PathVariable("adsId") Integer adsId,
-                                      @RequestBody CommentDto commentDto) {
-        return commentsService.addComment(adsId, commentDto);
+    public AdsCommentDto addComment(@PathVariable("adsId") Integer adsId,
+                                 @RequestBody AdsCommentDto adsCommentDto) {
+        return commentsService.addComment(adsId, adsCommentDto);
     }
 
     @DeleteMapping(value = "/ads/{adId}/comments/{commentId}")
@@ -98,15 +99,15 @@ public class CommentController {
             @ApiResponse(responseCode = "403", description = "Forbidden"),
 
             @ApiResponse(responseCode = "404", description = "Not Found") })
-    ResponseEntity<CommentDto> updateComment(@PathVariable("adId") Integer adId,
+    public ResponseEntity<AdsCommentDto> updateComment(@PathVariable("adId") Integer adId,
                                                 @PathVariable("commentId") Integer commentId,
-                                                @RequestBody CommentDto updateCommentDto,
+                                                @RequestBody AdsCommentDto updateAdsCommentDto,
                                                 Authentication authentication){
-        CommentDto updatedCommentDto = commentsService.updateComment(adId, commentId,
-                updateCommentDto, authentication);
-        if (updateCommentDto.equals(updatedCommentDto)) {
+        AdsCommentDto updatedAdsCommentDto = commentsService.updateComment(adId, commentId,
+                updateAdsCommentDto, authentication);
+        if (updatedAdsCommentDto.equals(updateAdsCommentDto)) {
             return ResponseEntity.status(HttpServletResponse.SC_UNAUTHORIZED).build();
         }
-        return ResponseEntity.ok(updatedCommentDto);
+        return ResponseEntity.ok(updatedAdsCommentDto);
     }
 }
