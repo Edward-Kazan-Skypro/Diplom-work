@@ -1,7 +1,6 @@
 package pro.sky.finalprojectsky.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import pro.sky.finalprojectsky.dto.RegisterReqDto;
 import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.User;
