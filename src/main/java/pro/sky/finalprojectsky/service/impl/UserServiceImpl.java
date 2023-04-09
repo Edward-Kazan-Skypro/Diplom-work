@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
-import pro.sky.finalprojectsky.dto.CreateUserDto;
+import pro.sky.finalprojectsky.dto.RegisterReqDto;
 import pro.sky.finalprojectsky.dto.Role;
 import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.User;
@@ -16,10 +16,10 @@ import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.security.UserDetailsServiceImpl;
 import pro.sky.finalprojectsky.service.UserService;
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.List;
 import static pro.sky.finalprojectsky.dto.Role.USER;
 
-//@Transactional
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,28 +33,33 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto createUser(CreateUserDto user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new ValidationException(String.format("Пользователь \"%s\" уже существует!", user.getEmail()));
+    public UserDto createUser(RegisterReqDto user) {
+        if (userRepository.existsByEmail(user.getUsername())) {
+            throw new ValidationException(String.format("Пользователь \"%s\" уже существует!", user.getUsername()));
         }
-        User createdUser = userMapper.createUserDtoToEntity(user);
+        User createdUser = userMapper.convertRegisterReqDtoToEntity(user);
         if (createdUser.getRole() == null) {
             createdUser.setRole(USER);
         }
-        return userMapper.toDto(userRepository.save(createdUser));
+        return userMapper.convertEntityToUserDto(userRepository.save(createdUser));
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<UserDto> getUsers() {
-        return userMapper.toDto(userRepository.findAll());
+        ArrayList<User> userArrayList = new ArrayList<>(userRepository.findAll());
+        ArrayList<UserDto> usersDtoArrayList = new ArrayList<>();
+        for (User user: userArrayList){
+            usersDtoArrayList.add(userMapper.convertEntityToUserDto(user));
+        }
+        return usersDtoArrayList;
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserDto getUserMe(Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        return userMapper.toDto(user);
+        return userMapper.convertEntityToUserDto(user);
     }
 
     @Override
@@ -65,13 +70,13 @@ public class UserServiceImpl implements UserService {
         user.setLastName(updatedUserDto.getLastName());
         user.setPhone(updatedUserDto.getPhone());
         userRepository.save(user);
-        return userMapper.toDto(user);
+        return userMapper.convertEntityToUserDto(user);
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserDto getUserById(Integer id) {
-        return userMapper.toDto(userRepository.findById(id)
+        return userMapper.convertEntityToUserDto(userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id " + id + " не найден!")));
     }
 
@@ -91,6 +96,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Пользователь с id " + id + " не найден!"));
         user.setRole(role);
         userRepository.save(user);
-        return userMapper.toDto(user);
+        return userMapper.convertEntityToUserDto(user);
     }
 }

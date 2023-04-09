@@ -1,20 +1,17 @@
 package pro.sky.finalprojectsky.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pro.sky.finalprojectsky.entity.User;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.service.AuthService;
 import javax.validation.ValidationException;
 
-@Transactional
+
 @RequiredArgsConstructor
 @Service
 

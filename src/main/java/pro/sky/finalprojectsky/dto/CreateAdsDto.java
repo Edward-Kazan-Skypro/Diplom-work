@@ -1,6 +1,5 @@
 package pro.sky.finalprojectsky.dto;
 
-import lombok.Builder;
 import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -15,8 +14,4 @@ public class CreateAdsDto {
     @NotBlank
     @Size(min = 8)
     private String description;
-
-    //private String image;
-    //ads id
-    //private int pk;
 }

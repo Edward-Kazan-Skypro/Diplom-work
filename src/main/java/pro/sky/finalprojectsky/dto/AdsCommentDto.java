@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 
 @Data
 public class AdsCommentDto {
-    private int pk;
+    private int id;
     private int author;
     private String createdAt;
     @NotBlank
