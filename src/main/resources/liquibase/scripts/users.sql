@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset aalekseev:1
+-- changeset unit:1
 
 CREATE TABLE IF NOT EXISTS users
 (

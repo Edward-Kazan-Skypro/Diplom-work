@@ -167,7 +167,7 @@ public class AdsController {
     }
 
     @SneakyThrows
-    @Operation(summary = "Загрузка навого изображения к объявлению",
+    @Operation(summary = "Загрузка нового изображения к объявлению",
             responses = {
                     @ApiResponse(
                             responseCode = "200",

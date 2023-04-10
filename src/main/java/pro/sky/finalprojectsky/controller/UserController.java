@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.finalprojectsky.service.UserService;
 import pro.sky.finalprojectsky.dto.*;
-
 import javax.validation.Valid;
 
 @CrossOrigin(value = "http://localhost:3000")
