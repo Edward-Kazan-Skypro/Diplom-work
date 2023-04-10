@@ -8,5 +8,7 @@ import pro.sky.finalprojectsky.entity.Image;
  */
 public interface ImageRepository extends JpaRepository<Image, Long> {
     Image findByAdsId(long adsId);
+    Image findByUserId(long userId);
+
 
 }

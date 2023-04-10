@@ -14,9 +14,17 @@ CREATE TABLE IF NOT EXISTS image
 ALTER TABLE ads
     ADD COLUMN image_id BIGINT REFERENCES image (id);
 
+-- changeset unit:5
+ALTER TABLE users
+    ADD COLUMN image_id BIGINT REFERENCES image (id);
+
 --changeset unit:1
 ALTER TABLE image
 ADD COLUMN ads_id BIGINT REFERENCES ads (id);
+
+--changeset unit:6
+ALTER TABLE image
+ADD COLUMN user_id BIGINT REFERENCES users (id);
 
 
 --changeset unit:4
