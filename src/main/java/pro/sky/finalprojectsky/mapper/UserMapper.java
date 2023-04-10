@@ -15,6 +15,7 @@ public interface UserMapper {
                 .lastName(dto.getLastName())
                 .password(dto.getPassword())
                 .phone(dto.getPhone())
+                .role(null)
                 .build();
     }
 

@@ -18,7 +18,7 @@ public class Image {
     private Integer id;
     @Lob
     @Type(type = "binary")
-    private byte[] image;
+    private byte[] byteData;
     private long fileSize;
     private String mediaType;
     private String filePath;
@@ -30,6 +30,6 @@ public class Image {
     private User user;
 
     public String toString() {
-        return "AdsEntity(id=" + this.getId() + ", image=" + java.util.Arrays.toString(this.getImage()) + ")";
+        return "AdsEntity(id=" + this.getId() + ", image=" + java.util.Arrays.toString(this.getByteData()) + ")";
     }
 }

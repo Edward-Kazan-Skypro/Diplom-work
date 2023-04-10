@@ -22,6 +22,8 @@ public interface ImageService {
 
     byte[] getImageBytesArray(Integer id);
 
+    Image getImageById(Integer id);
+
     void removeAdsImage(Integer id) throws IOException;
 
     Image uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;

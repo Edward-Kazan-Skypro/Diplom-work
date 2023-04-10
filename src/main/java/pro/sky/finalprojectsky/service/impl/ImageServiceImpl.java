@@ -22,6 +22,7 @@ import pro.sky.finalprojectsky.service.ImageService;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @RequiredArgsConstructor
@@ -68,10 +69,15 @@ public class ImageServiceImpl implements ImageService {
         image.setFilePath(filePath.toString());
         image.setFileSize(imageFile.getSize());
         image.setMediaType(imageFile.getContentType());
-        image.setImage(imageFile.getBytes());
+        image.setByteData(imageFile.getBytes());
         image.setAds(null);
         image.setUser(null);
         return imagesRepository.save(image);
+    }
+
+    @Override
+    public Image getImageById(Integer id){
+        return imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
     }
 
     @Override
@@ -100,7 +106,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public byte[] getImageBytesArray(Integer id) {
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
-        return images.getImage();
+        return images.getByteData();
     }
 
     @Override
