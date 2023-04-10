@@ -49,6 +49,7 @@ public class AdsServiceImpl implements AdsService {
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
         Ads ads = adsMapper.convertCreateAdsDtoToEntity(createAdsDto, user, adsImage);
+        ads.setImage(adsImage);
         adsRepository.save(ads);
         return adsMapper.convertEntityToAdsDto(ads);
 
