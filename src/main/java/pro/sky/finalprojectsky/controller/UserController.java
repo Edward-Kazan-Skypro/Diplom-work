@@ -2,11 +2,14 @@ package pro.sky.finalprojectsky.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -14,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import pro.sky.finalprojectsky.entity.Image;
+import pro.sky.finalprojectsky.service.ImageService;
 import pro.sky.finalprojectsky.service.UserService;
 import pro.sky.finalprojectsky.dto.*;
 import javax.validation.Valid;
@@ -24,12 +30,11 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 @Tag(name = "Пользователи", description = "UserController")
 public class UserController {
-
-
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-
     private final UserService userService;
+
+    private final ImageService imageService;
 
     @Operation(summary = "Создание пользователя",
             responses = {
@@ -146,5 +151,45 @@ public class UserController {
     public ResponseEntity<UserDto> updateRole(@PathVariable("id") long id, Role role) {
         logger.info("Request for update user role");
         return ResponseEntity.ok(userService.updateRole(id, role));
+    }
+
+    @Operation(summary = "Просмотр изображения пользователя",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Изображение, найденное по id",
+                            content = @Content(
+                                    mediaType = MediaType.IMAGE_PNG_VALUE,
+                                    schema = @Schema(implementation = Image.class)
+                            )
+                    )
+            },
+            tags = "Image"
+    )@GetMapping(value = "images/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        logger.info("Request for get image by id");
+        return ResponseEntity.ok(imageService.getImageBytesArray(id));
+    }
+
+    @SneakyThrows
+    @Operation(summary = "Загрузка новой аватарки пользователя",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Новое изображение",
+                            content = @Content(
+                                    mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                                    schema = @Schema(implementation = Image.class)
+                            )
+                    )
+            },
+            tags = "Image"
+    )
+    @PatchMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Image> updateUserImage(Authentication authentication, @Parameter(in = ParameterIn.DEFAULT, description = "Загрузите сюда новое изображение",
+            schema = @Schema())
+    @RequestPart(value = "image") @Valid MultipartFile image) {
+        logger.info("Request for update ad image by id");
+        return ResponseEntity.ok(imageService.uploadUserImage(image, authentication));
     }
 }

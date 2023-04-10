@@ -62,10 +62,10 @@ class AdsControllerTest {
     @Test
     void getAllAds() throws Exception {
         User user1 = new User(1, "a@mail.ru", "123", "Amt", "Lom",
-                "+79123456789", Role.USER);
+                "+79123456789", Role.USER, null);
 
         User user2 = new User(2, "b@mail.ru", "321", "Tma", "Mol",
-                "+79123456790", Role.USER);
+                "+79123456790", Role.USER, null);
 
         byte[] imgStub = new byte[]{1, 0, 1};
         byte[] imgStub1 = new byte[]{0, 1, 0};
@@ -198,7 +198,7 @@ class AdsControllerTest {
     void updateAdsImage() throws Exception {
         AdsDto adsDto = new AdsDto();
 
-        when(imagesService.updateImage(any(MultipartFile.class), any(Authentication.class), anyLong())).thenReturn(adsDto);
+        when(imagesService.updateAdsImage(any(MultipartFile.class), any(Authentication.class), anyLong())).thenReturn(adsDto);
 
         byte[] imgStub = new byte[]{1, 0, 1};
 

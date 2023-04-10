@@ -33,14 +33,11 @@ import javax.validation.Valid;
 @RequestMapping("/ads")
 @Tag(name = "Объявления", description = "AdsController")
 public class AdsController {
-
-
     Logger logger = LoggerFactory.getLogger(AdsController.class);
-
 
     private final AdsService adsService;
 
-    private final ImageService imagesService;
+    private final ImageService imageService;
 
     @Operation(summary = "Просмотр всех объявлений",
             responses = {
@@ -102,7 +99,7 @@ public class AdsController {
     )@GetMapping(value = "images/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
     public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
         logger.info("Request for get image by id");
-        return ResponseEntity.ok(imagesService.getImageBytesArray(id));
+        return ResponseEntity.ok(imageService.getImageBytesArray(id));
     }
 
     @Operation(summary = "Просмотр всех моих объявлений",
@@ -185,7 +182,7 @@ public class AdsController {
                                                          schema = @Schema())
                                                  @RequestPart(value = "image") @Valid MultipartFile image) {
         logger.info("Request for update ad image by id");
-        return ResponseEntity.ok(imagesService.updateImage(image, authentication, id));
+        return ResponseEntity.ok(imageService.updateAdsImage(image, authentication, id));
     }
 
     @SneakyThrows

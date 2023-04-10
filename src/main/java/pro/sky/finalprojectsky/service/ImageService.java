@@ -3,9 +3,9 @@ package pro.sky.finalprojectsky.service;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.AdsDto;
+import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
-
 import java.io.IOException;
 
 /**
@@ -16,13 +16,17 @@ public interface ImageService {
     /**
      * Сохранение картинки в БД
      */
-    Image uploadImage(MultipartFile imageFile, Ads ads) throws IOException;
+    Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException;
 
     /**
      * Обновление картинки объявления
      */
 
-    AdsDto updateImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException;
+    AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException;
+
+    Image uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
+
+    UserDto updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
 
     /**
      * Получение картинки по ID

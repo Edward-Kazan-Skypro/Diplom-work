@@ -16,9 +16,9 @@ import pro.sky.finalprojectsky.service.AuthService;
 import javax.validation.ValidationException;
 
 /**
- * Имплементация сервиса для регистрации пользователя и входа
+ * Реализация сервиса для регистрации пользователя и входа
  */
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Service
 

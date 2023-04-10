@@ -24,14 +24,12 @@ import java.util.List;
 import static pro.sky.finalprojectsky.dto.Role.USER;
 
 /**
- * Имплеменация сервиса для работы с пользователем
+ * Реализация сервиса для работы с пользователем
  */
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-
-
     Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;

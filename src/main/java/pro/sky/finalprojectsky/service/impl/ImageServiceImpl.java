@@ -10,33 +10,33 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 import pro.sky.finalprojectsky.dto.AdsDto;
+import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
 import pro.sky.finalprojectsky.entity.User;
 import pro.sky.finalprojectsky.mapper.AdsMapper;
+import pro.sky.finalprojectsky.mapper.UserMapper;
 import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.ImageRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
+import pro.sky.finalprojectsky.security.SecurityUtils;
 import pro.sky.finalprojectsky.service.ImageService;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
-
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 /**
- * Имплементация сервиса для работы с картинками
+ * Реализация сервиса для работы с картинками
  */
 @RequiredArgsConstructor
-@Transactional
+//@Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
     Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     @Value("${path.to.images.folder}")
-
     private String imagesDir;
 
     private final ImageRepository imagesRepository;
@@ -46,6 +46,8 @@ public class ImageServiceImpl implements ImageService {
     private final UserRepository userRepository;
 
     private final AdsMapper adsMapper;
+
+    private final UserMapper userMapper;
 
     /**
      * Сохранение картинки в БД
@@ -57,9 +59,9 @@ public class ImageServiceImpl implements ImageService {
      *                     * {@link #getExtensions(String fileName)}
      */
     @Override
-    public Image uploadImage(MultipartFile imageFile, Ads ads) throws IOException {
-        logger.info("Was invoked method for upload image");
-        Path filePath = Path.of(imagesDir, "ads_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
+    public Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException {
+        logger.info("Was invoked method for upload ads image");
+        Path filePath = Path.of(imagesDir, "ads_image_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
@@ -79,23 +81,48 @@ public class ImageServiceImpl implements ImageService {
         return imagesRepository.save(images);
     }
 
+    @Override
+    public Image uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException {
+        logger.info("Was invoked method for upload user image");
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        Path filePath = Path.of(imagesDir, "user_image_" + user.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+        try (
+                InputStream is = imageFile.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
+        ) {
+            bis.transferTo(bos);
+        }
+        Image images = new Image();
+        images.setFilePath(filePath.toString());
+        images.setFileSize(imageFile.getSize());
+        images.setMediaType(imageFile.getContentType());
+        images.setImage(imageFile.getBytes());
+        images.setUser(user);
+        return imagesRepository.save(images);
+    }
+
     /**
      * Обновление картинки объявления
      *
      * @param imageFile      Файл картинки
      * @param authentication Файл аутентификации
      * @param adsId          ID объявления
-     * @return AdsDto         обьявление
+     * @return AdsDto         объявление
      * @throws IOException       exception
-     * @throws NotFoundException Обьявление не найдено
+     * @throws NotFoundException Объявление не найдено
      */
     @Override
-    public AdsDto updateImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException {
-        logger.info("Was invoked method for update image");
+    public AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException {
+        logger.info("Was invoked method for update ads image");
+
         Ads ads = adsRepository.findById(adsId).orElseThrow(() -> new NotFoundException("Объявление с id " + adsId + " не найдено!"));
         logger.warn("ad by id {} not found", adsId);
-        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+        //User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        if (SecurityUtils.checkPermissionToAds(ads)) {
             Image updatedImage = imagesRepository.findByAdsId(adsId);
             Path filePath = Path.of(updatedImage.getFilePath());
             Files.deleteIfExists(filePath);
@@ -116,6 +143,33 @@ public class ImageServiceImpl implements ImageService {
         return adsMapper.toDto(ads);
     }
 
+    @Override
+    public UserDto updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException {
+        logger.info("Was invoked method for update user image");
+        String userName = authentication.getName();
+        User user = userRepository.findByEmail(userName).orElseThrow(() -> new NotFoundException("Пользователь с именем " + authentication.getName() + " не найден!"));
+        logger.warn("user by name {} not found", userName);
+        Image updatedUserImage = imagesRepository.findByUserId(user.getId());
+        Path filePath = Path.of(updatedUserImage.getFilePath());
+        Files.deleteIfExists(filePath);
+        try (
+                InputStream is = imageFile.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
+        ) {
+            bis.transferTo(bos);
+        }
+        updatedUserImage.setFileSize(imageFile.getSize());
+        updatedUserImage.setMediaType(imageFile.getContentType());
+        updatedUserImage.setImage(imageFile.getBytes());
+        user.setImage(imagesRepository.save(updatedUserImage));
+        userRepository.save(user);
+
+        return userMapper.toDto(user);
+    }
+
+
     private String getExtensions(String fileName) {
         logger.info("Was invoked method for get extensions");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -125,7 +179,7 @@ public class ImageServiceImpl implements ImageService {
      * Получение картинки по ID
      *
      * @param id Id картинки
-     * @return image изобраение
+     * @return image изображение
      * @throws NotFoundException Картинка не найдена
      */
     @Transactional(readOnly = true)
@@ -139,7 +193,7 @@ public class ImageServiceImpl implements ImageService {
      * Получение массива байтов(для фронта)
      *
      * @param id изображения
-     * @return image изображеие
+     * @return image изображение
      * @throws NotFoundException Картинка не найдена
      */
     @Transactional(readOnly = true)

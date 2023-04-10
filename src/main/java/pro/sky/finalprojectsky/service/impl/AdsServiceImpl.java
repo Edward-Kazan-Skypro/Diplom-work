@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Имплементация сервиса для работы с объявлениями
+ * Реализация сервиса для работы с объявлениями
  */
-@Transactional
+//@Transactional
 @RequiredArgsConstructor
 @Service
 
@@ -60,7 +60,7 @@ public class AdsServiceImpl implements AdsService {
 
         Ads ads = adsMapper.toEntity(createAdsDto);
         ads.setAuthor(user);
-        ads.setImage(imagesService.uploadImage(imageFile, adsRepository.save(ads)));
+        ads.setImage(imagesService.uploadAdsImage(imageFile, adsRepository.save(ads)));
         logger.info("ad created");
         return adsMapper.toDto(adsRepository.save(ads));
     }
