@@ -23,7 +23,6 @@ import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.ImageService;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,14 +65,14 @@ public class AdsServiceImpl implements AdsService {
 
     @Transactional(readOnly = true)
     @Override
-    public Ads getAds(long id) {
+    public Ads getAds(Integer id) {
         logger.info("Was invoked method for get ad by id");
         return adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public FullAdsDto getFullAdsDto(long id) {
+    public FullAdsDto getFullAdsDto(Integer id) {
         logger.info("Was invoked method for get full ad dto");
         return adsMapper.toFullAdsDto(adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!")));
     }
@@ -85,14 +84,14 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public boolean removeAds(long id, Authentication authentication) throws IOException {
+    public boolean removeAds(Integer id, Authentication authentication) throws IOException {
         logger.info("Was invoked method for delete ad by id");
         Ads ads = adsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
         logger.warn("Ad by id {} not found", id);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
-            List<Long> adsComments = adsCommentRepository.findAll().stream()
+            List<Integer> adsComments = adsCommentRepository.findAll().stream()
                     .filter(adsComment -> adsComment.getAds().getId() == ads.getId())
                     .map(AdsComment::getId)
                     .collect(Collectors.toList());
@@ -107,7 +106,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public AdsDto updateAds(long id, AdsDto updateAdsDto, Authentication authentication) {
+    public AdsDto updateAds(Integer id, AdsDto updateAdsDto, Authentication authentication) {
         logger.info("Was invoked method for update ad by id");
         Ads updatedAds = adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
         logger.warn("Ad by id {} not found", id);
@@ -134,7 +133,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public AdsCommentDto addAdsComment(long adKey, AdsCommentDto adsCommentDto) {
+    public AdsCommentDto addAdsComment(Integer adKey, AdsCommentDto adsCommentDto) {
         logger.info("Was invoked method for add ads comment");
         User user = userRepository.findByEmail(SecurityContextHolder.getContext()
                 .getAuthentication().getName()).orElseThrow();
@@ -149,7 +148,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<AdsCommentDto> getAdsComments(long adKey) {
+    public List<AdsCommentDto> getAdsComments(Integer adKey) {
         logger.info("Was invoked method for get ads comment by adKey");
         List<AdsComment> commentList = adsCommentRepository.findAllByAdsId(adKey);
         return adsCommentMapper.toDto(commentList);
@@ -157,7 +156,7 @@ public class AdsServiceImpl implements AdsService {
 
     @Transactional(readOnly = true)
     @Override
-    public AdsCommentDto getAdsComment(long adKey, long id) {
+    public AdsCommentDto getAdsComment(Integer adKey, Integer id) {
         logger.info("Was invoked method for get ads comment by adKey and id");
         AdsComment adsComment = adsCommentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + id + " не найден!"));
@@ -170,7 +169,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public boolean deleteAdsComment(long adKey, long id, Authentication authentication) {
+    public boolean deleteAdsComment(Integer adKey, Integer id, Authentication authentication) {
         logger.info("Was invoked method for delete ads comment by adKey and id");
         AdsComment adsComment = adsCommentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + id + " не найден!"));
@@ -190,7 +189,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     @Override
-    public AdsCommentDto updateAdsComment(long adKey, long id, AdsCommentDto updateAdsComment, Authentication authentication) {
+    public AdsCommentDto updateAdsComment(Integer adKey, Integer id, AdsCommentDto updateAdsComment, Authentication authentication) {
         logger.info("Was invoked method for update ads comment by adKey and id");
         AdsComment updatedAdsComment = adsCommentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + id + " не найден!"));

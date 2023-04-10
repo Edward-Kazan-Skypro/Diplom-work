@@ -3,6 +3,7 @@ package pro.sky.finalprojectsky.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 
 /**
@@ -21,7 +22,7 @@ public class Ads {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Integer id;
     /**
      * "users/пользователь" field
      */
@@ -42,6 +43,7 @@ public class Ads {
     /**
      * "image/изображение" field
      */
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "ads")
     private Image image;
+
 }

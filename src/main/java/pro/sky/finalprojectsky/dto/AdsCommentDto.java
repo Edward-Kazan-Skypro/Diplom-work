@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class AdsCommentDto {
 
 
-    private int pk;
+    private int id;
 
     private int author;
 

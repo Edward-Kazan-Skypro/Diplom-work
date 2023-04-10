@@ -22,14 +22,14 @@ public class Image {
      */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Long id;
+    private Integer id;
     @Lob
     @Type(type = "binary")
     private byte[] image;
     /**
      * "fileSize/размер файла
      */
-    private long fileSize;
+    private Long fileSize;
     /**
      * "mediaType/тип данных
      */
@@ -42,6 +42,7 @@ public class Image {
      * "ads/объявление" field
      */
     @OneToOne
+    //@JoinColumn(name = "ads_id")
     private Ads ads;
 
     public String toString() {

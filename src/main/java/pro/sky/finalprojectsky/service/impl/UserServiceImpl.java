@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserDto getUserById(long id) {
+    public UserDto getUserById(Integer id) {
         logger.info("Was invoked method for get user by id");
         return userMapper.toDto(userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id " + id + " не найден!")));
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateRole(long id, Role role) {
+    public UserDto updateRole(Integer id, Role role) {
         logger.info("Was invoked method for update user role");
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Пользователь с id " + id + " не найден!"));
         user.setRole(role);

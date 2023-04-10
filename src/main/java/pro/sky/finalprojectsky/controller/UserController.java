@@ -124,7 +124,7 @@ public class UserController {
             tags = "Users"
     )
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable long id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
         logger.info("Request for get user by id");
         return ResponseEntity.ok(userService.getUserById(id));
     }
@@ -144,7 +144,7 @@ public class UserController {
     )
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("{id}/updateRole")
-    public ResponseEntity<UserDto> updateRole(@PathVariable("id") long id, Role role) {
+    public ResponseEntity<UserDto> updateRole(@PathVariable("id") Integer id, Role role) {
         logger.info("Request for update user role");
         return ResponseEntity.ok(userService.updateRole(id, role));
     }

@@ -44,7 +44,7 @@ public interface UserService {
      * @param id ID пользователя
      * @return User с данным ID
      */
-    UserDto getUserById(long id);
+    UserDto getUserById(Integer id);
 
     /**
      * Изменение пароля пользователя
@@ -62,5 +62,5 @@ public interface UserService {
      * @param id   идентификатор пользователя
      * @param role новая роль
      */
-    UserDto updateRole(long id, Role role);
+    UserDto updateRole(Integer id, Role role);
 }

@@ -171,7 +171,7 @@ class AdsControllerTest {
     void removeAds() throws Exception {
 
         AdsDto adsDto = new AdsDto();
-        when(adsService.removeAds(anyLong(), any())).thenReturn(true);
+        when(adsService.removeAds(anyInt(), any())).thenReturn(true);
 
         mockMvc.perform(delete("/ads/1"))
                 .andDo(print())
@@ -184,21 +184,21 @@ class AdsControllerTest {
 
         fullAdsDto.setEmail("d@mail.ru");
 
-        when(adsService.getFullAdsDto(anyLong())).thenReturn(fullAdsDto);
+        when(adsService.getFullAdsDto(anyInt())).thenReturn(fullAdsDto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/ads/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("d@mail.ru"));
 
-        verify(adsService, times(1)).getFullAdsDto(anyLong());
+        verify(adsService, times(1)).getFullAdsDto(anyInt());
     }
 
     @Test
     void updateAdsImage() throws Exception {
         AdsDto adsDto = new AdsDto();
 
-        when(imagesService.updateImage(any(MultipartFile.class), any(Authentication.class), anyLong())).thenReturn(adsDto);
+        when(imagesService.updateImage(any(MultipartFile.class), any(Authentication.class), anyInt())).thenReturn(adsDto);
 
         byte[] imgStub = new byte[]{1, 0, 1};
 
@@ -221,7 +221,7 @@ class AdsControllerTest {
         adsDto.setDescription("Описание");
         adsDto.setTitle("Название");
 
-        when(adsService.updateAds(anyLong(), any(), any())).thenReturn(updateAdsDto);
+        when(adsService.updateAds(anyInt(), any(), any())).thenReturn(updateAdsDto);
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/ads/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -230,7 +230,7 @@ class AdsControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
-        verify(adsService, times(1)).updateAds(anyLong(), any(), any());
+        verify(adsService, times(1)).updateAds(anyInt(), any(), any());
     }
 
     @Test
@@ -244,7 +244,7 @@ class AdsControllerTest {
         adsCommentsDto.add(adsDtoComment2);
 
 
-        when(adsService.getAdsComments(anyLong())).thenReturn(adsCommentsDto);
+        when(adsService.getAdsComments(anyInt())).thenReturn(adsCommentsDto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/ads/1/comments"))
                 .andDo(print())
@@ -259,7 +259,7 @@ class AdsControllerTest {
         AdsCommentDto adsCommentDto = new AdsCommentDto();
         adsCommentDto.setText("Комментарий");
 
-        when(adsService.addAdsComment(anyLong(), any(AdsCommentDto.class))).thenReturn(adsCommentDto);
+        when(adsService.addAdsComment(anyInt(), any(AdsCommentDto.class))).thenReturn(adsCommentDto);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/ads/1/comments")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -272,7 +272,7 @@ class AdsControllerTest {
     @Test
     void deleteAdsComment() throws Exception {
 
-        when(adsService.deleteAdsComment(anyLong(), anyLong(), any())).thenReturn(true);
+        when(adsService.deleteAdsComment(anyInt(), anyInt(), any())).thenReturn(true);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/ads/1/comments/1"))
                 .andDo(print())
@@ -284,26 +284,26 @@ class AdsControllerTest {
     void getAdsComment() throws Exception {
         AdsCommentDto adsCommentDto = new AdsCommentDto();
 
-        when(adsService.getAdsComment(anyLong(), anyLong())).thenReturn(adsCommentDto);
+        when(adsService.getAdsComment(anyInt(), anyInt())).thenReturn(adsCommentDto);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/ads/1/comments/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(adsCommentDto));
 
-        verify(adsService, times(1)).getAdsComment(anyLong(), anyLong());
+        verify(adsService, times(1)).getAdsComment(anyInt(), anyInt());
     }
 
     @Test
     void updateAdsComment() throws Exception {
         AdsCommentDto adsCommentDto = new AdsCommentDto();
         AdsCommentDto adsCommentDto2 = new AdsCommentDto();
-        adsCommentDto2.setPk(3);
+        adsCommentDto2.setId(3);
         adsCommentDto.setText("Комментарий");
         adsCommentDto2.setText("Комментарий");
 
 
-        when(adsService.updateAdsComment(anyInt(), anyLong(), any(AdsCommentDto.class), any())).thenReturn(adsCommentDto);
+        when(adsService.updateAdsComment(anyInt(), anyInt(), any(AdsCommentDto.class), any())).thenReturn(adsCommentDto);
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/ads/1/comments/1")
                         .contentType(MediaType.APPLICATION_JSON)

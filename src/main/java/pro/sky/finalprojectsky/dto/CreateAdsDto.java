@@ -15,7 +15,7 @@ public class CreateAdsDto {
 
     private String image;
 
-    private int pk;
+    private int id;
 
     private int price;
 

@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 public class MyUserDetails extends org.springframework.security.core.userdetails.User {
 
-    private final Long id;
+    private final Integer id;
 
     public MyUserDetails(User user) {
         super(user.getEmail(), user.getPassword(), List.of(user.getRole()));

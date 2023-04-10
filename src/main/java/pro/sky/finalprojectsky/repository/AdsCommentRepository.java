@@ -9,10 +9,10 @@ import java.util.Optional;
 /**
  * Repository AdsCommentRepository (advertisement comment/комментарий в объявлениях).
  */
-public interface AdsCommentRepository extends JpaRepository<AdsComment, Long> {
+public interface AdsCommentRepository extends JpaRepository<AdsComment, Integer> {
 
-    List<AdsComment> findAllByAdsId(long adsId);
+    List<AdsComment> findAllByAdsId(Integer adsId);
 
-    Optional<AdsComment> findByIdAndAdsId(long id, long adsId);
+    Optional<AdsComment> findByIdAndAdsId(Integer id, Integer adsId);
 
 }

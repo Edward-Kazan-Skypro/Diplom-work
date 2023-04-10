@@ -8,8 +8,8 @@ import java.util.List;
 /**
  * Repository AdsRepository (advertisement/объявление).
  */
-public interface AdsRepository extends JpaRepository<Ads, Long> {
+public interface AdsRepository extends JpaRepository<Ads, Integer> {
 
-    List<Ads> findAllByAuthorId(long id);
+    List<Ads> findAllByAuthorId(Integer id);
 
 }

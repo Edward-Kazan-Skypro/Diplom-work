@@ -18,7 +18,7 @@ public class FullAdsDto {
 
     private String phone;
 
-    private int pk;
+    private int id;
 
     private int price;
 

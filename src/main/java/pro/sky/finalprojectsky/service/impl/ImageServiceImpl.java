@@ -90,7 +90,7 @@ public class ImageServiceImpl implements ImageService {
      * @throws NotFoundException Обьявление не найдено
      */
     @Override
-    public AdsDto updateImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException {
+    public AdsDto updateImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException {
         logger.info("Was invoked method for update image");
         Ads ads = adsRepository.findById(adsId).orElseThrow(() -> new NotFoundException("Объявление с id " + adsId + " не найдено!"));
         logger.warn("ad by id {} not found", adsId);
@@ -130,7 +130,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Transactional(readOnly = true)
     @Override
-    public Image getImage(long id) {
+    public Image getImage(Integer id) {
         logger.info("Was invoked method for get image by id");
         return imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
     }
@@ -144,7 +144,7 @@ public class ImageServiceImpl implements ImageService {
      */
     @Transactional(readOnly = true)
     @Override
-    public byte[] getImageBytesArray(long id) {
+    public byte[] getImageBytesArray(Integer id) {
         logger.info("Was invoked method for get image bates array");
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
         return images.getImage();
@@ -157,7 +157,7 @@ public class ImageServiceImpl implements ImageService {
      * @throws IOException exception
      */
     @Override
-    public void removeImage(long id) throws IOException {
+    public void removeImage(Integer id) throws IOException {
         logger.info("Was invoked method for delete image by id");
         Image images = imagesRepository.findById(id).orElseThrow(() -> new NotFoundException("Картинка с id " + id + " не найдена!"));
         logger.warn("image by id {} not found", id);

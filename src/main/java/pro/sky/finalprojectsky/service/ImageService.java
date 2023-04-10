@@ -22,20 +22,20 @@ public interface ImageService {
      * Обновление картинки объявления
      */
 
-    AdsDto updateImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException;
+    AdsDto updateImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException;
 
     /**
      * Получение картинки по ID
      */
-    Image getImage(long id);
+    Image getImage(Integer id);
 
     /**
      * Получение массива байтов(для фронта)
      */
-    byte[] getImageBytesArray(long id);
+    byte[] getImageBytesArray(Integer id);
 
     /**
      * Удаление картинки по ID
      */
-    void removeImage(long id) throws IOException;
+    void removeImage(Integer id) throws IOException;
 }

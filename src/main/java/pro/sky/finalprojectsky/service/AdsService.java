@@ -32,12 +32,12 @@ public interface AdsService {
      * @param id ID объявления
      * @return Ads
      */
-    Ads getAds(long id);
+    Ads getAds(Integer id);
 
     /**
      * Получение DTO с полной информацией об объекте
      */
-    FullAdsDto getFullAdsDto(long id);
+    FullAdsDto getFullAdsDto(Integer id);
 
     /**
      * Получение всех объявлений
@@ -53,7 +53,7 @@ public interface AdsService {
      * @param authentication Аутентифицированный пользователь
      * @return Возвращает true если объявление удалено, иначе false.
      */
-    boolean removeAds(long id, Authentication authentication) throws IOException;
+    boolean removeAds(Integer id, Authentication authentication) throws IOException;
 
     /**
      * Изменение объявления по ID
@@ -63,7 +63,7 @@ public interface AdsService {
      * @param authentication Аутентифицированный пользователь
      * @return Ads Изменённое объявление.
      */
-    AdsDto updateAds(long id, AdsDto updatedAdsDto, Authentication authentication);
+    AdsDto updateAds(Integer id, AdsDto updatedAdsDto, Authentication authentication);
 
     /**
      * Получение всех объявлений аутентифицированного пользователя
@@ -79,7 +79,7 @@ public interface AdsService {
      * @param adsCommentDto Объект комментария
      * @return AdsComment
      */
-    AdsCommentDto addAdsComment(long adKey, AdsCommentDto adsCommentDto);
+    AdsCommentDto addAdsComment(Integer adKey, AdsCommentDto adsCommentDto);
 
     /**
      * Получение всех комментариев определённого объявления
@@ -87,7 +87,7 @@ public interface AdsService {
      * @param adKey ID объявления
      * @return Collection<AdsComment>
      */
-    List<AdsCommentDto> getAdsComments(long adKey);
+    List<AdsCommentDto> getAdsComments(Integer adKey);
 
     /**
      * Получение комментария по ID
@@ -96,7 +96,7 @@ public interface AdsService {
      * @param adKey ID объявления
      * @return AdsComment
      */
-    AdsCommentDto getAdsComment(long adKey, long id);
+    AdsCommentDto getAdsComment(Integer adKey, Integer id);
 
     /**
      * Удаление комментария по ID
@@ -106,7 +106,7 @@ public interface AdsService {
      * @param authentication Аутентифицированный пользователь
      * @return Возвращает true если комментарий удалён, иначе false.
      */
-    boolean deleteAdsComment(long adKey, long id, Authentication authentication);
+    boolean deleteAdsComment(Integer adKey, Integer id, Authentication authentication);
 
     /**
      * Изменение комментария по ID
@@ -117,5 +117,5 @@ public interface AdsService {
      * @param authentication   Аутентифицированный пользователь
      * @return AdsComment      Изменённый комментарий.
      */
-    AdsCommentDto updateAdsComment(long adKey, long id, AdsCommentDto updateAdsComment, Authentication authentication);
+    AdsCommentDto updateAdsComment(Integer adKey, Integer id, AdsCommentDto updateAdsComment, Authentication authentication);
 }
