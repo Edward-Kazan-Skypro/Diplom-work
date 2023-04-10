@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.finalprojectsky.dto.AdsCommentDto;
-import pro.sky.finalprojectsky.dto.CommentDto;
 import pro.sky.finalprojectsky.dto.ResponseWrapper;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.CommentService;
@@ -50,7 +49,7 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class))),
+                            schema = @Schema(implementation = AdsCommentDto.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 
@@ -92,7 +91,7 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class))),
+                            schema = @Schema(implementation = AdsCommentDto.class))),
 
             @ApiResponse(responseCode = "401", description = "Unauthorized"),
 

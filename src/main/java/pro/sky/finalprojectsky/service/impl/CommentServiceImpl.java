@@ -41,7 +41,6 @@ public class CommentServiceImpl implements CommentService {
         AdsComment adsComment = adsCommentMapper.toEntity(adsCommentDto);
         adsComment.setAuthor(user);
         adsComment.setAds(adsRepository.findById(adId).orElseThrow());
-        //adsComment.setCreatedAt(LocalDateTime.now());
         LocalDateTime localDateTime = LocalDateTime.now();
         ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
         long date = zdt.toInstant().toEpochMilli();
@@ -73,8 +72,6 @@ public class CommentServiceImpl implements CommentService {
     public boolean deleteComment(Integer adId, Integer commentId, Authentication authentication) {
         AdsComment adsComment = adsCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + commentId + " не найден!"));
-        //User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        //if (adsComment.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
         if (SecurityUtils.checkPermissionToAdsComment(adsComment)) {
             if (adsComment.getAds().getId() != adId) {
                 throw new NotFoundException("Комментарий с id " + commentId + " не принадлежит объявлению с id " + adId);
@@ -90,8 +87,6 @@ public class CommentServiceImpl implements CommentService {
 
         AdsComment updatedComment = adsCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + commentId + " не найден!"));
-        //User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        //if (updatedComment.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
         if (SecurityUtils.checkPermissionToAdsComment(updatedComment)) {
             if (updatedComment.getAds().getId() != adId) {
                 throw new NotFoundException("Комментарий с id " + commentId + " не принадлежит объявлению с id " + adId);
