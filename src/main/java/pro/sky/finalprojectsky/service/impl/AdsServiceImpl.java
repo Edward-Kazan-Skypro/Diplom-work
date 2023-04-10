@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 /**
  * Реализация сервиса для работы с объявлениями
  */
-@Transactional
+
 @RequiredArgsConstructor
 @Service
 

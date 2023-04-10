@@ -17,7 +17,7 @@ import javax.validation.ValidationException;
 /**
  * Реализация сервиса для регистрации пользователя и входа
  */
-@Transactional
+
 @RequiredArgsConstructor
 @Service
 

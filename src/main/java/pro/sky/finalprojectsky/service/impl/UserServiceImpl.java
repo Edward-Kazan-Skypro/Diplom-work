@@ -25,7 +25,7 @@ import static pro.sky.finalprojectsky.dto.Role.USER;
 /**
  * Реализация сервиса для работы с пользователем
  */
-@Transactional
+
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {

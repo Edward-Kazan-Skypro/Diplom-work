@@ -34,7 +34,6 @@ import javax.validation.Valid;
 public class AdsController {
     Logger logger = LoggerFactory.getLogger(AdsController.class);
 
-
     private final AdsService adsService;
 
     private final ImageService imagesService;
@@ -96,8 +95,9 @@ public class AdsController {
                     )
             },
             tags = "Image"
-    )@GetMapping(value = "images/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
-    public ResponseEntity<byte[]> getImage(@PathVariable Integer id) {
+    )
+    @GetMapping(value = "images/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<byte[]> getImage(@PathVariable int id) {
         logger.info("Request for get image by id");
         return ResponseEntity.ok(imagesService.getImageBytesArray(id));
     }
@@ -136,7 +136,7 @@ public class AdsController {
             tags = "Ads"
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> removeAds(@PathVariable Integer id, Authentication authentication) {
+    public ResponseEntity<HttpStatus> removeAds(@PathVariable int id, Authentication authentication) {
         logger.info("Request for delete ad by id");
         if (adsService.removeAds(id, authentication)) {
             return ResponseEntity.ok().build();
@@ -158,13 +158,13 @@ public class AdsController {
             tags = "Ads"
     )
     @GetMapping("/{id}")
-    public FullAdsDto getAds(@PathVariable Integer id) {
+    public FullAdsDto getAds(@PathVariable int id) {
         logger.info("Request for get ad by id");
         return adsService.getFullAdsDto(id);
     }
 
     @SneakyThrows
-    @Operation(summary = "Загрузка нового изображения к объявлению",
+    @Operation(summary = "Загрузка навого изображения к объявлению",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -178,9 +178,9 @@ public class AdsController {
             tags = "Image"
     )
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<AdsDto> updateAdsImage(@PathVariable Integer id, Authentication authentication, @Parameter(in = ParameterIn.DEFAULT, description = "Загрузите сюда новое изображение",
-                                                         schema = @Schema())
-                                                 @RequestPart(value = "image") @Valid MultipartFile image) {
+    public ResponseEntity<AdsDto> updateAdsImage(@PathVariable int id, Authentication authentication, @Parameter(in = ParameterIn.DEFAULT, description = "Загрузите сюда новое изображение",
+            schema = @Schema())
+    @RequestPart(value = "image") @Valid MultipartFile image) {
         logger.info("Request for update ad image by id");
         return ResponseEntity.ok(imagesService.updateImage(image, authentication, id));
     }
@@ -200,7 +200,7 @@ public class AdsController {
             tags = "Ads"
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, Authentication authentication,
+    public ResponseEntity<AdsDto> updateAds(@PathVariable int id, Authentication authentication,
                                             @RequestBody AdsDto updatedAdsDto) {
         logger.info("Request for update ad by id");
         AdsDto updateAdsDto = adsService.updateAds(id, updatedAdsDto, authentication);
@@ -224,7 +224,7 @@ public class AdsController {
             tags = "Comments"
     )
     @GetMapping("/{adKey}/comments")
-    public ResponseWrapper<AdsCommentDto> getAdsComments(@PathVariable Integer adKey) {
+    public ResponseWrapper<AdsCommentDto> getAdsComments(@PathVariable int adKey) {
         logger.info("Request for get ad comment");
         return ResponseWrapper.of(adsService.getAdsComments(adKey));
     }
@@ -243,7 +243,7 @@ public class AdsController {
             tags = "Comments"
     )
     @PostMapping("/{adKey}/comments")
-    public AdsCommentDto addAdsComments(@PathVariable Integer adKey, @RequestBody AdsCommentDto adsCommentDto) {
+    public AdsCommentDto addAdsComments(@PathVariable int adKey, @RequestBody AdsCommentDto adsCommentDto) {
         logger.info("Request for add ad comment");
         return adsService.addAdsComment(adKey, adsCommentDto);
     }
@@ -262,7 +262,7 @@ public class AdsController {
             tags = "Comments"
     )
     @DeleteMapping("/{adKey}/comments/{id}")
-    public ResponseEntity<HttpStatus> deleteAdsComment(@PathVariable Integer adKey, @PathVariable Integer id,
+    public ResponseEntity<HttpStatus> deleteAdsComment(@PathVariable int adKey, @PathVariable int id,
                                                        Authentication authentication) {
         logger.info("Request for delete ad comment");
         if (adsService.deleteAdsComment(adKey, id, authentication)) {
@@ -285,7 +285,7 @@ public class AdsController {
             tags = "Comments"
     )
     @GetMapping("/{adKey}/comments/{id}")
-    public AdsCommentDto getAdsComment(@PathVariable Integer adKey, @PathVariable Integer id) {
+    public AdsCommentDto getAdsComment(@PathVariable int adKey, @PathVariable int id) {
         logger.info("Request for get ad comment");
         return adsService.getAdsComment(adKey, id);
     }
@@ -304,7 +304,7 @@ public class AdsController {
             tags = "Comments"
     )
     @PatchMapping("/{adKey}/comments/{id}")
-    public ResponseEntity<AdsCommentDto> updateAdsComment(@PathVariable Integer adKey, @PathVariable Integer id,
+    public ResponseEntity<AdsCommentDto> updateAdsComment(@PathVariable int adKey, @PathVariable int id,
                                                           @RequestBody AdsCommentDto updateAdsCommentDto,
                                                           Authentication authentication) {
         logger.info("Request for update ad comment");

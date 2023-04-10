@@ -1,7 +1,6 @@
 package pro.sky.finalprojectsky.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 /**
@@ -35,13 +34,12 @@ public class Ads {
      */
     private String title;
     /**
-     * "description/описание обьявления" field
+     * "description/описание объявления" field
      */
     private String description;
     /**
      * "image/изображение" field
      */
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "ads")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Image image;
-
 }

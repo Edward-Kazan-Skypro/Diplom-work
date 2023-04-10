@@ -29,7 +29,6 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
  * Реализация сервиса для работы с картинками
  */
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
     Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
