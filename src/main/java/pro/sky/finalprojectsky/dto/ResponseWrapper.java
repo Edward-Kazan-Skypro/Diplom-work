@@ -1,13 +1,11 @@
 package pro.sky.finalprojectsky.dto;
 
 import lombok.Data;
-
 import java.util.Collection;
 import java.util.List;
 
 @Data
 public class ResponseWrapper<T> {
-
 
     private int count;
 
@@ -19,10 +17,8 @@ public class ResponseWrapper<T> {
         if (results == null) {
             return responseWrapper;
         }
-
         responseWrapper.results = results;
         responseWrapper.count = results.size();
-
         return responseWrapper;
     }
 }

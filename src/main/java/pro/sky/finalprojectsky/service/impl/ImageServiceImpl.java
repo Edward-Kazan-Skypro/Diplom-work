@@ -18,7 +18,6 @@ import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.ImageRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.service.ImageService;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +26,7 @@ import java.util.Objects;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 /**
- * Имплементация сервиса для работы с картинками
+ * Реализация сервиса для работы с картинками
  */
 @RequiredArgsConstructor
 @Transactional

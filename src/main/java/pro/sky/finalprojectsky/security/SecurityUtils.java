@@ -28,7 +28,6 @@ public class SecurityUtils {
         return true;
     }
 
-
     public static boolean checkPermissionToAdsComment(AdsComment adsComment) {
         MyUserDetails userDetails = getUserDetailsFromContext();
 

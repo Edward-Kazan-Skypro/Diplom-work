@@ -2,7 +2,6 @@ package pro.sky.finalprojectsky.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
 
 /**

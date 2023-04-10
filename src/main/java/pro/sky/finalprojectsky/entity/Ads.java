@@ -3,8 +3,6 @@ package pro.sky.finalprojectsky.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
-
 
 /**
  * Class of Ads (advertisement/объявление).

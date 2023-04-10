@@ -12,11 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import pro.sky.finalprojectsky.entity.User;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.service.AuthService;
-
 import javax.validation.ValidationException;
 
 /**
- * Имплементация сервиса для регистрации пользователя и входа
+ * Реализация сервиса для регистрации пользователя и входа
  */
 @Transactional
 @RequiredArgsConstructor

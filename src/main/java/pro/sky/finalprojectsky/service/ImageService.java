@@ -5,7 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
-
 import java.io.IOException;
 
 /**

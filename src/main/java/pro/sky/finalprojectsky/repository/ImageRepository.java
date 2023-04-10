@@ -8,5 +8,4 @@ import pro.sky.finalprojectsky.entity.Image;
  */
 public interface ImageRepository extends JpaRepository<Image, Integer> {
     Image findByAdsId(Integer adsId);
-
 }

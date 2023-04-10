@@ -23,7 +23,6 @@ import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.ImageService;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -33,8 +32,6 @@ import javax.validation.Valid;
 @RequestMapping("/ads")
 @Tag(name = "Объявления", description = "AdsController")
 public class AdsController {
-
-
     Logger logger = LoggerFactory.getLogger(AdsController.class);
 
 
@@ -167,7 +164,7 @@ public class AdsController {
     }
 
     @SneakyThrows
-    @Operation(summary = "Загрузка навого изображения к объявлению",
+    @Operation(summary = "Загрузка нового изображения к объявлению",
             responses = {
                     @ApiResponse(
                             responseCode = "200",

@@ -7,7 +7,6 @@ import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.dto.CreateAdsDto;
 import pro.sky.finalprojectsky.dto.FullAdsDto;
 import pro.sky.finalprojectsky.entity.Ads;
-
 import java.io.IOException;
 import java.util.List;
 

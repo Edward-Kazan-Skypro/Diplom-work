@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Имплементация сервиса для работы с объявлениями
+ * Реализация сервиса для работы с объявлениями
  */
 @Transactional
 @RequiredArgsConstructor

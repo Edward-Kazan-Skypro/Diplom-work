@@ -17,14 +17,13 @@ import pro.sky.finalprojectsky.mapper.UserMapper;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.security.UserDetailsServiceImpl;
 import pro.sky.finalprojectsky.service.UserService;
-
 import javax.validation.ValidationException;
 import java.util.List;
 
 import static pro.sky.finalprojectsky.dto.Role.USER;
 
 /**
- * Имплеменация сервиса для работы с пользователем
+ * Реализация сервиса для работы с пользователем
  */
 @Transactional
 @RequiredArgsConstructor

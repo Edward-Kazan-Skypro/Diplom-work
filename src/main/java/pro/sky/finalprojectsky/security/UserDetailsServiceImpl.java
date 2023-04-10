@@ -26,7 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserDetailsPa
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = getUserByUsername(username);
-
         return new MyUserDetails(user);
     }
 
@@ -42,7 +41,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserDetailsPa
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(updatedUserDetails, null, updatedUserDetails.getAuthorities())
         );
-
         return updatedUserDetails;
     }
 
