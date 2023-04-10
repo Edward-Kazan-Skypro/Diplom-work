@@ -2,12 +2,13 @@ package pro.sky.finalprojectsky.security;
 
 import lombok.Getter;
 import pro.sky.finalprojectsky.entity.User;
+
 import java.util.List;
 
 @Getter
 public class MyUserDetails extends org.springframework.security.core.userdetails.User {
 
-    private final Integer id;
+    private final Long id;
 
     public MyUserDetails(User user) {
         super(user.getEmail(), user.getPassword(), List.of(user.getRole()));
@@ -17,4 +18,5 @@ public class MyUserDetails extends org.springframework.security.core.userdetails
     @Override
     public void eraseCredentials() {
     }
+
 }

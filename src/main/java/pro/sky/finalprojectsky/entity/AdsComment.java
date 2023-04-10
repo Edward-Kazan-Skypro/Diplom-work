@@ -17,13 +17,28 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class AdsComment {
+    /**
+     * "ID/ id комментария" field
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
+    /**
+     * "users/пользователь" field
+     */
     @ManyToOne
     private User author;
+    /**
+     * "createdAt/время создания комментария" field
+     */
     private LocalDateTime createdAt;
+    /**
+     * "text/текст комментария" field
+     */
     private String text;
+    /**
+     * "ads/объявление" field
+     */
     @ManyToOne
     private Ads ads;
 }

@@ -7,10 +7,14 @@ import javax.validation.constraints.Size;
 
 @Data
 public class NewPasswordDto {
+
+
     @NotBlank
     @Size(min = 8)
     private String currentPassword;
+
     @NotBlank
     @Size(min = 8)
     private String newPassword;
+
 }

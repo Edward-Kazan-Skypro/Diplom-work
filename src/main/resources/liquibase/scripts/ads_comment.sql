@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset team_unit:1
+-- changeset aalekseev:4
 
 CREATE TABLE IF NOT EXISTS ads_comment
 (
@@ -9,4 +9,5 @@ CREATE TABLE IF NOT EXISTS ads_comment
     created_at timestamp,
     text       text,
     ads_id     integer REFERENCES ads (id)
+
 );

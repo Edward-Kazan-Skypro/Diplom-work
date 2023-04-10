@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset team_unit:2
+-- changeset aalekseev:3
 
 CREATE TABLE IF NOT EXISTS image
 (
@@ -10,15 +10,15 @@ CREATE TABLE IF NOT EXISTS image
     media_type text
 );
 
--- changeset team_unit:2
+-- changeset aalekseev:2
 ALTER TABLE ads
     ADD COLUMN image_id integer REFERENCES image (id);
 
---changeset team_unit:2
+--changeset bbazarov:1
 ALTER TABLE image
 ADD COLUMN ads_id integer REFERENCES ads (id);
 
 
---changeset team_unit:2
+--changeset bbazarov:2
 ALTER TABLE image
 ADD COLUMN file_path VARCHAR NOT NULL;

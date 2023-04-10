@@ -1,9 +1,14 @@
 package pro.sky.finalprojectsky.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,57 +16,65 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pro.sky.finalprojectsky.dto.LoginReqDto;
 import pro.sky.finalprojectsky.dto.RegisterReqDto;
-import pro.sky.finalprojectsky.service.AuthService;
-import javax.validation.Valid;
 import pro.sky.finalprojectsky.mapper.UserMapper;
+import pro.sky.finalprojectsky.service.AuthService;
 
-@Slf4j
+import javax.validation.Valid;
+
 @CrossOrigin(value = "http://localhost:3000")
+@RequiredArgsConstructor
 @RestController
-//@RequiredArgsConstructor
+@Tag(name = "Авторизация", description = "AuthController")
 public class AuthController {
+
+
+    Logger logger = LoggerFactory.getLogger(AuthController.class);
+
+
     private final AuthService authService;
+
     private final UserMapper userMapper;
 
-    public AuthController(AuthService authService,
-                          UserMapper userMapper) {
-        this.authService = authService;
-        this.userMapper = userMapper;
-    }
-
-    @PostMapping(value = "/login",
-            consumes = { "application/json" })
     @Operation(summary = "Авторизация пользователя",
-            description = "",
-            tags={ "Авторизация" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Авторизированный пользователь",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = LoginReqDto.class)
+                            )
+                    )
+            },
+            tags = "Users"
 
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-
-            @ApiResponse(responseCode = "404", description = "Not Found") })
-    public ResponseEntity<Void> login(@RequestBody LoginReqDto req) {
+    )
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(@Valid @RequestBody LoginReqDto req) {
+        logger.info("Request for authorization user");
         authService.login(req.getUsername(), req.getPassword());
+
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(value = "/register",
-            consumes = { "application/json" })
     @Operation(summary = "Регистрация пользователя",
-            description = "",
-            tags={ "Регистрация" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created"),
-
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-
-            @ApiResponse(responseCode = "403", description = "Forbidden"),
-
-            @ApiResponse(responseCode = "404", description = "Not Found") })
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Зарегистрированный пользователь",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = RegisterReqDto.class)
+                            )
+                    )
+            },
+            tags = "Users"
+    )
+    @PostMapping("/register")
     public ResponseEntity<Void> register(@Valid @RequestBody RegisterReqDto req) {
+        logger.info("Request for registration user");
         authService.register(userMapper.toEntity(req));
+
         return ResponseEntity.ok().build();
     }
 }

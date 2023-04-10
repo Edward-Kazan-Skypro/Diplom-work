@@ -17,19 +17,32 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class Image {
+    /**
+     * "id изображения" field
+     */
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Integer id;
+    private Long id;
     @Lob
     @Type(type = "binary")
     private byte[] image;
+    /**
+     * "fileSize/размер файла
+     */
     private long fileSize;
+    /**
+     * "mediaType/тип данных
+     */
     private String mediaType;
+    /**
+     * "filePath/путь к файлу" field
+     */
     private String filePath;
+    /**
+     * "ads/объявление" field
+     */
     @OneToOne
     private Ads ads;
-    @OneToOne
-    private User user;
 
     public String toString() {
         return "AdsEntity(id=" + this.getId() + ", image=" + java.util.Arrays.toString(this.getImage()) + ")";

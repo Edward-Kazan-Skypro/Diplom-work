@@ -1,11 +1,13 @@
 -- liquibase formatted sql
 
--- changeset team_unit:1
+-- changeset aalekseev:2
 
 CREATE TABLE IF NOT EXISTS ads
 (
     id          BIGSERIAL PRIMARY KEY,
     author_id   integer REFERENCES users (id),
     price       int  NOT NULL,
-    title       varchar
+    title       varchar,
+    description text NOT NULL
+
 );

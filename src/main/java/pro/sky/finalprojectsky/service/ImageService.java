@@ -1,28 +1,41 @@
 package pro.sky.finalprojectsky.service;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.dto.AdsDto;
 import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
+
 import java.io.IOException;
 
-
-@Component
+/**
+ * Интерфейс сервиса для работы с картинками
+ */
 public interface ImageService {
-    Image uploadAdsImage(MultipartFile imageFile, Ads ads) throws IOException;
 
-    AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, Integer adsId) throws IOException;
+    /**
+     * Сохранение картинки в БД
+     */
+    Image uploadImage(MultipartFile imageFile, Ads ads) throws IOException;
 
-    Image getAdsImage(Integer id);
+    /**
+     * Обновление картинки объявления
+     */
 
-    byte[] getImageBytesArray(Integer id);
+    AdsDto updateImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException;
 
-    void removeAdsImage(Integer id) throws IOException;
+    /**
+     * Получение картинки по ID
+     */
+    Image getImage(long id);
 
-    boolean uploadUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
+    /**
+     * Получение массива байтов(для фронта)
+     */
+    byte[] getImageBytesArray(long id);
 
-    boolean updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
-
+    /**
+     * Удаление картинки по ID
+     */
+    void removeImage(long id) throws IOException;
 }

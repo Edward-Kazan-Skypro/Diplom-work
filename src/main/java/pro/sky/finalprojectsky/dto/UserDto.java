@@ -7,21 +7,28 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 import static pro.sky.finalprojectsky.constant.Regexp.EMAIL_REGEXP;
 import static pro.sky.finalprojectsky.constant.Regexp.PHONE_REGEXP;
 
 @Data
 public class UserDto {
-    private Integer id;
+
+
+    private int id;
+
     @Email(regexp = EMAIL_REGEXP)
     @Schema(example = "user@user.ru")
     private String email;
+
     @NotBlank
     @Size(min = 3)
     private String firstName;
+
     @NotBlank
     @Size(min = 3)
     private String lastName;
+
     @Pattern(regexp = PHONE_REGEXP)
     private String phone;
 }

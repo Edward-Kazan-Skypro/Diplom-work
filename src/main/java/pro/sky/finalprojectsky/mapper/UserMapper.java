@@ -7,8 +7,12 @@ import pro.sky.finalprojectsky.dto.RegisterReqDto;
 import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.User;
 
+/**
+ * Interface of user mapper
+ */
 @Mapper
 public interface UserMapper extends WebMapper<UserDto, User> {
+
     CreateUserDto toCreateUserDto(User entity);
 
     User createUserDtoToEntity(CreateUserDto dto);
@@ -19,4 +23,6 @@ public interface UserMapper extends WebMapper<UserDto, User> {
     @Mapping(target = "role", defaultValue = "USER")
     @Mapping(source = "username", target = "email")
     User toEntity(RegisterReqDto dto);
+
+
 }
