@@ -21,6 +21,7 @@ import pro.sky.finalprojectsky.mapper.AdsMapper;
 import pro.sky.finalprojectsky.repository.AdsCommentRepository;
 import pro.sky.finalprojectsky.repository.AdsRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
+import pro.sky.finalprojectsky.security.SecurityUtils;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.ImageService;
 import java.io.IOException;
@@ -90,7 +91,7 @@ public class AdsServiceImpl implements AdsService {
                 .orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
         logger.warn("Ad by id {} not found", id);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (ads.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+        if (SecurityUtils.checkPermissionToAds(ads)) {
             List<Integer> adsComments = adsCommentRepository.findAll().stream()
                     .filter(adsComment -> adsComment.getAds().getId() == ads.getId())
                     .map(AdsComment::getId)
@@ -111,7 +112,7 @@ public class AdsServiceImpl implements AdsService {
         Ads updatedAds = adsRepository.findById(id).orElseThrow(() -> new NotFoundException("Объявление с id " + id + " не найдено!"));
         logger.warn("Ad by id {} not found", id);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (updatedAds.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+        if (SecurityUtils.checkPermissionToAds(updatedAds)) {
             updatedAds.setTitle(updateAdsDto.getTitle());
             updatedAds.setDescription(updateAdsDto.getDescription());
             updatedAds.setPrice(updateAdsDto.getPrice());
@@ -175,7 +176,7 @@ public class AdsServiceImpl implements AdsService {
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + id + " не найден!"));
         logger.warn("Comment by {} not found", id);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (adsComment.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+        if (SecurityUtils.checkPermissionToAdsComment(adsComment)) {
             if (adsComment.getAds().getId() != adKey) {
                 logger.warn("Comment by id {} does not belong to ad by id {} ", id, adKey);
                 throw new NotFoundException("Комментарий с id " + id + " не принадлежит объявлению с id " + adKey);
@@ -195,7 +196,7 @@ public class AdsServiceImpl implements AdsService {
                 .orElseThrow(() -> new NotFoundException("Комментарий с id " + id + " не найден!"));
         logger.warn("Comment by id {} not found", id);
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
-        if (updatedAdsComment.getAuthor().getEmail().equals(user.getEmail()) || user.getRole().getAuthority().equals("ADMIN")) {
+        if (SecurityUtils.checkPermissionToAdsComment(updatedAdsComment)) {
             if (updatedAdsComment.getAds().getId() != adKey) {
                 logger.warn("Comment by id {} does not belong to ad by id {} ", id, adKey);
                 throw new NotFoundException("Комментарий с id " + id + " не принадлежит объявлению с id " + adKey);

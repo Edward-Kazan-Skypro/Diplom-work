@@ -19,20 +19,22 @@ public class SecurityUtils {
         return getUserDetailsFromContext().getId();
     }
 
-    public static void checkPermissionToAds(Ads ads) {
+    public static boolean checkPermissionToAds(Ads ads) {
         MyUserDetails userDetails = getUserDetailsFromContext();
 
         if (!userDetails.getAuthorities().contains(Role.ADMIN) && userDetails.getId() != ads.getAuthor().getId()) {
             throw new AccessDeniedException("Чтобы изменить/удалить объявление, нужно иметь роль ADMIN или быть владельцем этого объявления");
         }
+        return true;
     }
 
 
-    public static void checkPermissionToAdsComment(AdsComment adsComment) {
+    public static boolean checkPermissionToAdsComment(AdsComment adsComment) {
         MyUserDetails userDetails = getUserDetailsFromContext();
 
         if (!userDetails.getAuthorities().contains(Role.ADMIN) && userDetails.getId() != adsComment.getAuthor().getId()) {
             throw new AccessDeniedException("Чтобы изменить/удалить комментарий, нужно иметь роль ADMIN или быть владельцем этого комментария");
         }
+        return true;
     }
 }
