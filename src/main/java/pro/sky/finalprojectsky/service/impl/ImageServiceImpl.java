@@ -31,7 +31,6 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
  * Реализация сервиса для работы с картинками
  */
 @RequiredArgsConstructor
-//@Transactional
 @Service
 public class ImageServiceImpl implements ImageService {
     Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
@@ -96,13 +95,13 @@ public class ImageServiceImpl implements ImageService {
         ) {
             bis.transferTo(bos);
         }
-        Image images = new Image();
-        images.setFilePath(filePath.toString());
-        images.setFileSize(imageFile.getSize());
-        images.setMediaType(imageFile.getContentType());
-        images.setImage(imageFile.getBytes());
-        images.setUser(user);
-        return imagesRepository.save(images);
+        Image image = new Image();
+        image.setFilePath(filePath.toString());
+        image.setFileSize(imageFile.getSize());
+        image.setMediaType(imageFile.getContentType());
+        image.setImage(imageFile.getBytes());
+        image.setUser(user);
+        return imagesRepository.save(image);
     }
 
     /**
@@ -118,10 +117,8 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public AdsDto updateAdsImage(MultipartFile imageFile, Authentication authentication, long adsId) throws IOException {
         logger.info("Was invoked method for update ads image");
-
         Ads ads = adsRepository.findById(adsId).orElseThrow(() -> new NotFoundException("Объявление с id " + adsId + " не найдено!"));
         logger.warn("ad by id {} not found", adsId);
-        //User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         if (SecurityUtils.checkPermissionToAds(ads)) {
             Image updatedImage = imagesRepository.findByAdsId(adsId);
             Path filePath = Path.of(updatedImage.getFilePath());

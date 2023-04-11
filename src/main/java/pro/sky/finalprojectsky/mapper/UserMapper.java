@@ -13,29 +13,20 @@ import pro.sky.finalprojectsky.entity.User;
  */
 @Mapper
 public interface UserMapper extends WebMapper<UserDto, User>   {
-
-    //CreateUserDto toCreateUserDto(User entity);
-
     User createUserDtoToEntity(CreateUserDto dto);
-
-    //@Mapping(source = "email", target = "username")
-    //RegisterReqDto toDtoReg(User entity);
 
     @Mapping(target = "role", defaultValue = "USER")
     @Mapping(source = "username", target = "email")
     User toEntity(RegisterReqDto dto);
 
-    /*@Mapping(target = "image", expression = "java(\"/images/\" + entity.getImage().getId())")
-    @Mapping(target = "image", qualifiedByName = "buildLink")
-    @Mapping(target = "id", source = "entity.id")
-    @Mapping(target = "email", source = "entity.email")
-    @Mapping(target = "firstName", source = "entity.firstName")
-    @Mapping(target = "lastName", source = "entity.lastName")
-    @Mapping(target = "phone", source = "entity.phone")
-    UserDto toDto (User entity);
+    @Mapping(target = "image", expression = "java(\"/images/\" + user.getImage().getId())")
+    @Mapping(target = "id", source = "user.id")
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "firstName", source = "user.firstName")
+    @Mapping(target = "lastName", source = "user.lastName")
+    @Mapping(target = "phone", source = "user.phone")
+    UserDto toDto (User user);
 
-    @Named(value = "buildLink")
-    default String buildLink(User user){
-        return "/images/" + user.getImage().getId() + "/image";
-    }*/
+    @Mapping(target = "image", ignore = true)
+    User toEntity(UserDto dto);
 }

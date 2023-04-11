@@ -16,9 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.finalprojectsky.entity.Image;
+import pro.sky.finalprojectsky.entity.User;
+import pro.sky.finalprojectsky.mapper.UserMapper;
+import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.service.UserService;
 import pro.sky.finalprojectsky.service.ImageService;
 import pro.sky.finalprojectsky.dto.*;
@@ -35,6 +39,10 @@ public class UserController {
     private final UserService userService;
 
     private final ImageService imageService;
+
+    private final UserRepository userRepository;
+
+    private final UserMapper userMapper;
 
     @Operation(summary = "Создание пользователя",
             responses = {
@@ -179,17 +187,22 @@ public class UserController {
                             description = "Новое изображение",
                             content = @Content(
                                     mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                                    schema = @Schema(implementation = Image.class)
+                                    schema = @Schema(implementation = UserDto.class)
                             )
                     )
             },
             tags = "Image"
     )
-    @PatchMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Image> updateUserImage(Authentication authentication, @Parameter(in = ParameterIn.DEFAULT, description = "Загрузите сюда новое изображение",
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserDto> updateUserImage(Authentication authentication, @Parameter(in = ParameterIn.DEFAULT, description = "Загрузите сюда новое изображение",
             schema = @Schema())
     @RequestPart(value = "image") @Valid MultipartFile image) {
         logger.info("Request for update user image");
-        return ResponseEntity.ok(imageService.uploadUserImage(image, authentication));
+        Image newImage = imageService.uploadUserImage(image, authentication);
+        User user = userRepository.findByEmail(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).orElseThrow();
+        user.setImage(newImage);
+        userRepository.save(user);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 }
