@@ -189,7 +189,7 @@ public class UserController {
     public ResponseEntity<Image> updateUserImage(Authentication authentication, @Parameter(in = ParameterIn.DEFAULT, description = "Загрузите сюда новое изображение",
             schema = @Schema())
     @RequestPart(value = "image") @Valid MultipartFile image) {
-        logger.info("Request for update ad image by id");
+        logger.info("Request for update user image");
         return ResponseEntity.ok(imageService.uploadUserImage(image, authentication));
     }
 }
