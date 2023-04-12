@@ -14,8 +14,10 @@ import pro.sky.finalprojectsky.dto.Role;
 import pro.sky.finalprojectsky.dto.UserDto;
 import pro.sky.finalprojectsky.entity.User;
 import pro.sky.finalprojectsky.mapper.UserMapper;
+import pro.sky.finalprojectsky.repository.ImageRepository;
 import pro.sky.finalprojectsky.repository.UserRepository;
 import pro.sky.finalprojectsky.security.UserDetailsServiceImpl;
+import pro.sky.finalprojectsky.service.ImageService;
 import pro.sky.finalprojectsky.service.UserService;
 
 import javax.validation.ValidationException;
