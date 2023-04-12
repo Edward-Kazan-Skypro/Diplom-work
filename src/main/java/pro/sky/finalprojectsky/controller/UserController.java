@@ -34,7 +34,7 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 @Tag(name = "Пользователи", description = "UserController")
 public class UserController {
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -198,11 +198,6 @@ public class UserController {
             schema = @Schema())
     @RequestPart(value = "image") @Valid MultipartFile image) {
         logger.info("Request for update user image");
-        Image newImage = imageService.uploadUserImage(image, authentication);
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext()
-                .getAuthentication().getName()).orElseThrow();
-        user.setImage(newImage);
-        userRepository.save(user);
-        return ResponseEntity.ok(userMapper.toDto(user));
+        return ResponseEntity.ok(imageService.updateUserImage(image, authentication));
     }
 }

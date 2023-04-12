@@ -26,10 +26,7 @@ import javax.validation.Valid;
 @RestController
 @Tag(name = "Авторизация", description = "AuthController")
 public class AuthController {
-
-
-    Logger logger = LoggerFactory.getLogger(AuthController.class);
-
+    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final AuthService authService;
 

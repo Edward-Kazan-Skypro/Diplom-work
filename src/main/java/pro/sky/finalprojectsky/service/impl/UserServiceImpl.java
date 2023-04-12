@@ -32,7 +32,7 @@ import static pro.sky.finalprojectsky.dto.Role.USER;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
 
