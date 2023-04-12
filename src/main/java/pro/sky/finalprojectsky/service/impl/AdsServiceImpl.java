@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @Service
 
 public class AdsServiceImpl implements AdsService {
-    Logger logger = LoggerFactory.getLogger(AdsServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(AdsServiceImpl.class);
 
     private final AdsRepository adsRepository;
 

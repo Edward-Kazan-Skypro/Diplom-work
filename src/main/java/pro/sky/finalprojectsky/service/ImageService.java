@@ -28,6 +28,8 @@ public interface ImageService {
 
     UserDto updateUserImage(MultipartFile imageFile, Authentication authentication) throws IOException;
 
+    Image simpleSaveImage (MultipartFile imageFile) throws IOException;
+
     /**
      * Получение картинки по ID
      */
