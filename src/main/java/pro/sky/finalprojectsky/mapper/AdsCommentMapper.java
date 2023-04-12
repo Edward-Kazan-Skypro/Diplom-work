@@ -18,9 +18,9 @@ public interface AdsCommentMapper extends WebMapper<AdsCommentDto, AdsComment> {
 
     @Override
     @Mapping(target = "authorImage",
-            expression = "java(\"/users/images/\" + entity.getAuthor().getImage().getId())")
+            expression = "java(\"/comments/users/\" + entity.getAuthor().getImage().getId())")
     @Mapping(target = "author", source = "author.id")
     @Mapping(source = "id", target = "pk")
-    @Mapping(target = "createdAt", source = "entity.createdAt", dateFormat = "dd-MM-yyyy HH:mm:ss")
+    @Mapping(target = "createdAt", source = "entity.createdAt", dateFormat = "yyyy-MM-dd HH:mm:ss")
     AdsCommentDto toDto(AdsComment entity);
 }
