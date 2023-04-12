@@ -60,24 +60,6 @@ public class ImageServiceImpl implements ImageService {
         Image image = simpleSaveImage(imageFile);
         image.setAds(ads);
         return imageRepository.save(image);
-       /* Path filePath = Path.of(imagesDir, "ads_image_" + ads.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
-        try (
-                InputStream is = imageFile.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
-        ) {
-            bis.transferTo(bos);
-        }
-        Image images = new Image();
-        images.setFilePath(filePath.toString());
-        images.setFileSize(imageFile.getSize());
-        images.setMediaType(imageFile.getContentType());
-        images.setImage(imageFile.getBytes());
-        images.setAds(ads);
-        return imagesRepository.save(images);*/
     }
     @Override
     public Image simpleSaveImage(MultipartFile imageFile) throws IOException{
@@ -108,24 +90,6 @@ public class ImageServiceImpl implements ImageService {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         image.setUser(user);
         return imageRepository.save(image);
-       /* Path filePath = Path.of(imagesDir, "user_image_" + user.getId() + "." + getExtensions(Objects.requireNonNull(imageFile.getOriginalFilename())));
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
-        try (
-                InputStream is = imageFile.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
-        ) {
-            bis.transferTo(bos);
-        }
-        Image image = new Image();
-        image.setFilePath(filePath.toString());
-        image.setFileSize(imageFile.getSize());
-        image.setMediaType(imageFile.getContentType());
-        image.setImage(imageFile.getBytes());
-        image.setUser(user);
-        return imagesRepository.save(image);*/
     }
 
     /**
