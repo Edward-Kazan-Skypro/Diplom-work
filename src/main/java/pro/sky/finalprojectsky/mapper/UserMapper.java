@@ -2,7 +2,6 @@ package pro.sky.finalprojectsky.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import pro.sky.finalprojectsky.dto.CreateUserDto;
 import pro.sky.finalprojectsky.dto.RegisterReqDto;
 import pro.sky.finalprojectsky.dto.UserDto;
@@ -19,7 +18,7 @@ public interface UserMapper extends WebMapper<UserDto, User>   {
     @Mapping(source = "username", target = "email")
     User toEntity(RegisterReqDto dto);
 
-    @Mapping(target = "image", expression = "java(\"/images/\" + user.getImage().getId())")
+    @Mapping(target = "image", expression = "java(\"/users/images/\" + user.getImage().getId())")
     @Mapping(target = "id", source = "user.id")
     @Mapping(target = "email", source = "user.email")
     @Mapping(target = "firstName", source = "user.firstName")

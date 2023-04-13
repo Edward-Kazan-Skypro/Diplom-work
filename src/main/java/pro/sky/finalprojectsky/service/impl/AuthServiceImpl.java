@@ -23,7 +23,7 @@ import javax.validation.ValidationException;
 @Service
 
 public class AuthServiceImpl implements AuthService {
-    Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final PasswordEncoder passwordEncoder;
 

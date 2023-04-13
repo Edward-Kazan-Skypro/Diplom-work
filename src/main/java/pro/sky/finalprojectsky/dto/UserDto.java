@@ -23,6 +23,5 @@ public class UserDto {
     private String lastName;
     @Pattern(regexp = PHONE_REGEXP)
     private String phone;
-
     private String image;
 }

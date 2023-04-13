@@ -33,7 +33,7 @@ import javax.validation.Valid;
 @RequestMapping("/ads")
 @Tag(name = "Объявления", description = "AdsController")
 public class AdsController {
-    Logger logger = LoggerFactory.getLogger(AdsController.class);
+    private final Logger logger = LoggerFactory.getLogger(AdsController.class);
 
     private final AdsService adsService;
 
