@@ -23,14 +23,12 @@ import pro.sky.finalprojectsky.entity.Ads;
 import pro.sky.finalprojectsky.entity.Image;
 import pro.sky.finalprojectsky.service.AdsService;
 import pro.sky.finalprojectsky.service.ImageService;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/ads")
 @Tag(name = "Объявления", description = "AdsController")
 public class AdsController {
     private final Logger logger = LoggerFactory.getLogger(AdsController.class);
@@ -53,7 +51,7 @@ public class AdsController {
             tags = "Ads"
 
     )
-    @GetMapping
+    @GetMapping(value = "/ads")
     public ResponseWrapper<AdsDto> getAllAds() {
         logger.info("Request for get all ads");
         return ResponseWrapper.of(adsService.getAllAds());
@@ -75,7 +73,7 @@ public class AdsController {
             },
             tags = "Ads"
     )
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value ="/ads", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdsDto> addAds(@Parameter(in = ParameterIn.DEFAULT, description = "Данные нового объявления",
             required = true, schema = @Schema())
                                          @RequestPart("image") MultipartFile image,
@@ -96,8 +94,28 @@ public class AdsController {
                     )
             },
             tags = "Image"
-    )@GetMapping(value = "images/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
+    )
+    @GetMapping(value = "/ads/images/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
     public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        logger.info("Request for get image by id");
+        return ResponseEntity.ok(imageService.getImageBytesArray(id));
+    }
+
+    @Operation(summary = "Просмотр аватарки пользователя к комментарию",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Изображение, найденное по id",
+                            content = @Content(
+                                    mediaType = MediaType.IMAGE_PNG_VALUE,
+                                    schema = @Schema(implementation = Image.class)
+                            )
+                    )
+            },
+            tags = "Image"
+    )
+    @GetMapping(value = "/comments/users/{id}", produces = {MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<byte[]> getCommentImage(@PathVariable Long id) {
         logger.info("Request for get image by id");
         return ResponseEntity.ok(imageService.getImageBytesArray(id));
     }
@@ -115,7 +133,7 @@ public class AdsController {
             },
             tags = "Ads"
     )
-    @GetMapping("/me")
+    @GetMapping(value ="/ads/me")
     public ResponseWrapper<AdsDto> getAdsMe() {
         logger.info("Request for get my ads");
         return ResponseWrapper.of(adsService.getAdsMe());
@@ -135,7 +153,7 @@ public class AdsController {
             },
             tags = "Ads"
     )
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value ="/ads/{id}")
     public ResponseEntity<HttpStatus> removeAds(@PathVariable long id, Authentication authentication) {
         logger.info("Request for delete ad by id");
         if (adsService.removeAds(id, authentication)) {
@@ -157,7 +175,7 @@ public class AdsController {
             },
             tags = "Ads"
     )
-    @GetMapping("/{id}")
+    @GetMapping(value ="/ads/{id}")
     public FullAdsDto getAds(@PathVariable long id) {
         logger.info("Request for get ad by id");
         return adsService.getFullAdsDto(id);
@@ -177,7 +195,7 @@ public class AdsController {
             },
             tags = "Image"
     )
-    @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/ads/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdsDto> updateAdsImage(@PathVariable long id, Authentication authentication, @Parameter(in = ParameterIn.DEFAULT, description = "Загрузите сюда новое изображение",
                                                          schema = @Schema())
                                                  @RequestPart(value = "image") @Valid MultipartFile image) {
@@ -199,7 +217,7 @@ public class AdsController {
             },
             tags = "Ads"
     )
-    @PatchMapping("/{id}")
+    @PatchMapping(value ="/ads/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable long id, Authentication authentication,
                                             @RequestBody AdsDto updatedAdsDto) {
         logger.info("Request for update ad by id");
@@ -223,7 +241,7 @@ public class AdsController {
             },
             tags = "Comments"
     )
-    @GetMapping("/{adKey}/comments")
+    @GetMapping(value ="/ads/{adKey}/comments")
     public ResponseWrapper<AdsCommentDto> getAdsComments(@PathVariable int adKey) {
         logger.info("Request for get ad comment");
         return ResponseWrapper.of(adsService.getAdsComments(adKey));
@@ -242,7 +260,7 @@ public class AdsController {
             },
             tags = "Comments"
     )
-    @PostMapping("/{adKey}/comments")
+    @PostMapping(value ="/ads/{adKey}/comments")
     public AdsCommentDto addAdsComments(@PathVariable long adKey, @RequestBody AdsCommentDto adsCommentDto) {
         logger.info("Request for add ad comment");
         return adsService.addAdsComment(adKey, adsCommentDto);
@@ -261,7 +279,7 @@ public class AdsController {
             },
             tags = "Comments"
     )
-    @DeleteMapping("/{adKey}/comments/{id}")
+    @DeleteMapping(value ="/ads/{adKey}/comments/{id}")
     public ResponseEntity<HttpStatus> deleteAdsComment(@PathVariable int adKey, @PathVariable long id,
                                                        Authentication authentication) {
         logger.info("Request for delete ad comment");
@@ -284,7 +302,7 @@ public class AdsController {
             },
             tags = "Comments"
     )
-    @GetMapping("/{adKey}/comments/{id}")
+    @GetMapping(value ="/ads/{adKey}/comments/{id}")
     public AdsCommentDto getAdsComment(@PathVariable int adKey, @PathVariable long id) {
         logger.info("Request for get ad comment");
         return adsService.getAdsComment(adKey, id);
@@ -303,7 +321,7 @@ public class AdsController {
             },
             tags = "Comments"
     )
-    @PatchMapping("/{adKey}/comments/{id}")
+    @PatchMapping(value ="/ads/{adKey}/comments/{id}")
     public ResponseEntity<AdsCommentDto> updateAdsComment(@PathVariable int adKey, @PathVariable long id,
                                                           @RequestBody AdsCommentDto updateAdsCommentDto,
                                                           Authentication authentication) {
