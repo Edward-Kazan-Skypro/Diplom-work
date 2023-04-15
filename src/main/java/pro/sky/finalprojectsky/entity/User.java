@@ -52,4 +52,7 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Image image;
 
+
+    public User(int i, String s, String s1, String tma, String mol, String s2, Role user) {
+    }
 }
